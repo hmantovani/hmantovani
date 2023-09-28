@@ -10,11 +10,8 @@ Sinta-se à vontade para entrar em contato comigo através do [LinkedIn](https:/
 
 ### Lista de repositórios
 
-#### [Análise exploratória de RH da IBM](https://github.com/hmantovani/EDA-RH-IBM)
-Hospedado no Kaggle, esse é um dataset fictício criado por cientistas de dados da IBM com diversos dados de quase 1500 colaboradores. Como o objetivo geral de uma empresa deve ser manter seus talentos e fortalecer seu capital intelectual, essa análise busca entender quais fatores levam a uma maior insatisfação por parte dos colaboradores, permitindo que a empresa intervenha em determinados aspectos.
+[Análise exploratória de RH da IBM](https://github.com/hmantovani/EDA-RH-IBM) - Hospedado no Kaggle, esse é um dataset fictício criado por cientistas de dados da IBM com diversos dados de quase 1500 colaboradores. Como o objetivo geral de uma empresa deve ser manter seus talentos e fortalecer seu capital intelectual, essa análise busca entender quais fatores levam a uma maior insatisfação por parte dos colaboradores, permitindo que a empresa intervenha em determinados aspectos.
 
-#### [Keras e MNIST](https://github.com/hmantovani/keras-models-mnist)
-Criação, treinamento e aplicação de modelos para **classificação de imagens** no famoso dataset MNIST. A base de dados MNIST é uma grande coleção de algarismos manuscritos, frequentemente utilizada para treinar sistemas de processamento de imagens e muito utilizada por pessoas em fase de evolução na área de Machine Learning e processamento de imagens.
+[Keras e MNIST](https://github.com/hmantovani/keras-models-mnist) - Criação, treinamento e aplicação de modelos para **classificação de imagens** no famoso dataset MNIST. A base de dados MNIST é uma grande coleção de algarismos manuscritos, frequentemente utilizada para treinar sistemas de processamento de imagens e muito utilizada por pessoas em fase de evolução na área de Machine Learning e processamento de imagens.
 
-#### [Projetos relacionados a futebol](https://github.com/hmantovani/football-PT/)
-Pasta especial para armazenamento de projetos relacionados a futebol, pensados como uma maneira de misturar um hobby ao aprendizado, tornando o processo mais leve e prazeroso. Essa pasta conta com 2 projetos no momento, mas esse número sempre estará passível de expansão. Essa pasta serve como uma medida de evolução pessoal nos conhecimentos necessários para um analista de dados.
+[Projetos relacionados a futebol](https://github.com/hmantovani/football-PT/) - Pasta especial para armazenamento de projetos relacionados a futebol, pensados como uma maneira de misturar um hobby ao aprendizado, tornando o processo mais leve e prazeroso. Essa pasta conta com 2 projetos no momento, mas esse número sempre estará passível de expansão. Essa pasta serve como uma medida de evolução pessoal nos conhecimentos necessários para um analista de dados.
