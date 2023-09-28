@@ -10,6 +10,8 @@ Sinta-se à vontade para entrar em contato comigo através do [LinkedIn](https:/
 
 ### Lista de repositórios
 
+[Dataset de e-commerce da Olist](https://github.com/hmantovani/olist/) - Análise e modelagem de dados usando o dataset de e-commerce da Olist, disponibilizado no Kaggle. O objetivo final é criar um modelo capaz de prever a probabilidade de um cliente ficar satisfeito ao comprar um produto.
+
 [Análise exploratória de RH da IBM](https://github.com/hmantovani/EDA-RH-IBM) - Hospedado no Kaggle, esse é um dataset fictício criado por cientistas de dados da IBM com diversos dados de quase 1500 colaboradores. Como o objetivo geral de uma empresa deve ser manter seus talentos e fortalecer seu capital intelectual, essa análise busca entender quais fatores levam a uma maior insatisfação por parte dos colaboradores, permitindo que a empresa intervenha em determinados aspectos.
 
 [Keras e MNIST](https://github.com/hmantovani/keras-models-mnist) - Criação, treinamento e aplicação de modelos para **classificação de imagens** no famoso dataset MNIST. A base de dados MNIST é uma grande coleção de algarismos manuscritos, frequentemente utilizada para treinar sistemas de processamento de imagens e muito utilizada por pessoas em fase de evolução na área de Machine Learning e processamento de imagens.
