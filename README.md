@@ -1,7 +1,7 @@
 ### @hmantovani
 
 <details>
-  <summary>Português</summary>
+<summary>🇧🇷</summary>
 
 Olá! Me chamo Henrique Mantovani e sou um profissional dedicado à análise de dados e à busca constante de conhecimento na área.
 
