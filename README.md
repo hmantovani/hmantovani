@@ -4,7 +4,7 @@
 
 <hr>
 
-<a> <img src="https://upload.wikimedia.org/wikipedia/en/0/05/Flag_of_Brazil.svg" alt="LinkedIn" width="40" height="28"> </a>
+<a> <img src="https://cdn-icons-png.flaticon.com/512/3909/3909370.png" alt="Portuguese" width="30" height="30"> </a>
 
 Bem-vindo ao meu Github!
 
@@ -37,7 +37,7 @@ Sinta-se à vontade para entrar em contato comigo através do [LinkedIn](https:/
 
 <hr>
 
-<a> <img src="https://upload.wikimedia.org/wikipedia/en/a/a4/Flag_of_the_United_States.svg" alt="LinkedIn" width="38" height="20"> </a>
+<a> <img src="https://cdn-icons-png.flaticon.com/512/323/323310.png" alt="English" width="30" height="30"> </a>
 
 Welcome to my Github!
 
