@@ -44,6 +44,6 @@ Feel free to reach out to me via [LinkedIn](https://www.linkedin.com/in/hmantova
 <details>
 <summary>🇺🇸 List of repositories</summary>
 
-[Python Handbook](https://github.com/hmantovani/py-handbook/) - Coleção de códigos curtos para diferentes atividades em Python, servindo como um manual para consultas rápidas e aumentando a produtividade em tarefas como EDA e modelagem.
+[Python Handbook](https://github.com/hmantovani/py-handbook/) - A compilation of concise Python code snippets. It serves as a quick-reference guide, streamlining tasks like Exploratory Data Analysis (EDA), data manipulation and modeling. These compact codes enhance productivity by providing instant solutions for various activities in Python programming.
 
 </details>
