@@ -59,6 +59,8 @@ Feel free to reach out to me via [LinkedIn](https://www.linkedin.com/in/hmantova
 
 [Python Handbook](https://github.com/hmantovani/py-handbook/) - A compilation of concise Python code snippets. It serves as a quick-reference guide, streamlining tasks like Exploratory Data Analysis (EDA), data manipulation and modeling. These compact codes enhance productivity by providing instant solutions for various activities in Python programming.
 
+[IBM HR analysis](https://github.com/hmantovani/RH-IBM-EN) - Analysis and modeling of a fictitious dataset created by IBM data scientists with diverse data from almost 1500 employees. As a company's general objective should be to maintain its talents and strengthen its intellectual capital, this analysis seeks to understand which factors lead to greater dissatisfaction on the part of employees, allowing the company to intervene in certain aspects.
+
 [Keras + MNIST](https://github.com/hmantovani/keras-mnist-EN) - Creation, training, and application of models for **image classification** on the famous MNIST dataset. The MNIST dataset is a large collection of handwritten digits, often used to train image processing systems and widely employed by individuals in the process of advancing their knowledge in the field of Machine Learning and image processing.
 
 </details>
