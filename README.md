@@ -8,7 +8,7 @@ Olá! Me chamo Henrique Mantovani e sou um profissional dedicado à análise de 
 
 
 <details>
-<summary>🇧🇷 Apresentação pessoal</summary>
+<summary>Apresentação pessoal</summary>
 
 Em 2022, concluí minha graduação em Engenharia de Produção na PUC-SP, onde desenvolvi uma base sólida em princípios de gestão e processos. Foi durante uma breve experiência na IBM, no mesmo ano, que minha trajetória tomou um novo rumo. A imersão no universo da análise de dados despertou meu interesse de forma definitiva, levando-me a abraçar essa área mesmo após deixar a empresa. Para aprimorar minhas habilidades, completei o curso de [Data Analytics Professional](https://www.coursera.org/professional-certificates/google-data-analytics) do Google (baseado em R) e dei início ao curso mais avançado, chamado de [Google Advanced Data Analytics Professional](https://www.coursera.org/professional-certificates/google-advanced-data-analytics) (baseado em Python). Ambos são oferecidos pelo Coursera e fornecem uma base sólida em análise de dados, estatísticas e visualização de dados, além de capacitar o profissional com as habilidades necessárias para coletar, processar e interpretar dados de maneira eficaz. 
 
@@ -19,7 +19,7 @@ Sinta-se à vontade para entrar em contato comigo através do [LinkedIn](https:/
 </details>
 
 <details>
-<summary>🇧🇷 Lista de repositórios</summary>
+<summary>Lista de repositórios</summary>
 
 [E-commerce da Olist](https://github.com/hmantovani/olist/) - Análise e modelagem de dados usando o dataset de e-commerce da Olist, disponibilizado no Kaggle. O objetivo final é criar um modelo capaz de prever a probabilidade de um cliente ficar satisfeito ao comprar um produto.
 
@@ -36,7 +36,7 @@ Sinta-se à vontade para entrar em contato comigo através do [LinkedIn](https:/
 Hello! My name is Henrique Mantovani, and I'm a dedicated data analysis professional constantly seeking knowledge in the field. I graduated in Production Engineering and fell in love with data analysis during a professional experience. I completed two Google courses in the field and started a postgraduate program in Data Science at PUC-RS. 
 
 <details>
-<summary>🇺🇸 Personal introduction</summary>
+<summary>Personal introduction</summary>
 
 In 2022, I completed my undergraduate studies in Production Engineering at PUC-SP, where I developed a strong foundation in management principles and processes. It was during a brief stint at IBM in the same year that my career took a new direction. Immersing myself in the world of data analysis sparked my interest definitively, leading me to embrace this field even after leaving the company. To enhance my skills, I completed the [Data Analytics Professional](https://www.coursera.org/professional-certificates/google-data-analytics) course by Google (based on R) and began the more advanced course called [Google Advanced Data Analytics Professional](https://www.coursera.org/professional-certificates/google-advanced-data-analytics) (based on Python). Both courses are offered on Coursera and provide a solid foundation in data analysis, statistics, and data visualization, equipping professionals with the skills needed to collect, process, and interpret data effectively.
 
@@ -47,7 +47,7 @@ Feel free to reach out to me via [LinkedIn](https://www.linkedin.com/in/hmantova
 </details>
 
 <details>
-<summary>🇺🇸 List of repositories</summary>
+<summary>List of repositories</summary>
 
 [Python Handbook](https://github.com/hmantovani/py-handbook/) - A compilation of concise Python code snippets. It serves as a quick-reference guide, streamlining tasks like Exploratory Data Analysis (EDA), data manipulation and modeling. These compact codes enhance productivity by providing instant solutions for various activities in Python programming.
 
