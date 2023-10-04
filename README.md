@@ -31,6 +31,8 @@ Sinta-se à vontade para entrar em contato comigo através do [LinkedIn](https:/
 
 </details>
 
+<div style="border-top: 3px solid #999;"></div>
+
 🇺🇸 Welcome to my Github!
 
 Hello! My name is Henrique Mantovani, and I'm a dedicated data analysis professional constantly seeking knowledge in the field. I graduated in Production Engineering and fell in love with data analysis during a professional experience. I completed two Google courses in the field and started a postgraduate program in Data Science at PUC-RS. 
