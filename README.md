@@ -29,9 +29,7 @@ Feel free to reach out to me via [LinkedIn](https://www.linkedin.com/in/hmantova
 </details>
 
 <details>
-### <summary>Lista de projetos 🇧🇷</summary>
-
-[Python Handbook](https://github.com/hmantovani/py-handbook/) - Coleção de códigos curtos para diferentes atividades em Python, servindo como um manual para consultas rápidas e aumentando a produtividade em tarefas como EDA e modelagem.
+<summary>Lista de repositórios 🇧🇷</summary>
 
 [E-commerce da Olist](https://github.com/hmantovani/olist/) - Análise e modelagem de dados usando o dataset de e-commerce da Olist, disponibilizado no Kaggle. O objetivo final é criar um modelo capaz de prever a probabilidade de um cliente ficar satisfeito ao comprar um produto.
 
@@ -40,5 +38,12 @@ Feel free to reach out to me via [LinkedIn](https://www.linkedin.com/in/hmantova
 [Keras + MNIST](https://github.com/hmantovani/keras-mnist) - Criação, treinamento e aplicação de modelos para **classificação de imagens** no famoso dataset MNIST. A base de dados MNIST é uma grande coleção de algarismos manuscritos, frequentemente utilizada para treinar sistemas de processamento de imagens e muito utilizada por pessoas em fase de evolução na área de Machine Learning e processamento de imagens.
 
 [Projetos relacionados a futebol](https://github.com/hmantovani/football-PT/) - Pasta especial para armazenamento de projetos relacionados a futebol, pensados como uma maneira informal de misturar um hobby ao aprendizado, tornando o processo mais leve e prazeroso. Essa pasta conta com 2 projetos no momento, mas esse número sempre estará passível de expansão. Essa pasta serve como uma medida de evolução pessoal nos conhecimentos necessários para um analista de dados.
+
+</details>
+
+<details>
+<summary>List of repositories 🇺🇸</summary>
+
+[Python Handbook](https://github.com/hmantovani/py-handbook/) - Coleção de códigos curtos para diferentes atividades em Python, servindo como um manual para consultas rápidas e aumentando a produtividade em tarefas como EDA e modelagem.
 
 </details>
