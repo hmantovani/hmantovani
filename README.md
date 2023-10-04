@@ -1,3 +1,7 @@
+[Henrique Mantovani](https://www.linkedin.com/in/hmantovani/) <a href="https://www.linkedin.com/in/hmantovani/">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" alt="LinkedIn" width="20" height="20">
+</a>
+
 🇧🇷
 
 Olá! Me chamo Henrique Mantovani e sou um profissional dedicado à análise de dados em constante busca por conhecimento na área. Me formei em Engenharia de Produção e me apaixonei por análise de dados durante uma experiência profissional. Completei dois cursos do Google na área e iniciei uma pós graduação em Ciência de Dados pela PUC-RS.
