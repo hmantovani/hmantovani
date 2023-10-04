@@ -1,9 +1,13 @@
-### @hmantovani
+🇧🇷
+
+Olá! Me chamo Henrique Mantovani e sou um profissional dedicado à análise de dados em constante busca por conhecimento na área. Minha apresentação por completo, incluindo formação acadêmica, está disponível nas seções abaixo.
+
+🇺🇸
+
+Hello! My name is Henrique Mantovani, and I'm a dedicated data analysis professional constantly seeking knowledge in the field. My full introduction, including academic background, is available in the sections below.
 
 <details>
 <summary>🇧🇷</summary>
-
-Olá! Me chamo Henrique Mantovani e sou um profissional dedicado à análise de dados e à busca constante de conhecimento na área.
 
 Em 2022, concluí minha graduação em Engenharia de Produção na PUC-SP, onde desenvolvi uma base sólida em princípios de gestão e processos. Foi durante uma breve experiência na IBM, no mesmo ano, que minha trajetória tomou um novo rumo. A imersão no universo da análise de dados despertou meu interesse de forma definitiva, levando-me a abraçar essa área mesmo após deixar a empresa. Para aprimorar minhas habilidades, completei o curso de [Data Analytics Professional](https://www.coursera.org/professional-certificates/google-data-analytics) do Google (baseado em R) e dei início ao curso mais avançado, chamado de [Google Advanced Data Analytics Professional](https://www.coursera.org/professional-certificates/google-advanced-data-analytics) (baseado em Python). Ambos são oferecidos pelo Coursera e fornecem uma base sólida em análise de dados, estatísticas e visualização de dados, além de capacitar o profissional com as habilidades necessárias para coletar, processar e interpretar dados de maneira eficaz. 
 
@@ -27,8 +31,6 @@ Sinta-se à vontade para entrar em contato comigo através do [LinkedIn](https:/
 
 <details>
 <summary>🇺🇸</summary>
-  
-Hello! My name is Henrique Mantovani, and I am a professional dedicated to data analysis with a constant thirst for knowledge in the field.
 
 In 2022, I completed my undergraduate studies in Production Engineering at PUC-SP, where I developed a strong foundation in management principles and processes. It was during a brief stint at IBM in the same year that my career took a new direction. Immersing myself in the world of data analysis sparked my interest definitively, leading me to embrace this field even after leaving the company. To enhance my skills, I completed the [Data Analytics Professional](https://www.coursera.org/professional-certificates/google-data-analytics) course by Google (based on R) and began the more advanced course called [Google Advanced Data Analytics Professional](https://www.coursera.org/professional-certificates/google-advanced-data-analytics) (based on Python). Both courses are offered on Coursera and provide a solid foundation in data analysis, statistics, and data visualization, equipping professionals with the skills needed to collect, process, and interpret data effectively.
 
