@@ -2,7 +2,7 @@
   <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" alt="LinkedIn" width="20" height="20">
 </a> [Henrique Mantovani](https://www.linkedin.com/in/hmantovani/)
 
-🇧🇷
+🇧🇷 Bem-vindo ao meu Github!
 
 Olá! Me chamo Henrique Mantovani e sou um profissional dedicado à análise de dados em constante busca por conhecimento na área. Me formei em Engenharia de Produção e me apaixonei por análise de dados durante uma experiência profissional. Completei dois cursos do Google na área e iniciei uma pós graduação em Ciência de Dados pela PUC-RS.
 
@@ -31,7 +31,7 @@ Sinta-se à vontade para entrar em contato comigo através do [LinkedIn](https:/
 
 </details>
 
-🇺🇸
+🇺🇸 Welcome to my Github!
 
 Hello! My name is Henrique Mantovani, and I'm a dedicated data analysis professional constantly seeking knowledge in the field. I graduated in Production Engineering and fell in love with data analysis during a professional experience. I completed two Google courses in the field and started a postgraduate program in Data Science at PUC-RS. 
 
