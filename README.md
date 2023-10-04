@@ -1,10 +1,10 @@
 🇧🇷
 
-Olá! Me chamo Henrique Mantovani e sou um profissional dedicado à análise de dados em constante busca por conhecimento na área. Minha apresentação por completo, incluindo formação acadêmica, está disponível nas seções abaixo.
+Olá! Me chamo Henrique Mantovani e sou um profissional dedicado à análise de dados em constante busca por conhecimento na área. As seções abaixo contém a minha apresentação pessoal na íntegra, incluindo a formação acadêmica.
 
 🇺🇸
 
-Hello! My name is Henrique Mantovani, and I'm a dedicated data analysis professional constantly seeking knowledge in the field. My full introduction, including academic background, is available in the sections below.
+Hello! My name is Henrique Mantovani, and I'm a dedicated data analysis professional constantly seeking knowledge in the field. The sections below contain my full personal introduction, including academic background.
 
 <details>
 <summary>🇧🇷</summary>
@@ -14,18 +14,6 @@ Em 2022, concluí minha graduação em Engenharia de Produção na PUC-SP, onde 
 Atualmente, estou investindo no meu crescimento profissional através de uma pós-graduação em Ciência de Dados e Inteligência Artificial na PUC-RS, com previsão de conclusão em dezembro de 2024.
 
 Sinta-se à vontade para entrar em contato comigo através do [LinkedIn](https://www.linkedin.com/in/hmantovani/). Obrigado por visitar meu perfil!
-
-### Lista de repositórios
-
-[Python Handbook](https://github.com/hmantovani/py-handbook/) - Coleção de códigos curtos para diferentes atividades em Python, servindo como um manual para consultas rápidas e aumentando a produtividade em tarefas como EDA e modelagem.
-
-[E-commerce da Olist](https://github.com/hmantovani/olist/) - Análise e modelagem de dados usando o dataset de e-commerce da Olist, disponibilizado no Kaggle. O objetivo final é criar um modelo capaz de prever a probabilidade de um cliente ficar satisfeito ao comprar um produto.
-
-[Análise de RH da IBM](https://github.com/hmantovani/RH-IBM) - Análise e modelagem de um dataset fictício criado por cientistas de dados da IBM com diversos dados de quase 1500 colaboradores. Como o objetivo geral de uma empresa deve ser manter seus talentos e fortalecer seu capital intelectual, essa análise busca entender quais fatores levam a uma maior insatisfação por parte dos colaboradores, permitindo que a empresa intervenha em determinados aspectos.
-
-[Keras + MNIST](https://github.com/hmantovani/keras-mnist) - Criação, treinamento e aplicação de modelos para **classificação de imagens** no famoso dataset MNIST. A base de dados MNIST é uma grande coleção de algarismos manuscritos, frequentemente utilizada para treinar sistemas de processamento de imagens e muito utilizada por pessoas em fase de evolução na área de Machine Learning e processamento de imagens.
-
-[Projetos relacionados a futebol](https://github.com/hmantovani/football-PT/) - Pasta especial para armazenamento de projetos relacionados a futebol, pensados como uma maneira informal de misturar um hobby ao aprendizado, tornando o processo mais leve e prazeroso. Essa pasta conta com 2 projetos no momento, mas esse número sempre estará passível de expansão. Essa pasta serve como uma medida de evolução pessoal nos conhecimentos necessários para um analista de dados.
 
 </details>
 
@@ -37,5 +25,20 @@ In 2022, I completed my undergraduate studies in Production Engineering at PUC-S
 Currently, I am investing in my professional growth through a postgraduate program in Data Science and Artificial Intelligence at PUC-RS, with an expected completion date in December 2024.
 
 Feel free to reach out to me via [LinkedIn](https://www.linkedin.com/in/hmantovani/). Thank you for visiting my profile!
+
+</details>
+
+<details>
+<summary>### Lista de projetos 🇧🇷</summary>
+
+[Python Handbook](https://github.com/hmantovani/py-handbook/) - Coleção de códigos curtos para diferentes atividades em Python, servindo como um manual para consultas rápidas e aumentando a produtividade em tarefas como EDA e modelagem.
+
+[E-commerce da Olist](https://github.com/hmantovani/olist/) - Análise e modelagem de dados usando o dataset de e-commerce da Olist, disponibilizado no Kaggle. O objetivo final é criar um modelo capaz de prever a probabilidade de um cliente ficar satisfeito ao comprar um produto.
+
+[Análise de RH da IBM](https://github.com/hmantovani/RH-IBM) - Análise e modelagem de um dataset fictício criado por cientistas de dados da IBM com diversos dados de quase 1500 colaboradores. Como o objetivo geral de uma empresa deve ser manter seus talentos e fortalecer seu capital intelectual, essa análise busca entender quais fatores levam a uma maior insatisfação por parte dos colaboradores, permitindo que a empresa intervenha em determinados aspectos.
+
+[Keras + MNIST](https://github.com/hmantovani/keras-mnist) - Criação, treinamento e aplicação de modelos para **classificação de imagens** no famoso dataset MNIST. A base de dados MNIST é uma grande coleção de algarismos manuscritos, frequentemente utilizada para treinar sistemas de processamento de imagens e muito utilizada por pessoas em fase de evolução na área de Machine Learning e processamento de imagens.
+
+[Projetos relacionados a futebol](https://github.com/hmantovani/football-PT/) - Pasta especial para armazenamento de projetos relacionados a futebol, pensados como uma maneira informal de misturar um hobby ao aprendizado, tornando o processo mais leve e prazeroso. Essa pasta conta com 2 projetos no momento, mas esse número sempre estará passível de expansão. Essa pasta serve como uma medida de evolução pessoal nos conhecimentos necessários para um analista de dados.
 
 </details>
