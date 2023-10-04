@@ -31,7 +31,7 @@ Sinta-se à vontade para entrar em contato comigo através do [LinkedIn](https:/
 
 </details>
 
-<div style="border-top: 3px solid #999;"></div>
+<hr>
 
 🇺🇸 Welcome to my Github!
 
