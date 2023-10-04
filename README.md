@@ -29,7 +29,7 @@ Feel free to reach out to me via [LinkedIn](https://www.linkedin.com/in/hmantova
 </details>
 
 <details>
-<summary>### Lista de projetos 🇧🇷</summary>
+### <summary>Lista de projetos 🇧🇷</summary>
 
 [Python Handbook](https://github.com/hmantovani/py-handbook/) - Coleção de códigos curtos para diferentes atividades em Python, servindo como um manual para consultas rápidas e aumentando a produtividade em tarefas como EDA e modelagem.
 
