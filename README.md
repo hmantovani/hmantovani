@@ -26,7 +26,7 @@ Sinta-se à vontade para entrar em contato comigo através do [LinkedIn](https:/
 </details>
 
 <details>
-  <summary>English</summary>
+<summary>🇺🇸</summary>
   
 Hello! My name is Henrique Mantovani, and I am a professional dedicated to data analysis with a constant thirst for knowledge in the field.
 
