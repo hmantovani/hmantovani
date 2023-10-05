@@ -1,6 +1,6 @@
 # Modelo para simulação de campeonatos de futebol
 
-A análise pode ser acessada na íntegra através do [NBViewer](https://nbviewer.org/github/hmantovani/football-PT/blob/main/modelo-previsao-futebol/Montecarlo_BR.nb.html).
+A análise pode ser acessada na íntegra através do [NBViewer](https://nbviewer.org/github/hmantovani/hmantovani/blob/main/football/modelo-previsao-futebol/Montecarlo_BR.nb.html).
 
 O futebol, enraizado na cultura brasileira como uma paixão nacional, transcende fronteiras geográficas e sociais, unindo torcedores de todas as idades em um espetáculo esportivo. O Brasil respira futebol. Desde as ruas esburacadas das favelas até os gramados impecáveis dos estádios mundialmente famosos, o esporte se entrelaça com a vida cotidiana de milhões de brasileiros. As rivalidades regionais alimentam a paixão dos torcedores e emprestam autenticidade e intensidade a cada partida.
 
