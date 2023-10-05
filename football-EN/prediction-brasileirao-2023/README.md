@@ -41,19 +41,19 @@ Before we delve into the analysis of the results, it is important to understand 
 It is important to note that every prediction model may perform better in contexts like the major European leagues, including England, Italy, Germany, Spain, and France. In these leagues, the difference in technical level between teams is clearer, and fewer clubs start the tournament with realistic title chances. This scenario may provide a conducive environment for the model to achieve higher accuracy. However, in the unique and unpredictable context of the Brazilian Championship, with its wide range of clubs and possible scenarios, our analysis focuses on understanding how our model adapts and behaves in an environment where competition is a true challenge.
 
 ### Probabilities for each team
-<img src="https://github.com/hmantovani/football-EN/blob/main/prediction-brasileirao-2023/24-08-2023%20-%20Posi%C3%A7%C3%B5es.png"/>
+<img src="https://github.com/hmantovani/hmantovani/blob/main/football-EN/prediction-brasileirao-2023/24-08-2023%20-%20Posi%C3%A7%C3%B5es.png"/>
 
 ### Libertadores probabilities
-<img src="https://github.com/hmantovani/football-EN/blob/main/prediction-brasileirao-2023/Prob%20Lib.png" width="350"/>
+<img src="https://github.com/hmantovani/hmantovani/blob/main/football-EN/prediction-brasileirao-2023/Prob%20Lib.png" width="350"/>
 
 ### Sul-Americana probabilities
-<img src="https://github.com/hmantovani/football-EN/blob/main/prediction-brasileirao-2023/Prob%20Sula.png" width="350"/>
+<img src="https://github.com/hmantovani/hmantovani/blob/main/football-EN/prediction-brasileirao-2023/Prob%20Sula.png" width="350"/>
 
 ### Relegation probabilities
-<img src="https://github.com/hmantovani/football-EN/blob/main/prediction-brasileirao-2023/Prob%20Z4.png" width="350"/>
+<img src="https://github.com/hmantovani/hmantovani/blob/main/football-EN/prediction-brasileirao-2023/Prob%20Z4.png" width="350"/>
 
 ### Standings in August 24th
-<img src="https://github.com/hmantovani/football-EN/blob/main/prediction-brasileirao-2023/24-08-2023%20-%20Tabela%20HOJE.png" width="600"/>
+<img src="https://github.com/hmantovani/hmantovani/blob/main/football-EN/prediction-brasileirao-2023/24-08-2023%20-%20Tabela%20HOJE.png" width="600"/>
 
 ### Predicted final standings
-<img src="https://github.com/hmantovani/football-EN/blob/main/prediction-brasileirao-2023/24-08-2023%20-%20Tabela%20FINAL.png" width="600"/>
+<img src="https://github.com/hmantovani/hmantovani/blob/main/football-EN/prediction-brasileirao-2023/24-08-2023%20-%20Tabela%20FINAL.png" width="600"/>
