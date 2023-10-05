@@ -25,7 +25,7 @@ Sinta-se à vontade para entrar em contato comigo através do [LinkedIn](https:/
 <details>
 <summary>Lista de repositórios</summary>
 
-<a> <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" width="10" height="10"> </a> [E-commerce da Olist](https://github.com/hmantovani/olist/) - Análise e modelagem de dados usando o dataset de e-commerce da Olist, disponibilizado no Kaggle. O objetivo final é criar um modelo capaz de prever a probabilidade de um cliente ficar satisfeito ao comprar um produto.
+<a> <img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/Python-logo-notext.svg" width="15" height="15"> </a> [E-commerce da Olist](https://github.com/hmantovani/olist/) - Análise e modelagem de dados usando o dataset de e-commerce da Olist, disponibilizado no Kaggle. O objetivo final é criar um modelo capaz de prever a probabilidade de um cliente ficar satisfeito ao comprar um produto.
 
 Py - [Análise de RH da IBM](https://github.com/hmantovani/RH-IBM) - Análise e modelagem de um dataset fictício criado por cientistas de dados da IBM com diversos dados de quase 1500 colaboradores. Como o objetivo geral de uma empresa deve ser manter seus talentos e fortalecer seu capital intelectual, essa análise busca entender quais fatores levam a uma maior insatisfação por parte dos colaboradores, permitindo que a empresa intervenha em determinados aspectos.
 
