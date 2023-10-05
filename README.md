@@ -63,4 +63,6 @@ Feel free to reach out to me via [LinkedIn](https://www.linkedin.com/in/hmantova
 
 [Keras + MNIST](https://github.com/hmantovani/keras-mnist-EN) - Creation, training, and application of models for **image classification** on the famous MNIST dataset. The MNIST dataset is a large collection of handwritten digits, often used to train image processing systems and widely employed by individuals in the process of advancing their knowledge in the field of Machine Learning and image processing.
 
+[Football projects](https://github.com/hmantovani/football-EN/) - Special folder for storing football-related projects, designed as an informal way to mix a hobby with learning, making the process lighter and more enjoyable. This folder currently has 2 projects, but this number will always be subject to expansion. This folder serves as a measure of personal evolution in the knowledge necessary for a data analyst.
+
 </details>
