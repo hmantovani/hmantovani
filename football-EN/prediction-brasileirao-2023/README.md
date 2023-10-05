@@ -1,7 +1,7 @@
 # Modeling, Simulation, and Prediction of the 2023 Brazilian Championship
 Monte Carlo Method for Simulation and Prediction of the 2023 Brazilian Championship.
 
-The complete notebook is best viewed through [NB Viewer](https://nbviewer.org/github/hmantovani/football-EN/blob/main/prediction-brasileirao-2023/Simulador-Montecarlo.html).
+The complete notebook is best viewed through [NB Viewer](https://nbviewer.org/github/hmantovani/hmantovani/blob/main/football-EN/prediction-brasileirao-2023/Simulador-Montecarlo.html).
 
 Football, deeply rooted in Brazilian culture as a national passion, transcends geographical and social boundaries, uniting fans of all ages in a sports spectacle. Brazil lives and breathes football. The sport intertwines with the daily lives of millions of Brazilians.
 
