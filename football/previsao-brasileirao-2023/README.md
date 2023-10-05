@@ -1,5 +1,5 @@
 # Modelagem, simulação e previsão do Campeonato Brasileiro 2023
-Método Montecarlo para simulação e previsão do Campeonato Brasileiro 2023. O notebook completo é melhor visualizado através do [NB Viewer](https://nbviewer.org/github/hmantovani/football-PT/blob/main/previsao-brasileirao-2023/Simulador-Montecarlo.html).
+Método Montecarlo para simulação e previsão do Campeonato Brasileiro 2023. O notebook completo é melhor visualizado através do [NB Viewer](https://nbviewer.org/github/hmantovani/hmantovani/blob/main/football/previsao-brasileirao-2023/Simulador-Montecarlo.html).
 
 O futebol, enraizado na cultura brasileira como uma paixão nacional, transcende fronteiras geográficas e sociais, unindo torcedores de todas as idades em um espetáculo esportivo. O Brasil vive e respira futebol. O esporte se entrelaça com a vida cotidiana de milhões de brasileiros.
 
