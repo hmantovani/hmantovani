@@ -39,19 +39,19 @@ Antes de nos aprofundarmos na análise dos resultados, é importante compreender
 É importante observar que todo modelo de previsão pode ter um desempenho melhor em contextos como as grandes ligas europeias, incluindo a Inglaterra, Itália, Alemanha, Espanha e França. Nessas ligas, a diferença de nível técnico entre as equipes é mais clara e menos clubes iniciam o torneio com chances reais de título. Esse cenário pode oferecer um ambiente propício para o modelo atingir maior precisão. No entanto, no contexto único e imprevisível do Campeonato Brasileiro, com sua ampla gama de clubes e possíveis cenários, nossa análise se concentra em compreender como nosso modelo se adapta e se comporta em um ambiente onde a competição é um verdadeiro desafio.
 
 ### Probabilidade por time e posição
-<img src="https://github.com/hmantovani/football-PT/blob/main/previsao-brasileirao-2023/24-08-2023%20-%20Posi%C3%A7%C3%B5es.png"/>
+<img src="https://github.com/hmantovani/hmantovani/blob/main/football/previsao-brasileirao-2023/24-08-2023%20-%20Posições.png"/>
 
 ### Chances de Libertadores
-<img src="https://github.com/hmantovani/football-PT/blob/main/previsao-brasileirao-2023/Prob%20Lib.png" width="350"/>
+<img src="https://github.com/hmantovani/hmantovani/blob/main/football/previsao-brasileirao-2023/Prob%20Lib.png" width="350"/>
 
 ### Chances de Sulamericana
-<img src="https://github.com/hmantovani/football-PT/blob/main/previsao-brasileirao-2023/Prob%20Sula.png" width="350"/>
+<img src="https://github.com/hmantovani/hmantovani/blob/main/football/previsao-brasileirao-2023/Prob%20Sula.png" width="350"/>
 
 ### Chances de rebaixamento
-<img src="https://github.com/hmantovani/football-PT/blob/main/previsao-brasileirao-2023/Prob%20Z4.png" width="350"/>
+<img src="https://github.com/hmantovani/hmantovani/blob/main/football/previsao-brasileirao-2023/Prob%20Z4.png" width="350"/>
 
 ### Tabela em 24 de agosto
-<img src="https://github.com/hmantovani/football-PT/blob/main/previsao-brasileirao-2023/24-08-2023%20-%20Tabela%20HOJE.png" width="600"/>
+<img src="https://github.com/hmantovani/hmantovani/blob/main/football/previsao-brasileirao-2023/24-08-2023%20-%20Tabela%20HOJE.png" width="600"/>
 
 ### Previsão final
-<img src="https://github.com/hmantovani/football-PT/blob/main/previsao-brasileirao-2023/24-08-2023%20-%20Tabela%20FINAL.png" width="600"/>
+<img src="https://github.com/hmantovani/hmantovani/blob/main/football/previsao-brasileirao-2023/24-08-2023%20-%20Tabela%20FINAL.png" width="600"/>
