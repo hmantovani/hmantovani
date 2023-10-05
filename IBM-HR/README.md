@@ -1,7 +1,7 @@
 # Análise de atrição, desempenho e retenção de funcionários
 
-* **[Notebook da EDA no NBViewer](https://nbviewer.org/github/hmantovani/RH-IBM/blob/main/EDA_RH_IBM.ipynb)**
-* **[Notebook da modelagem no NBViewer](https://nbviewer.org/github/hmantovani/RH-IBM/blob/main/model_IBM.ipynb)**
+* **[Notebook da EDA no NBViewer](https://nbviewer.org/github/hmantovani/hmantovani/blob/main/IBM-HR/EDA_RH_IBM.ipynb)**
+* **[Notebook da modelagem no NBViewer](https://nbviewer.org/github/hmantovani/hmantovani/blob/main/IBM-HR/model_IBM.ipynb)**
 
 Ter a capacidade de contratar, treinar e manter um corpo de funcionários competente e capacitado é uma das peças mais importantes dentro do esquema de uma empresa. Para estimular seus talentos a permanecerem exercendo suas atividades atuais, a empresa deve elaborar uma estratégia de retenção de funcionários.
 
