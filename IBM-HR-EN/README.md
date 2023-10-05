@@ -1,7 +1,7 @@
 # Employee attrition, performance and retention analysis
 
-* **[EDA Notebook on NBViewer](https://nbviewer.org/github/hmantovani/RH-IBM-EN/blob/main/EDA_RH_IBM.ipynb)**
-* **[Modeling Notebook in NBViewer](https://nbviewer.org/github/hmantovani/RH-IBM-EN/blob/main/model_IBM.ipynb)**
+* **[EDA Notebook on NBViewer](https://nbviewer.org/github/hmantovani/hmantovani/blob/main/IBM-HR-EN/EDA_RH_IBM.ipynb)**
+* **[Modeling Notebook in NBViewer](https://nbviewer.org/github/hmantovani/hmantovani/blob/main/IBM-HR-EN/model_IBM.ipynb)**
 
 Having the ability to hire, train and maintain a competent and qualified team of employees is one of the most important pieces within a company's scheme. To encourage its talents to remain in their current activities, the company must develop an employee retention strategy.
 
