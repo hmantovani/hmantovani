@@ -1,0 +1,713 @@
+---
+title: "Simulador Montecarlo 2023"
+output: html_document
+---
+
+**Importação de pacotes necessários e funções personalizadas**
+
+Além dos pacotes necessários, as funções são necessárias para calcular o resultado final de cada jogo, a quantidade final de pontos de cada equipe e também montar uma tabela de classificação de acordo com um conjunto de placares.
+
+```{r message=FALSE, warning=FALSE}
+# Pacotes necessários
+library(tidyverse)
+library(goalmodel)
+library(worldfootballR)
+library(regista)
+library(janitor)
+library(magrittr)
+library(ggrepel)
+library(ggtext)
+library(jsonlite)
+library(gt)
+library(gtExtras)
+library(MetBrewer)
+
+# Funções para calcular o resultado da partida
+calcV <- function(hg, ag){
+  return(hg > ag)
+}
+calcD <- function(hg, ag){
+  return(hg < ag)
+}
+calcE <- function(hg, ag){
+  return(hg == ag)
+}
+calcPTS <- function(hg, ag){
+  return(ifelse(hg < ag, 0, ifelse(hg == ag, 1, 3)))
+}
+calcTAB <- function(games){
+  home <- games %>%
+    mutate(casa_V = calcV(hgoal, agoal),
+           casa_E = calcE(hgoal, agoal),
+           casa_D = calcD(hgoal, agoal),
+           casa_PTS = calcPTS(hgoal,agoal)) %>%
+    group_by(home) %>% summarise(casa_PTS = sum(casa_PTS),
+                                 casa_J = length(home),
+                                 casa_V = sum(casa_V),
+                                 casa_E = sum(casa_E),
+                                 casa_D = sum(casa_D),
+                                 casa_GP = sum(as.numeric(hgoal)),
+                                 casa_GS = sum(as.numeric(agoal)),
+                                 casa_SG = sum(as.numeric(hgoal)) - sum(as.numeric(agoal))) %>%
+    dplyr::rename(Time = home)
+  
+  away <- games %>%
+    mutate(fora_V = calcV(agoal, hgoal),
+           fora_E = calcE(agoal, hgoal),
+           fora_D = calcD(agoal, hgoal),
+           fora_PTS = calcPTS(agoal,hgoal)) %>%
+    group_by(away) %>% summarise(fora_PTS = sum(fora_PTS),
+                                 fora_J = length(away),
+                                 fora_V = sum(fora_V),
+                                 fora_E = sum(fora_E),
+                                 fora_D = sum(fora_D),
+                                 fora_GP = sum(as.numeric(agoal)),
+                                 fora_GS = sum(as.numeric(hgoal)),
+                                 fora_SG = sum(as.numeric(agoal)) - sum(as.numeric(hgoal))) %>%
+    dplyr::rename(Time = away)
+  
+  total <- inner_join(home, away, by = 'Time') %>%
+    mutate(PTS = casa_PTS + fora_PTS,
+           J = casa_J + fora_J,
+           V = casa_V + fora_V,
+           E = casa_E + fora_E,
+           D = casa_D + fora_D,
+           GP = casa_GP + fora_GP,
+           GS = casa_GS + fora_GS,
+           SG = casa_SG + fora_SG) %>%
+    select(Time, PTS, J, V, E, D, GP, GS, SG) %>%
+    arrange(desc(PTS), desc(V), desc(SG), desc(GP)) %>%
+    mutate(Pos = row_number()) %>%
+    relocate(Pos) %>%
+    mutate(AP = round(PTS / (J * 3) * 100, digits = 1))
+  
+  return(total)
+}
+
+current_date <- strftime(Sys.Date(), format = "%d-%m-%Y")
+camcorder::gg_record(
+  dir = file.path(here::here("camcorder_outputs")),
+  device = "png",
+  width = 18,
+  height = 10,
+  dpi = 300)
+sysfonts::font_add_google(name = "IBM Plex Sans", family = "IBM")
+showtext::showtext_auto()
+showtext::showtext_opts(dpi = 300)
+font <- "IBM"
+```
+
+**Extração e manipulação dos dados necessários para o modelo**
+
+Os dados utilizados são originários do site FBRef e para tentar aumentar a eficácia do modelo coletaremos todos os placares dos jogos do Campeonato Brasileiro desde 2014. Os jogos já disputados em 2023, obviamente, serão integrados à parte de treinamento de modelo, que será então aplicado aos jogos ainda por disputar.
+
+Na data da elaboração original desse modelo, no dia 17 de agosto, o Campeonato Brasileiro acabava de chegar ao final do seu primeiro turno, tendo o Botafogo como líder incontestável. Com 47 pontos nas 19 partidas disputadas no primeiro turno, o Botafogo igualava em pontos o desempenho do Corinthians na primeira metade de 2017. O primeiro critério de desempate de acordo com o regulamento do campeonato, o número de vitórias, deu ao Botafogo o melhor primeiro turno da história: foram 15 vitórias contra 14 do Corinthians em 2017, que também fez história ao fechar de maneira invicta a sequência de 19 jogos.
+
+```{r message=FALSE, warning=FALSE}
+folder <- "C:/R/Simuladores BR 2023/"
+# Dataframe vazio para armazenar todas tabelas finais
+montecarlo_tabelas <- setNames(data.frame(matrix(ncol = 12, nrow = 0)),
+                               c('Pos', 'Time', 'PTS', 'J', 'V', 'E',
+                                 'D', 'GP', 'GS', 'SG', 'AP', 'sim'))
+# Lista de dataframes
+montecarlo_tabelas_df <- list()
+
+# Dataframe vazio para armazenar todos os jogos
+montecarlo_jogos <- setNames(data.frame(matrix(ncol = 10, nrow = 0)),
+                             c('year', 'home', 'hgoal', 'agoal', 'away',
+                               'p1', 'pX', 'p2', 'hxg', 'axg'))
+# Lista de dataframes
+montecarlo_jogos_df <- list()
+
+# Extraindo dados do Campeonato Brasileiro de 2023 do FBRef
+data_2023 <- fb_match_results(country = "BRA",
+                              gender = "M",
+                              season_end_year = 2023,
+                              tier = "1st") %>%
+  clean_names() %>% factor_teams(c("home", "away")) %>% 
+  rename(hgoal = home_goals, agoal = away_goals) %>% 
+  select('date', 'home', 'away', 'hgoal', 'agoal')
+
+# Lista de times
+times <- unique(data_2023$home)
+
+# Extraindo dados das outras edições disponíveis no FBRef
+# Esses jogos servirão como treinamento do modelo
+train_data <- fb_match_results(country = "BRA",
+                               gender = "M",
+                               season_end_year = c(2014,2015,2016,
+                                                   2017,2018,2019,
+                                                   2020,2021,2022),
+                               tier = "1st") %>%
+  clean_names() %>% factor_teams(c("home", "away")) %>% 
+  rename(hgoal = home_goals, agoal = away_goals) %>% 
+  select('date', 'home', 'away', 'hgoal', 'agoal')
+
+# Separando os jogos já disputados em 2023
+# Esses jogos farão parte do treinamento do modelo
+played_2023 <- data_2023 %>% filter(!is.na(hgoal) & !is.na(agoal))
+train_data <- rbind(train_data, played_2023)
+
+# Separando os jogos ainda não disputados de 2023
+# Esses jogos serão o teste do modelo
+test_data <- data_2023 %>% filter(is.na(hgoal) & is.na(agoal))
+
+# Criando um dataframe para todos os jogos desde 2014
+full_data <- rbind(train_data, test_data)
+```
+
+**Criação e visualização do modelo**
+
+Nessa visualização do modelo, o sumário mostrará todos os times presentes nos dados fornecidos ao modelo. Isso significa que todos os clubes participantes de ao menos uma edição do Campeonato Brasileiro desde 2014 estarão presentes.
+
+```{r}
+pesos <- weights_dc(train_data$date, xi = 0.003)
+model <- goalmodel(goals1 = train_data$hgoal,
+                   goals2 = train_data$agoal,
+                   team1 = train_data$home,
+                   team2 = train_data$away,
+                   dc = TRUE,
+                   rs = TRUE,
+                   model = 'poisson',
+                   weights = pesos)
+summary(model)
+```
+
+**Plotagem das variáveis de cada time do Campeonato Brasileiro de 2023**
+
+```{r, fig.show='hold'}
+coef <- as.data.frame(model[["parameters"]][["attack"]])
+coef$Def <- model[["parameters"]][["defense"]]
+colnames(coef)[1] <- 'Att'
+coef$Ovr <- coef$Att + coef$Def
+coef <- coef[,c(3,1,2)]
+coef$Time <- row.names(coef)
+coef <- coef %>% filter(`Time` %in% times)
+
+coefplot <- coef %>% ggplot(aes(x = Def, y = Att)) +
+  geom_point(shape=21, stroke=0, fill="orange", color = "black", size=8) +
+  #geom_text_repel(aes(label = team)) +
+  #geom_text(aes(label = Time), position = position_nudge(y = -0.06)) +
+  geom_text(aes(label = Time), hjust = -0.2, size = 5) +
+  theme_minimal(base_size = 20) +
+  labs(title = "Estimativa de parâmetros dos times",
+       y = "Ataque",
+       x = "Defesa")
+
+print(coefplot)
+ggsave(paste(folder,
+             current_date,
+             ' - Coeficientes.png',
+             sep = ''),
+       plot = coefplot)
+```
+
+**Definindo a quantidade de simulações e executando**
+
+Cada iteração produz uma tabela de classificação final do campeonato, após todos clubes terem disputado suas 38 partidas, e uma lista dos 380 placares dos jogos entre as equipes. Todas essas tabelas e listas de jogos são agrupadas a um conjunto único, por motivos que serão explicados a seguir.
+
+```{r message=FALSE, warning=FALSE}
+# Quantidade de simulações
+runs = 10000
+
+for(n in 1:runs){
+  run <- test_data
+
+  for(i in 1:nrow(run)){
+    plac <- predict_goals(
+      model,
+      team1 = run$home[i],
+      team2 = run$away[i],
+      return_df = TRUE,
+      maxgoal = 15)
+    plac$res <- paste(plac$goals1,plac$goals2,sep="x")
+    plac <- plac[c(1,2,5,6)]
+    plac$probability <- ifelse(plac$probability < 0,
+                               abs(plac$probability), plac$probability)
+    
+    match <- sample(plac$res, 1, prob = plac$probability)
+    match <- data.frame(test_data$date[i], test_data$home[i],
+                        test_data$away[i], match)
+    colnames(match) <- c('date', 'home', 'away', 'x')
+    match[c('hgoal', 'agoal')] <- str_split_fixed(match$x, 'x', 2)
+    match$x <- 'x'
+    match <- match[c(1,2,5,6,3)]
+    run <- rbind(run,match)
+  }
+  
+  run <- run %>% drop_na(hgoal)
+  simmed <- run %>% select(1,2,3,4,5)
+  total <- rbind(played_2023, simmed)
+  
+  classificacao_casa <- total %>%
+    mutate(casa_V = calcV(hgoal, agoal),
+           casa_E = calcE(hgoal, agoal),
+           casa_D = calcD(hgoal, agoal),
+           casa_PTS = calcPTS(hgoal,agoal)) %>%
+    group_by(home) %>% summarise(casa_PTS = sum(casa_PTS),
+                                 casa_J = length(home),
+                                 casa_V = sum(casa_V),
+                                 casa_E = sum(casa_E),
+                                 casa_D = sum(casa_D),
+                                 casa_GP = sum(as.numeric(hgoal)),
+                                 casa_GS = sum(as.numeric(agoal)),
+                                 casa_SG = sum(as.numeric(hgoal)) - sum(as.numeric(agoal))) %>%
+    dplyr::rename(Time = home)
+  
+  classificacao_fora <- total %>%
+    mutate(fora_V = calcV(agoal, hgoal),
+           fora_E = calcE(agoal, hgoal),
+           fora_D = calcD(agoal, hgoal),
+           fora_PTS = calcPTS(agoal,hgoal)) %>%
+    group_by(away) %>% summarise(fora_PTS = sum(fora_PTS),
+                                 fora_J = length(away),
+                                 fora_V = sum(fora_V),
+                                 fora_E = sum(fora_E),
+                                 fora_D = sum(fora_D),
+                                 fora_GP = sum(as.numeric(agoal)),
+                                 fora_GS = sum(as.numeric(hgoal)),
+                                 fora_SG = sum(as.numeric(agoal)) - sum(as.numeric(hgoal))) %>%
+    dplyr::rename(Time = away)
+  
+  classificacao_final <- inner_join(classificacao_casa, classificacao_fora, by = 'Time') %>%
+    mutate(PTS = casa_PTS + fora_PTS,
+           J = casa_J + fora_J,
+           V = casa_V + fora_V,
+           E = casa_E + fora_E,
+           D = casa_D + fora_D,
+           GP = casa_GP + fora_GP,
+           GS = casa_GS + fora_GS,
+           SG = casa_SG + fora_SG) %>%
+    select(Time, PTS, J, V, E, D, GP, GS, SG) %>%
+    arrange(desc(PTS), desc(V), desc(SG), desc(GP)) %>%
+    mutate(Pos = row_number()) %>%
+    relocate(Pos) %>%
+    mutate(AP = round(PTS / (J * 3) * 100, digits = 1)) %>%
+    mutate(sim = n)
+  
+  montecarlo_tabelas <- do.call(rbind, list(montecarlo_tabelas, classificacao_final))
+  montecarlo_tabelas_df <- c(montecarlo_tabelas_df, list(classificacao_final))
+  run <- run %>% mutate(sim = n)
+  montecarlo_jogos <- do.call(rbind, list(montecarlo_jogos, run))
+  montecarlo_jogos_df <- c(montecarlo_jogos_df, list(run))
+}
+```
+
+**Criando um dataframe médio pelas tabelas**
+
+Usando a lista de dataframes de tabelas de classificação anteriormente criado, será gerado um dataframe médio que permitirá aplicação de métodos de distância euclidiana. Após isso, cada tabela de classificação é comparada ao dataframe médio e uma distância euclidiana é calculada. Quanto maior essa distância, maior a diferença entre a iteração e o resultado médio.
+
+Após todas as iterações serem avaliadas, é criado um dataframe **distances_df** listando o número de cada iteração e sua distância euclidiana com relação ao dataframe médio. Esse dataframe **distances_df** também possui uma coluna de probabilidade. Quanto mais próximo do dataframe médio, maior o valor da probabilidade. Essa coluna pode então ser usada em uma função **sample** com peso que nos permite sortear uma iteração X e conferir como ficou a tabela final de tal iteração.
+
+```{r message=FALSE, warning=FALSE}
+# Calculate the average dataframe
+if (!all(sapply(montecarlo_tabelas_df, function(df) identical(dim(df), dim(montecarlo_tabelas_df[[1]]))))) {
+  stop("All dataframes must have the same dimensions.")
+}
+preprocess_dataframe <- function(df) {
+  df_numeric <- as.data.frame(lapply(df, function(col) as.numeric(as.character(col))))
+  return(df_numeric)
+}
+list_of_dataframes_numeric <- lapply(montecarlo_tabelas_df, preprocess_dataframe)
+all_data <- array(unlist(list_of_dataframes_numeric), dim = c(nrow(list_of_dataframes_numeric[[1]]), ncol(list_of_dataframes_numeric[[1]]), length(list_of_dataframes_numeric)))
+average_dataframe <- apply(all_data, c(1, 2), mean)
+distances <- apply(all_data, 3, function(df) dist(rbind(df, average_dataframe))[1])
+distances_vector <- unlist(distances)
+distances_df <- data.frame(Index = seq_along(distances_vector), Distance = distances_vector)
+distances_df <- distances_df %>%
+  arrange(desc(Distance)) %>%
+  mutate(prob = Distance / sum(Distance))
+distances_df$prob <- distances_df$prob / sum(distances_df$prob)
+
+head(select(distances_df, -2), n = 10)
+```
+
+**Montagem da tabela final do método Montecarlo**
+
+Diferentemente da etapa anterior, onde o foco era só analisar matematicamente quão próximos eram os dataframes entre si, o objetivo aqui é criar a tabela final de classificação do campeonato. Resumindo, os totais de pontos, gols, vitórias, empates e derrotas de cada clube são divididos pela quantidade de iteração e organizados seguindo os critérios de desempate da competição.
+
+```{r}
+# Montar classificação média
+classificacao_media <- montecarlo_tabelas %>% group_by(Time) %>%
+  summarise(PTS = round(mean(PTS)),
+            J = round(mean(J)),
+            V = round(mean(V)),
+            E = round(mean(E)),
+            D = round(mean(D)),
+            GP = round(mean(GP)),
+            GS = round(mean(GS)),
+            SG = round(mean(SG))) %>%
+  arrange(desc(PTS), desc(V), desc(SG), desc(GP)) %>%
+  mutate(Pos = row_number()) %>%
+  relocate(Pos)
+
+head(classificacao_media, n = 8)
+```
+
+**Correção e padronização do nome de equipes**
+
+A seguir, utilizaremos outro site para obter os escudos de cada equipe. Alguns times estão nomeados diferentes nas duas fontes, então precisamos fazer algumas modificações nos dados.
+
+```{r}
+classificacao_media$Time <- as.character(classificacao_media$Time)
+classificacao_media[classificacao_media == 'Ath Paranaense'] <- 'Athletico'
+classificacao_media[classificacao_media == 'Botafogo (RJ)'] <- 'Botafogo'
+classificacao_media[classificacao_media == 'Bragantino'] <- 'RB Bragantino'
+```
+
+**Probabilidades de término por clube e posição**
+
+Novamente usando a lista de dataframes anteriormente estabelecidas, criaremos uma visualização mostrando em porcentagem quantas vezes cada clube terminou em cada uma das 20 posições. Isso pode, portanto, ser considerado a probabilidade de cada clube terminar em cada posição. Ao menos de acordo com a capacidade de previsão do nosso modelo, com resultado a ser conferido ao término do campeonato de fato.
+
+```{r}
+resumo <- montecarlo_tabelas %>%
+  group_by(Pos, Time) %>%
+  tally(name = "Total") %>%
+  mutate(prob = Total / runs)
+
+resumo$Time <- as.character(resumo$Time)
+resumo[resumo == 'Ath Paranaense'] <- 'Athletico'
+resumo[resumo == 'Botafogo (RJ)'] <- 'Botafogo'
+resumo[resumo == 'Bragantino'] <- 'RB Bragantino'
+
+resumoplot <- resumo %>%
+  ggplot(aes(x = Pos,
+             y = fct_reorder(Time,-Pos),
+             fill = prob)) +
+  geom_tile() +
+  scale_x_continuous(breaks = seq(0, 24, 1),
+                     expand = c(0.03, 0)) +
+  scale_fill_continuous(low = "white", high = "#72aeb6") +
+  geom_text(aes(label = paste0(prob * 100, "%"),
+                size = 2,
+                family = font)) +
+  labs(title = 'Probabilidade por posição no Campeonato Brasileiro 2023',
+       subtitle = gt::md(glue::glue("Simulado em {current_date}")),
+       y = "",
+       x = "Posição") +
+  theme(plot.title = element_text(family = font, size = 30, face = "bold"),
+        panel.grid.major = element_blank(),
+        panel.background = element_blank(),
+        legend.position = "none",
+        axis.text.y = element_text(size = 14, family = font),
+        axis.ticks = element_blank(),
+        plot.subtitle = element_text(size = 16),
+        axis.text.x = element_text(size = 12),
+        axis.title.x = element_text(size = 16, family = font),
+        plot.title.position = "plot",
+        plot.caption = element_text(size = 12)) 
+
+qtd_times <- classificacao_media %>% pull(Time) %>% n_distinct()
+print(resumoplot)
+ggsave(paste(folder, current_date, ' - Posições.png', sep = ''),
+       plot = resumoplot, width = 18, height = 10)
+```
+
+**Probabilidades de resultado por clube**
+
+```{r message=FALSE, warning=FALSE}
+resumo_zonas <- resumo %>%
+  mutate(Zona = case_when(
+    Pos >= 1 & Pos <= 6 ~ "Libertadores",
+    Pos >= 7 & Pos <= 12 ~ "Sulamericana",
+    Pos >= 17 & Pos <= 20 ~ "Rebaixamento",
+    TRUE ~ "Outro")) %>%
+  group_by(Zona, Time) %>%
+  summarise(Count = sum(Total)) %>%
+  mutate(prob = Count / runs * 100) %>%
+  arrange(desc(Count))
+
+resumo_lib <- resumo_zonas %>%
+  subset(Zona == "Libertadores") %>%
+  select(2, 4)
+
+resumo_sula <- resumo_zonas %>%
+  subset(Zona == "Sulamericana") %>%
+  select(2, 4)
+
+resumo_reb <- resumo_zonas %>%
+  subset(Zona == "Rebaixamento") %>%
+  select(2, 4)
+```
+
+### Chances de Libertadores
+
+```{r}
+resumo_lib_plot <- resumo_lib %>%
+  arrange(desc(prob)) %>%
+  ggplot(aes(x = Zona,
+             y = fct_reorder(Time,prob),
+             fill = prob)) +
+  geom_tile() +
+  scale_fill_continuous(low = "pink", high = "#72aeb6") +
+  geom_text(aes(label = paste0(prob, "%"),
+                size = 2,
+                family = font)) +
+  labs(title = 'Chances de Libertadores',
+       y = "",
+       x = "") +
+  theme(plot.title = element_text(family = font, size = 30, face = "bold"),
+        panel.grid.major = element_blank(),
+        panel.background = element_blank(),
+        legend.position = "none",
+        axis.text.y = element_text(size = 14, family = font),
+        axis.ticks = element_blank(),
+        plot.subtitle = element_text(size = 16),
+        axis.text.x = element_text(size = 12),
+        axis.title.x = element_text(size = 16, family = font),
+        plot.title.position = "plot",
+        plot.caption = element_text(size = 12),
+        plot.margin = margin(10, 1000, 1, 10, "pt"))
+
+head(resumo_lib, n = 20)
+```
+
+### Chances de Sulamericana
+
+```{r}
+resumo_sula_plot <- resumo_sula %>%
+  arrange(desc(prob)) %>%
+  ggplot(aes(x = Zona,
+             y = fct_reorder(Time,prob),
+             fill = prob)) +
+  geom_tile() +
+  scale_fill_continuous(low = "pink", high = "#72aeb6") +
+  geom_text(aes(label = paste0(prob, "%"),
+                size = 2,
+                family = font)) +
+  labs(title = 'Chances de Sulamericana',
+       y = "",
+       x = "") +
+  theme(plot.title = element_text(family = font, size = 30, face = "bold"),
+        panel.grid.major = element_blank(),
+        panel.background = element_blank(),
+        legend.position = "none",
+        axis.text.y = element_text(size = 14, family = font),
+        axis.ticks = element_blank(),
+        plot.subtitle = element_text(size = 16),
+        axis.text.x = element_text(size = 12),
+        axis.title.x = element_text(size = 16, family = font),
+        plot.title.position = "plot",
+        plot.caption = element_text(size = 12),
+        plot.margin = margin(10, 1000, 1, 10, "pt"))
+
+head(resumo_sula, n = 20)
+```
+
+### Chances de rebaixamento
+
+```{r}
+resumo_reb_plot <- resumo_reb %>%
+  arrange(desc(prob)) %>%
+  ggplot(aes(x = Zona,
+             y = fct_reorder(Time,prob),
+             fill = prob)) +
+  geom_tile() +
+  scale_fill_continuous(low = "pink", high = "#72aeb6") +
+  geom_text(aes(label = paste0(prob, "%"),
+                size = 2,
+                family = font)) +
+  labs(title = 'Chances de Rebaixamento',
+       y = "",
+       x = "") +
+  theme(plot.title = element_text(family = font, size = 30, face = "bold"),
+        panel.grid.major = element_blank(),
+        panel.background = element_blank(),
+        legend.position = "none",
+        axis.text.y = element_text(size = 14, family = font),
+        axis.ticks = element_blank(),
+        plot.subtitle = element_text(size = 16),
+        axis.text.x = element_text(size = 12),
+        axis.title.x = element_text(size = 16, family = font),
+        plot.title.position = "plot",
+        plot.caption = element_text(size = 12),
+        plot.margin = margin(10, 1000, 1, 10, "pt"))
+
+head(resumo_reb, n = 20)
+```
+
+**Início da criação da tabela visual final**
+
+```{r}
+# Função simples de extração do escudo de cada time
+logo_image <- function(team_id, width = 20) {
+  glue::glue("https://images.fotmob.com/image_resources/logo/teamlogo/{team_id}.png")
+}
+
+# Logotipo do Campeonato Brasileiro
+league_logo <- "https://images.fotmob.com/image_resources/logo/leaguelogo/268.png"
+
+# Criação de uma tabela auxiliar com o nome de cada time
+# e um link para o respectivo escudo
+team_ids <- fotmob_get_league_tables(league_id = 268) %>%
+  filter(table_idx == 1:20) %>% slice(1:20)
+team_ids <- team_ids %>%
+  mutate(image_link = logo_image(team_id = unique(team_ids$table_id))) %>%
+  select(4, 19)
+colnames(team_ids)[1] <- 'Time'
+
+# Novamente correção e padronização do nome de equipes
+# Essencial para o full join
+team_ids[team_ids == "America MG"] <- "América (MG)"
+team_ids[team_ids == "Athletico Paranaense"] <- 'Athletico'
+team_ids[team_ids == "Atletico MG"] <- 'Atlético Mineiro'
+team_ids[team_ids == "Cuiaba"] <- 'Cuiabá'
+team_ids[team_ids == "Goias"] <- 'Goiás'
+team_ids[team_ids == "Gremio"] <- 'Grêmio'
+team_ids[team_ids == "Red Bull Bragantino"] <- 'RB Bragantino'
+team_ids[team_ids == "Santos FC"] <- 'Santos'
+team_ids[team_ids == "Sao Paulo"] <- 'São Paulo'
+
+classificacao_media <- full_join(classificacao_media, team_ids, by = 'Time') %>%
+  relocate(image_link, .after = Pos)
+```
+
+**Calculando tabela de acordo com os jogos disputados até a data de hoje**
+
+```{r}
+table_today <- calcTAB(played_2023)
+table_today <- table_today[, -ncol(table_today)]
+table_today$Time <- as.character(table_today$Time)
+table_today[table_today == 'Ath Paranaense'] <- 'Athletico'
+table_today[table_today == 'Botafogo (RJ)'] <- 'Botafogo'
+table_today[table_today == 'Bragantino'] <- 'RB Bragantino'
+table_today <- full_join(table_today, team_ids, by = 'Time') %>%
+  relocate(image_link, .after = Pos)
+
+head(select(table_today, -2), n = 8)
+```
+
+**Plotagem final da tabela de classificação simulada**
+
+```{r}
+(
+  sim <-
+    classificacao_media %>%
+    gt::gt()  |>
+    ##logos
+    gtExtras::gt_img_rows(column = image_link, height = 20) |>
+    ##change column names
+    gt::cols_label(image_link = "")  %>%
+    ##apply 538 theme
+    gtExtras::gt_theme_538()  %>%
+    ##highlight rows for top 4/5/and bottom 3
+    gtExtras::gt_highlight_rows(
+      columns = everything(),
+      rows = 1:4,
+      fill = '#ACE1AF',
+      font_weight = "normal"
+    )  |>
+    gtExtras::gt_highlight_rows(
+      columns = everything(),
+      rows = 5:6,
+      fill = '#D0F0C0',
+      font_weight = "normal"
+    )  |>
+    gtExtras::gt_highlight_rows(
+      columns = everything(),
+      rows = 7:12,
+      fill = '#FFDEAD',
+      font_weight = "normal"
+    )  |>
+    gtExtras::gt_highlight_rows(
+      columns = everything(),
+      rows = 17:20,
+      fill = '#FFCCCC',
+      font_weight = "normal"
+    )  |>
+    ##align text
+    gt::cols_align("center")  |>
+    gt::cols_align(align = 'left',
+                   columns = Time)  |>
+    gt::cols_width(Time ~ px(165))  |>
+    gt::cols_width(PTS ~ px(35))  |>
+    gt::cols_width(J ~ px(35))  |>
+    gt::cols_width(V ~ px(35))  |>
+    gt::cols_width(E ~ px(35))  |>
+    gt::cols_width(D ~ px(35))  |>
+    gt::cols_width(GP ~ px(35))  |>
+    gt::cols_width(GS ~ px(35))  |>
+    gt::cols_width(SG ~ px(35))  |>
+    gt::cols_width(SG ~ px(35))  |>
+    gt::tab_style(style = cell_text(weight = 'bold'),
+                  locations  = cells_body(columns = c(PTS, Pos)))  |>
+    ##format title and subtitle (including league logo)
+    gt::tab_header(
+      title = gt::md(
+        glue::glue(
+          "<img src='{league_logo}' style='height:60px;'><br>Brasileirão 2023"
+        )
+      ),
+      subtitle = gt::md(glue::glue("Simulado em **{current_date}**"))
+    ))
+```
+
+**Plotagem final da tabela de classificação atual**
+
+```{r}
+(
+  act <-
+    table_today %>%
+    gt::gt()  |>
+    ##logos
+    gtExtras::gt_img_rows(column = image_link, height = 20) |>
+    ##change column names
+    gt::cols_label(image_link = "")  %>%
+    ##apply 538 theme
+    gtExtras::gt_theme_538()  %>%
+    ##highlight rows for top 4/5/and bottom 3
+    gtExtras::gt_highlight_rows(
+      columns = everything(),
+      rows = 1:4,
+      fill = '#ACE1AF',
+      font_weight = "normal"
+    )  |>
+    gtExtras::gt_highlight_rows(
+      columns = everything(),
+      rows = 5:6,
+      fill = '#D0F0C0',
+      font_weight = "normal"
+    )  |>
+    gtExtras::gt_highlight_rows(
+      columns = everything(),
+      rows = 7:12,
+      fill = '#FFDEAD',
+      font_weight = "normal"
+    )  |>
+    gtExtras::gt_highlight_rows(
+      columns = everything(),
+      rows = 17:20,
+      fill = '#FFCCCC',
+      font_weight = "normal"
+    )  |>
+    ##align text
+    gt::cols_align("center")  |>
+    gt::cols_align(align = 'left',
+                   columns = Time)  |>
+    gt::cols_width(Time ~ px(165))  |>
+    gt::cols_width(PTS ~ px(35))  |>
+    gt::cols_width(J ~ px(35))  |>
+    gt::cols_width(V ~ px(35))  |>
+    gt::cols_width(E ~ px(35))  |>
+    gt::cols_width(D ~ px(35))  |>
+    gt::cols_width(GP ~ px(35))  |>
+    gt::cols_width(GS ~ px(35))  |>
+    gt::cols_width(SG ~ px(35))  |>
+    gt::cols_width(SG ~ px(35))  |>
+    gt::tab_style(style = cell_text(weight = 'bold'),
+                  locations  = cells_body(columns = c(PTS, Pos)))  |>
+    ##format title and subtitle (including league logo)
+    gt::tab_header(
+      title = gt::md(
+        glue::glue(
+          "<img src='{league_logo}' style='height:60px;'><br>Brasileirão 2023"
+        )
+      ),
+      subtitle = gt::md(glue::glue("Classificação em **{current_date}**"))
+    ))
+```
+
+```{r message=FALSE, warning=FALSE}
+gt::gtsave(act, paste(folder, current_date, ' - Tabela HOJE.png', sep = ''), expand = 60)
+gt::gtsave(sim, paste(folder, current_date, ' - Tabela FINAL.png', sep = ''), expand = 60)
+```

@@ -1,0 +1,621 @@
+---
+title: "Avaliação de modelo de previsão para o Campeonato Brasileiro"
+output: html_notebook
+---
+
+```{r message=FALSE, warning=FALSE}
+library(ggplot2)
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(knitr)
+library(reshape2)
+library(bslib)
+
+data <- "C:/R/Montecarlo_1422/14-22.xlsx"
+real <- read_excel(data, sheet = "Real") %>% select(-1)
+sim <- read_excel(data, sheet = "Sim") %>% select(-1)
+```
+
+## Avaliação de modelo de previsão para o Campeonato Brasileiro
+
+Neste notebook, exploraremos em detalhes a eficácia de um modelo simples de previsão aplicado separadamente em nove edições consecutivas do Campeonato Brasileiro, abrangendo o período de 2014 a 2022. Para cada edição, os resultados do primeiro turno serviram como treinamento do modelo. Após isso, foi rodado um loop por todos os jogos do segundo turno. Para cada jogo, o modelo gera a probabilidade de cada resultado final (0x0, 1x0, 0x1...) e, usando um **sample** com o argumento **prob**, é gerado o resultado para tal partida.
+
+Uma abordagem interessante adotada neste notebook é a análise comparativa das previsões do modelo em relação aos resultados reais, permitindo-nos avaliar a precisão de cada previsão e identificar tendências ao longo dos anos. Investigaremos várias métricas para compreender como o desempenho do modelo varia de ano para ano.
+
+-   **Erro Médio Absoluto (MAE):** Média das diferenças absolutas entre as posições reais e simuladas dos times.
+-   **Erro Quadrático Médio (MSE):** Média das diferenças absolutas elevadas ao quadrado.
+-   **Raiz Quadrada do Erro Quadrático Médio (RMSE):** Raiz quadrada do MSE, fornecendo uma métrica de erro mais compreensível.
+-   **Erro Percentual Médio (MPE):** Média dos erros percentuais entre as posições reais e simuladas dos times.
+-   **Erro Relativo Médio (MRE):** Média dos erros relativos entre as posições reais e simuladas dos times.
+
+Este notebook também fornecerá visualizações informativas, incluindo histogramas, gráficos de dispersão e gráficos de linha, para ilustrar os resultados das análises realizadas. Ao final deste notebook, teremos uma compreensão abrangente da performance do modelo de previsão ao longo do tempo, ajudando-nos a avaliar sua robustez e identificar quaisquer áreas de melhoria.
+
+Preparado(a) para mergulhar nas análises e descobrir os insights que este notebook tem a oferecer sobre o desempenho do modelo de previsão no cenário do Campeonato Brasileiro? Vamos começar a explorar os resultados e avaliar a precisão do nosso modelo ao longo dessas nove edições emocionantes do torneio!
+
+### **Por que o Campeonato Brasileiro?**
+
+Antes de nos aprofundarmos na análise do nosso modelo de previsão, é importante compreender por que escolhemos o Campeonato Brasileiro como objeto de estudo. O torneio tem sido palco de uma série de desenvolvimentos emocionantes e notáveis. Vamos explorar alguns desses fatos que tornam o Campeonato Brasileiro uma escolha certeira para nossa análise.
+
+**Crescente dominância continental:** Os clubes brasileiros têm se tornado cada vez mais imbatíveis fora do país. Em 2022, dos 8 semifinalistas das duas Copas, 5 eram brasileiros. Finais e semifinais entre clubes brasileiros são cada vez mais comuns, expandindo os embates além dos horizontes do Campeonato Brasileiro.
+
+**Jogadores de renome:** A atração de jogadores renomados, que já construíram carreiras de sucesso na Europa e em outras partes do mundo, para atuar no Campeonato Brasileiro tem se tornado uma tendência cada vez mais forte. Essa presença de jogadores de destaque contribui para elevar o nível da competição, trazendo uma mistura única de talento e experiência para os campos brasileiros.
+
+**Liga competitiva e imprevisível:** O Campeonato Brasileiro é notoriamente reconhecido por sua alta competitividade, sendo considerado uma das ligas mais disputadas do mundo. A temporada é caracterizada por uma diversidade de clubes que iniciam a corrida sonhando com o título, mas também pela busca acirrada por cada posição da tabela. Cada partida se torna uma caixinha de surpresas e reviravoltas, fazendo com que as previsões se tornem mais eficazes.
+
+É importante observar que todo modelo de previsão pode ter um desempenho melhor em contextos como as grandes ligas europeias, incluindo a Inglaterra, Itália, Alemanha, Espanha e França. Nessas ligas, a diferença de nível técnico entre as equipes é mais clara e poucos clubes iniciam o torneio com chances reais de título. Esse cenário pode oferecer um ambiente propício para o modelo atingir maior precisão.
+
+No entanto, no contexto único e imprevisível do Campeonato Brasileiro, com sua ampla gama de clubes e possíveis cenários, nossa análise se concentra em compreender como nosso modelo se adapta e se comporta em um ambiente onde a competição é um verdadeiro desafio.
+
+### **Como funciona a comparação entre realidade e simulação?**
+
+Utilizamos duas tabelas de dados: uma contendo as classificações reais de 2014 a 2022 e a outra contendo as classificações simuladas pelo modelo desenvolvido. Todo o processo de calibração do modelo e simulação de resultados pode ser visto em nosso outro notebook, específico para previsão da edição de 2023.
+
+Com esse material em mãos, realizamos a mesclagem das tabelas com base nos nomes dos times e em seguida calculamos as métricas anteriormente citadas para avaliar o desempenho do modelo. A tabela de dados mesclada possui 180 observações, que equivalem aos 20 clubes de cada uma das 9 edições simuladas.
+
+As colunas terminadas em **.x** são os dados reais, enquanto as colunas **.y** representam as simulações.
+
+```{r}
+merged <- merge(real, sim, by = c("Time","ano"))
+print(merged)
+```
+
+### **Precisão do modelo para posição final**
+
+Neste bloco, exploramos a precisão do modelo com relação às posições finais das equipes. Para calcularmos as métricas, precisamos criar algumas colunas adicionais na tabela mesclada.
+
+```{r}
+# Adding helper columns before the calculations
+merged$abs_diff <- abs(merged$Pos.x - merged$Pos.y)
+merged$percent_error <- (merged$Pos.x / merged$Pos.y) * 100
+merged$relative_error <- (merged$Pos.x - merged$Pos.y) / merged$Pos.x
+
+# Calculate evaluation metrics
+mae <- mean(merged$abs_diff)
+mse <- mean(merged$abs_diff^2)
+rmse <- sqrt(mse)
+mpe <- mean(merged$percent_error)
+mre <- mean(merged$relative_error)
+
+# Print the metrics for standings
+metrics <- data.frame(
+  Metric = c("MAE", "MSE", "RMSE", "MPE", "MRE"),
+  Value = c(mae, mse, rmse, mpe, mre))
+
+# Print the metrics for standings
+print(metrics)
+```
+
+O valor do Erro Médio Absoluto (MAE) demonstra que, em média, o modelo erra por 2.41 a posição final do time. Isso significa que o modelo pode colocar em 6º ou 7º lugar um time que terminou na 4ª posição na vida real. Como o Campeonato Brasileiro conta com 20 clubes, um erro de 2.41 representa 12% do total.
+
+### **Precisão do modelo para total de pontos**
+
+Neste bloco, continuamos a avaliação da precisão do modelo, desta vez focando nas pontuações dos times de futebol. Aqui, realizamos cálculos para medir quão precisa é a previsão das pontuações dos times pelo modelo e, para isso, criaremos mais três colunas auxiliares.
+
+```{r}
+# Adding helper columns before the calculations
+merged$abs_points_diff <- abs(merged$PTS.x - merged$PTS.y)
+merged$percent_error_points <- (merged$abs_points_diff / merged$PTS.x) * 100
+merged$relative_error_points <- (merged$PTS.x - merged$PTS.y) / merged$PTS.x
+
+# Calculate evaluation metrics for team points
+mae_points <- mean(merged$abs_points_diff)
+mse_points <- mean(merged$abs_points_diff^2)
+rmse_points <- sqrt(mse_points)
+mpe_points <- mean(merged$percent_error_points)
+mre_points <- mean(merged$relative_error_points)
+
+metrics_points <- data.frame(
+  Metric = c("MAE", "MSE", "RMSE", "MPE", "MRE"),
+  Value = c(mae_points,
+            mse_points,
+            rmse_points,
+            mpe_points,
+            mre_points))
+
+print(metrics_points)
+```
+
+Assim como na etapa anterior, olharemos com mais cuidado para o valor de Erro Médio Absoluto (MAE), que agora prevê um erro médio de 5.5 pontos na estimativa total de um time. O MAE anterior representava um intervalo de erro de 12% ao todo.
+
+Nessa etapa é difícil prever uma porcentagem, já que os clubes costumam fazer de 30 a 80 pontos em uma mesma temporada. Se considerarmos a média de pontuações reais, 51.9, aqui o erro representaria 9.3% do total.
+
+### **Precisão do modelo para total de gols marcados**
+
+Finalizando a primeira etapa da nossa análise, agora avaliaremos a precisão do modelo em relação ao total de gols marcados. Novamente, usaremos a mesma tabela mesclada de dados com o acréscimo de três colunas.
+
+```{r}
+merged$abs_goals_diff <- abs(merged$GP.x - merged$GP.y)
+merged$percent_error_goals <- (merged$abs_goals_diff / merged$GP.x) * 100
+merged$relative_error_goals <- (merged$GP.x - merged$GP.y) / merged$GP.x
+
+# Calculate evaluation metrics for total goals scored
+mae_goals <- mean(merged$abs_goals_diff)
+mse_goals <- mean(merged$abs_goals_diff^2)
+rmse_goals <- sqrt(mse_goals)
+mpe_goals <- mean(merged$percent_error_goals)
+mre_goals <- mean(merged$relative_error_goals)
+
+metrics_goals <- data.frame(
+  Metric = c("MAE", "MSE", "RMSE", "MPE", "MRE"),
+  Value = c(mae_goals,
+            mse_goals,
+            rmse_goals,
+            mpe_goals,
+            mre_goals))
+
+print(metrics_goals)
+```
+
+Usando o raciocínio aplicado no código anterior, a média de gols marcados por um time ao longo das 9 edições é 44,37. Isso significa que o valor de MAE equivale a 12,7% dessa média. Ainda que o MAE para as posições seja o menor absoluto dos 3, é possível que ele seria o maior erro proporcional.
+
+### Visão geral das 15 métricas
+
+Ao longo das 3 últimas caixas de código, geramos 15 métricas ao todo. Para facilitar a compreensão, criaremos um dataframe único para exibição simultânea de todas as métricas.
+
+```{r}
+all_metrics <- data.frame(
+  Variable = rep(c("Position", "Points", "Goals"), each = 5),
+  Metric = c("MAE", "MSE", "RMSE", "MPE", "MRE"), 
+  Value = c(mae, mse, rmse, mpe, mre,
+            mae_points, mse_points, rmse_points, mpe_points, mre_points,
+            mae_goals, mse_goals, rmse_goals, mpe_goals, mre_goals)) %>% 
+  mutate(Variable = factor(Variable,
+                           levels = c("Position", "Points", "Goals"))) %>% 
+  arrange(Metric, Variable)
+
+kable(all_metrics, format = "markdown")
+```
+
+### Visualização dos valores de **Erro Médio Absoluto (MAE)**
+
+```{r}
+mae_data <- data.frame(
+  Variable = c("Position", "Points", "Goals"),
+  MAE = c(mae, mae_points, mae_goals))
+
+# Create a bar plot
+ggplot(mae_data, aes(x = Variable, y = MAE, fill = Variable)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = round(MAE, 2)), vjust = 1.5, color = "black", size = 10) +
+  labs(title = "Comparação do Erro Médio Absoluto (MAE)",
+       x = NULL,
+       y = "MAE") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        legend.position = "none")
+```
+
+### Visualização dos valores da **Raiz Quadrada do Erro Quadrático Médio (RMSE)**
+
+```{r}
+rmse_data <- data.frame(
+  Variable = c("Position", "Points", "Goals"),
+  RMSE = c(rmse, rmse_points, rmse_goals))
+
+# Create a bar plot
+ggplot(rmse_data, aes(x = Variable, y = RMSE, fill = Variable)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = round(RMSE, 2)), vjust = 1.5, color = "black", size = 10) +
+  labs(title = "Comparação da Raiz Quadrada do Erro Quadrático Médio (RMSE)",
+       x = NULL,
+       y = "RMSE") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        legend.position = "none")
+```
+
+### **Precisões normalizadas do modelo**
+
+Nesta seção, continuamos nossa avaliação, agora focando na precisão normalizada do modelo de previsão. Aqui, calculamos métricas normalizadas para avaliar quão precisas são as previsões do modelo, levando em consideração a variabilidade dos dados reais.
+
+-   **MAE Normalizado:** MAE dividido pela amplitude das posições reais.
+-   **MSE Normalizado:** MSE dividido pelo desvio padrão das posições reais.
+-   **RMSE Normalizado:** RMSE dividido pelo desvio padrão das posições reais.
+
+```{r}
+# Calculate normalized metrics
+range <- max(merged$Pos.x) - min(merged$Pos.x)
+sd <- sd(merged$Pos.x)
+
+normalized_mae <- mae / range
+normalized_mse <- mse / (sd^2)
+normalized_rmse <- rmse / sd
+
+#####
+
+# Calculate normalized metrics for team points
+range_points <- max(merged$PTS.x) - min(merged$PTS.x)
+sd_points <- sd(merged$PTS.x)
+
+normalized_mae_points <- mae / range_points
+normalized_mse_points <- mse / (sd_points^2)
+normalized_rmse_points <- rmse / sd_points
+
+#####
+
+# Calculate normalized metrics for total goals scored
+range_goals <- max(merged$GP.x) - min(merged$GP.x)
+sd_goals <- sd(merged$GP.x)
+
+normalized_mae_goals <- mae_goals / range_goals
+normalized_mse_goals <- mse_goals / (sd_goals^2)
+normalized_rmse_goals <- rmse_goals / sd_goals
+
+#####
+
+cat("Posições finais\n")
+cat("Normalized MAE:", normalized_mae, "\n")
+cat("Normalized MSE:", normalized_mse, "\n")
+cat("Normalized RMSE:", normalized_rmse, "\n\n")
+
+cat("Pontuações\n")
+cat("Normalized MAE:", normalized_mae_points, "\n")
+cat("Normalized MSE:", normalized_mse_points, "\n")
+cat("Normalized RMSE:", normalized_rmse_points, "\n\n")
+
+cat("Gols marcados\n")
+cat("Normalized MAE:", normalized_mae_goals, "\n")
+cat("Normalized MSE:", normalized_mse_goals, "\n")
+cat("Normalized RMSE:", normalized_rmse_goals, "\n")
+```
+
+Os valores de MAE normalizados indicam que, proporcionalmente, o Erro Médio Absoluto da previsão de posições é o maior. O valor relativamente alto do MSE indica que o modelo pode estar acertando as posições finais de alguns clubes, mas errando outras por uma grande margem e elevando o erro quadrático.
+
+Essa mesma lógica se aplica a previsão de gols marcados. Um MAE baixo e um MSE alto indica que o modelo passa perto de acertar a quantidade de gols marcados por alguns times, mas erra por um alto valor em outros casos.
+
+Por fim, as métricas normalizadas da previsão de pontos parecem ser as mais otimistas.
+
+### **Visualização de MAE, MSE e RMSE de posições por ano**
+
+Nesta seção, iniciamos a exploração visual dos resultados da avaliação do modelo. Começaremos com um gráfico que compara o valor das métricas mais importantes para cada um dos anos simulados.
+
+As linhas tracejadas, demonstrando o valor médio das variáveis para todas as edições, nos ajuda a compreender quais edições tiveram as menores taxas de erro. Com o gráfico a seguir, pode-se induzir que as edições com menor erro nas previsões de posições foram as de 2014 e 2018.
+
+```{r}
+# Calculate accuracy metrics for each year
+accuracy_by_year <- merged %>%
+  group_by(ano) %>%
+  summarize(MAE = mean(abs(Pos.x - Pos.y)),
+            MSE = mean((Pos.x - Pos.y)^2),
+            RMSE = sqrt(mean((Pos.x - Pos.y)^2))) %>%
+  pivot_longer(cols = c(MAE, MSE, RMSE),
+               names_to = "Métrica",
+               values_to = "Valor")
+
+# Create a line plot to compare model accuracy over the years
+ggplot(accuracy_by_year, aes(x = ano, y = Valor, color = Métrica)) +
+  geom_line() +
+  geom_hline(yintercept = mae, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = mse, linetype = "dashed", color = "green") +
+  geom_hline(yintercept = rmse, linetype = "dashed", color = "blue") +
+  labs(title = "Variação das métricas MAE, MSE e RMSE para posição",
+       x = NULL,
+       y = "Valor da métrica") +
+  theme_minimal()
+```
+
+### **Visualização de MAE, MSE e RMSE de pontuação por ano**
+
+Dando sequência à visualização dos resultados da avaliação do modelo, temos um gráfico que compara o valor das métricas mais importantes para cada um dos anos simulados na questão de pontuação.
+
+As linhas tracejadas, demonstrando o valor médio das variáveis para todas as edições, nos ajuda a compreender quais edições tiveram as menores taxas de erro. Com o gráfico a seguir, pode-se induzir que as edições com menor erro nas previsões de pontuação foram as de 2014 (novamente) e 2021.
+
+```{r}
+# Calculate accuracy metrics for each year
+accuracy_by_year_points <- merged %>%
+  group_by(ano) %>%
+  summarize(MAE = mean(abs(PTS.x - PTS.y)),
+            MSE = mean((PTS.x - PTS.y)^2),
+            RMSE = sqrt(mean((PTS.x - PTS.y)^2))) %>%
+  pivot_longer(cols = c(MAE, MSE, RMSE),
+               names_to = "Métrica",
+               values_to = "Valor")
+
+# Create a line plot to compare model accuracy over the years
+ggplot(accuracy_by_year_points, aes(x = ano, y = Valor, color = Métrica)) +
+  geom_line() +
+  geom_hline(yintercept = mae_points, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = mse_points, linetype = "dashed", color = "green") +
+  geom_hline(yintercept = rmse_points, linetype = "dashed", color = "blue") +
+  labs(title = "Variação das métricas MAE, MSE e RMSE para pontuação",
+       x = NULL,
+       y = "Valor da métrica") +
+  theme_minimal()
+```
+
+### **Visualização de MAE, MSE e RMSE de gols marcados por ano**
+
+Finalizando essa primeira etapa de visualização dos resultados da avaliação do modelo, temos um gráfico que compara o valor das métricas mais importantes para cada um dos anos simulados na questão de gols marcados.
+
+As linhas tracejadas, demonstrando o valor médio das variáveis para todas as edições, nos ajuda a compreender quais edições tiveram as menores taxas de erro. Com o gráfico a seguir, pode-se induzir que as edições com menor erro nas previsões de pontuação foram as de 2016 e 2020.
+
+```{r}
+# Calculate accuracy metrics for each year
+accuracy_by_year_goals <- merged %>%
+  group_by(ano) %>%
+  summarize(MAE = mean(abs(GP.x - GP.y)),
+            MSE = mean((GP.x - GP.y)^2),
+            RMSE = sqrt(mean((GP.x - GP.y)^2))) %>%
+  pivot_longer(cols = c(MAE, MSE, RMSE),
+               names_to = "Métrica",
+               values_to = "Valor")
+
+# Create a line plot to compare model accuracy over the years
+ggplot(accuracy_by_year_goals, aes(x = ano, y = Valor, color = Métrica)) +
+  geom_line() +
+  geom_hline(yintercept = mae_goals, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = mse_goals, linetype = "dashed", color = "green") +
+  geom_hline(yintercept = rmse_goals, linetype = "dashed", color = "blue") +
+  labs(title = "Variação das métricas MAE, MSE e RMSE para gols marcados",
+       x = NULL,
+       y = "Valor da métrica") +
+  theme_minimal()
+```
+
+Os campeonatos de 2016, 2018, 2020 e 2021 se destacaram uma vez nos gráficos acima, contendo as menores taxas de erro em alguma das variáveis analisadas: posição, pontuação e gols marcados.
+
+O campeonato de 2014 foi o único que se destacou em dois gráficos (posição e pontuação) e, apesar de isso ser um indício de que esse ano possa ter sido o melhor do modelo, se destacou negativamente no gráfico de gols marcados.
+
+### **Visualização das métricas normalizadas**
+
+Agora, avançaremos para a análise das métricas normalizadas, que nos fornecem uma perspectiva adicional sobre a performance do modelo. Como dito anteriormente, as métricas normalizadas consideram a variação das métricas em relação ao alcance dos dados e à dispersão.
+
+Por meio de um gráfico de barras agrupadas, compararemos as métricas normalizadas para diferentes categorias, incluindo posições, pontuação e gols marcados.
+
+```{r}
+# Create a data frame for normalized metrics
+normalized_metrics <- data.frame(
+  Metric = c("Normalized MAE", "Normalized MSE", "Normalized RMSE"),
+  Position = c(normalized_mae, normalized_mse, normalized_rmse),
+  Points = c(normalized_mae_points, normalized_mse_points, normalized_rmse_points),
+  Goals = c(normalized_mae_goals, normalized_mse_goals, normalized_rmse_goals))
+
+# Melt the data frame for visualization
+normalized_metrics <- melt(normalized_metrics, id.vars = "Metric")
+
+# Create a grouped bar plot for normalized metrics
+ggplot(normalized_metrics, aes(x = Metric, y = value, fill = variable)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.7) +
+  labs(title = "Comparação das métricas normalizadas",
+       x = NULL,
+       y = "Valor") +
+  theme_minimal()
+```
+
+Essa visualização reforça a teoria de que a variável de maior taxa de acerto seja a pontuação do clube.
+
+### Histograma de erro absoluto em posições
+
+```{r message=FALSE, warning=FALSE}
+abs_diff_freq <- table(merged$abs_diff)
+total_occurrences <- sum(abs_diff_freq)
+percentage_occurrences <- abs_diff_freq / total_occurrences * 100
+
+# Create a data frame for plotting
+histogram_data <- data.frame(abs_diff = as.numeric(names(abs_diff_freq)),
+                              percentage_occurrences = percentage_occurrences)
+
+# Create a histogram plot with percentage of occurrences on the y-axis
+ggplot(histogram_data, aes(x = abs_diff, y = percentage_occurrences)) +
+  geom_bar(stat = "identity", fill = "lightblue", color = "black") +
+  geom_text(aes(label = paste0(round(percentage_occurrences, 1), "%")),
+            vjust = -0.5) +
+  labs(title = "Porcentagem de ocorrências para diferenças de posições reais e simuladas",
+       x = NULL,
+       y = "Porcentagem de ocorrências (%)") +
+  scale_x_continuous(breaks = seq(0, max(histogram_data$abs_diff), by = 1)) +
+  theme_minimal()
+```
+
+Esse histograma engloba todas as previsões de posição final e nos indica que modelo acertou 23.3% das posições finais dos clubes. Além disso, em quase 62% das vezes o modelo erra por no máximo 2 posições. Considerando que a previsão de posição obteve as maiores taxas de erro, o resultado demonstrando aqui segue sendo muito interessante.
+
+### Scatter plot de posições reais x simuladas
+
+```{r}
+ggplot(merged, aes(x = Pos.x, y = Pos.y)) +
+  geom_point(size = 3.5) +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") +
+  labs(title = "Scatter plot de posições reais x simuladas",
+       x = "Posição real",
+       y = "Posição simulada") +
+  theme_minimal()
+```
+
+Esse scatter plot mostra todas as combinações existentes de posições reais x posições simuladas. Os pontos cruzados pela linha representam as previsões corretas do modelo. Por algum motivo, o modelo não acertou nenhum clube a terminar em 5º, 7º, 9º, 12º, 13º e 14º. Isso pode se dever ao fato de que clubes nessas posições costumam ter pontuações mais próximas. Um ou dois pontos a mais na previsão e o clube pode acabar ganhando 1, 2 ou até 3 posições.
+
+### Previsões de Campeões Brasileiros
+
+```{r}
+# Create a data frame with all possible combinations of real_standings and sim_standings
+combinations <- expand.grid(Real = 0:20, Sim = 0:20)
+
+# Merge the data frame with your merged_data to get the counts
+combined_counts <- merge(combinations, merged,
+                         by.x = c("Real", "Sim"),
+                         by.y = c("Pos.x", "Pos.y"),
+                         all.x = TRUE) %>%
+  mutate(diff = abs(Real - Sim))
+
+combined_counts[is.na(combined_counts)] <- 0
+
+correct_champions <- combined_counts %>%
+  subset(Real == 1 & Sim == 1) %>%
+  select(c("Time", "ano", "Real", "Sim")) %>%
+  arrange(desc(ano))
+
+print(correct_champions)
+```
+
+O modelo acertou com sucesso 7 dos 9 campeões, errando apenas nas edições de 2018 e 2020.
+
+```{r}
+wrong_champions <- merged %>%
+  select(c('Time', 'ano', 'Pos.x', 'PTS.x', 'Pos.y', 'PTS.y')) %>%
+  subset(ano %in% c(2018, 2020)) %>%
+  subset(Pos.x == 1 | Pos.y == 1) %>%
+  arrange(desc(PTS.x))
+
+print(wrong_champions)
+```
+
+Coincidentemente, as duas vezes em que o modelo errou o campeão foi porque previu o São Paulo levantando o título. De fato o São Paulo fez boas campanhas no primeiro turno de 2018 e 2020 e inclusive fechou essa etapa liderando os campeonatos. Uma queda brusca de rendimento nas duas ocasiões fez com que o clube perdesse os títulos e terminasse respectivamente em 5º e 4º.
+
+O real campeão de 2018 foi o Palmeiras, que o modelo previa terminar em 5º. Em 2020, o Flamengo levantou a taça enquanto o modelo o colocou em 3º. Mesmo errando o campeão em 2020, o modelo errou por apenas 4 pontos o total do Flamengo: de 71 reais para 67 simulados.
+
+### Posições previstas corretamente
+
+```{r}
+correct_positions <- merged %>%
+  subset(Pos.x == Pos.y) %>%
+  group_by(Pos.x) %>%
+  count()
+
+ggplot(correct_positions, aes(x = Pos.x, y = n)) +
+  geom_bar(stat = "identity", fill = "lightblue", color = "black") +
+  geom_text(aes(label = n), vjust = 1.5, color = "black") +
+  scale_x_continuous(breaks = seq(1, 20, by = 1)) +
+  labs(title = "Histograma de posições previstas corretamente",
+       x = "Posição",
+       y = "Frequência")
+```
+
+As posições que o modelo mais acerta são justamente a primeira e a última, possivelmente por serem as campanhas em que uma equipe pode destoar das demais, seja positivamente ou negativamente. Esse histograma reforça a dificuldade do modelo em prever corretamente as posições do meio da tabela: nenhum clube que terminou nas posições de 12º a 14º teve esse desempenho corretamente previsto nas simulações.
+
+### Posições previstas corretamente por ano
+
+Com o histograma de erro absoluto visto anteriormente, já sabemos que o modelo acertou 23.3% das posições finais, para um total de 42 das 180 observações. Vamos checar então o total de acertos por ano.
+
+```{r}
+correct_positions_by_year <- combined_counts %>%
+  subset(Real == Sim) %>%
+  select(c("Time", "ano", "Real", "Sim")) %>%
+  subset(ano != 0) %>%
+  arrange(desc(ano)) %>%
+  group_by(ano) %>%
+  summarize(corrects = n()) %>%
+  mutate(percent = corrects/20*100)
+
+tcp <- correct_positions_by_year %>%
+  summarise(ano = "Total", corrects = sum(corrects),
+            percent = round(mean(percent), 1))
+
+correct_positions_by_year$ano <- as.character(correct_positions_by_year$ano)
+correct_positions_by_year <- bind_rows(correct_positions_by_year, tcp)
+print(correct_positions_by_year)
+```
+
+Os anos de 2015 e 2021 tiveram o maior número de posições previstas de maneira correta, com 6 cada. Em um universo de 20 clubes, isso equivale a 30% do certame. O menor número de acertos foi em 2020, quando o modelo acertou apenas 2 posições. Tirando essa edição, o menor valor para acertos foi 4. Esse salto de 2 para 4 indica que a edição de 2020 foi definitivamente algo fora da curva.
+
+Uma possível explicação para isso é o fato do campeonato ter sido disputado em meio à fase mais aguda da pandemia de COVID-19. Surtos coletivos obrigaram equipes a jogar totalmente desfalcadas de seus principais jogadores, os estádios não podiam receber público e os jogos foram disputados em tempo recorde numa tentativa de não encavalar o calendário do ano seguinte. Esses fatores diminuíram o nível técnico das equipes, equilibrando e tornando ainda mais imprevisível.
+
+### Zonas previstas corretamente
+
+Prever a zona de classificação de uma equipe é tão ou mais importante do que prever exatamente a pontuação ou posição do mesmo time. Por "zona" entende-se o G6, grupo dos 6 primeiros que garantem classificação para a Libertadores, e o Z4, os 4 últimos que terminam rebaixados para a Série B do ano seguinte.
+
+```{r}
+merged <- merged %>%
+  mutate(real_zone = case_when(Pos.x <= 6 ~ "Libertadores",
+                               Pos.x >= 17 ~ "Rebaixamento",
+                               Pos.x >= 7 & Pos.x <= 12 ~ "Sul-Americana",
+                               TRUE ~ NA_character_),
+  sim_zone = case_when(Pos.y <= 6 ~ "Libertadores",
+                       Pos.y >= 17 ~ "Rebaixamento",
+                       Pos.y >= 7 & Pos.y <= 12 ~ "Sul-Americana",
+                       TRUE ~ NA_character_))
+
+total_zones <- merged %>%
+  subset(real_zone == sim_zone) %>%
+  select(c("Time", "ano", "Pos.x", "Pos.y", "real_zone", "sim_zone")) %>%
+  group_by(real_zone) %>%
+  count() %>%
+  mutate(total = case_when(real_zone == "Libertadores" ~ 6*9,
+                           real_zone == "Rebaixamento" ~ 4*9,
+                           real_zone == "Sul-Americana" ~ 6*9)) %>%
+  mutate(accuracy = (n / total) * 100)
+
+print(total_zones)
+```
+
+O modelo atingiu um nível muito alto de previsão dos classificados à Libertadores. De todos os clubes que terminaram nas 6 primeiras posições em cada um dos 9 anos, em um total de 54, o modelo acertou 45 vezes: um índice de 83.3%. De modo geral, seria como dizer que o modelo acertou 5 dos 6 classificados para a Libertadores a cada ano.
+
+Com relação aos clubes rebaixados, o modelo previu corretamente a queda de 25 dos 36 clubes ao longo dos anos, para uma taxa de quase 70%.
+
+Já na zona da Sul-Americana, englobando as posições de 7 a 12 e com maior proximidade nas pontuações, teve o menor índice de acerto. Dos 54 clubes que terminaram nessa zona na vida real, o modelo acertou 29, pouco mais da metade. Um total de quase 54%.
+
+### Zonas previstas corretamente por ano
+
+```{r}
+correct_zones_by_year <- merged %>%
+  subset(real_zone == sim_zone) %>%
+  group_by(ano) %>%
+  count() %>%
+  mutate(accuracy = n / 20 * 100)
+
+print(correct_zones_by_year)
+```
+
+### Vagas na Libertadores previstas corretamente por ano
+
+```{r}
+libertadores_by_year <- merged %>%
+  subset(real_zone == sim_zone) %>%
+  subset(real_zone == "Libertadores") %>%
+  group_by(ano) %>%
+  count() %>%
+  mutate(accuracy = n / 6 * 100)
+
+print(libertadores_by_year)
+```
+
+Apesar do ano de 2020 ter a menor taxa de acertos de posição, o modelo acertou todos os classificados para a Libertadores do ano seguinte. Além de 2020, os anos de 2018 e 2021 também atingiram essa marca.
+
+Um dado interessante é que de 2020 a 2022 o modelo cravou 17 dos 18 times a terminarem no G6. Isso pode indicar uma discrepância maior entre os clubes de maior investimento ou trabalhos mais consistentes. Como o modelo usa os resultados do primeiro turno para avaliar o segundo, times que se mantém regulares ao longo do campeonato tendem a ser previstos na região correta da tabela.
+
+### Vagas na Sul-Americana previstas corretamente por ano
+
+```{r}
+sulamericana_by_year <- merged %>%
+  subset(real_zone == sim_zone) %>%
+  subset(real_zone == "Sul-Americana") %>%
+  group_by(ano) %>%
+  count() %>%
+  mutate(accuracy = n / 6 * 100)
+
+print(sulamericana_by_year)
+```
+
+Como já abordado anteriormente, os clubes nessa região da tabela têm pontuações mais próximas e isso facilita uma variação maior nas previsões. De 2020 a 2022, o modelo classificou corretamente 10 dos 18 times, uma marca bem menos notável do que a da Libertadores.
+
+### Clubes rebaixados previstos corretamente por ano
+
+```{r}
+z4_by_year <- merged %>%
+  subset(real_zone == sim_zone) %>%
+  subset(real_zone == "Rebaixamento") %>%
+  group_by(ano) %>%
+  count() %>%
+  mutate(accuracy = n / 4 * 100)
+
+print(z4_by_year)
+```
+
+O modelo sempre acerta ao menos 2 dos 4 clubes rebaixados. Uma possível explicação para isso é que, em quase toda edição do Campeonato Brasileiro, um ou outro clube acaba destoando do restante. Seja por ter acabado de subir para a primeira divisão, por uma crise política interna (infelizmente algo comum no futebol brasileiro) ou por simples falta de planejamento.
+
+Incluindo o ano de 2019, onde o modelo previu corretamente todos os clubes rebaixados, em 6 dos 9 anos o modelo errou no máximo um time.
+
+### Conclusões sobre a eficiência do modelo
+
+Ao longo deste notebook, exploramos a eficácia de um modelo de previsão simples aplicado ao Campeonato Brasileiro, uma das ligas mais competitivas e imprevisíveis do mundo do futebol. Nosso objetivo principal era entender como esse modelo, que leva em consideração apenas os resultados dos jogos entre as equipes, se sairia ao prever as posições finais dos clubes nas edições de 2014 a 2022.
+
+Nossas análises revelaram resultados interessantes e valiosos. O modelo demonstrou uma taxa considerável de acertos nas posições finais dos clubes, atingindo 23.3% de previsões corretas e errando por no máximo 2 posições em 62% das vezes. O desempenho do modelo variou ao longo dos anos, refletindo a crescente competitividade e evolução técnica dos times brasileiros.
+
+Como o modelo considera apenas o primeiro turno para prever o segundo turno, acaba por não captar fatores relevantes como a janela de transferências do meio do ano. Essa janela marca o início da temporada europeia, e é quando os clubes europeus entram forte na disputa por jogadores do nosso Campeonato. Isso pode enfraquecer alguns times e melhorar outros, que por vezes se reforçam com jogadores em fim de contrato na Europa.
+
+Embora tenha apresentado bons resultados em algumas métricas, é importante ressaltar que o modelo enfrenta desafios em prever as posições no meio de tabela. Além disso, observamos que sua precisão varia para diferentes métricas, como posições, pontos e gols marcadas. Uma possível explicação para os valores mais altos de Erro Quadrático Médio (MSE) é que o modelo erra com maior frequência as posições em meio de tabela. Erros nessa região da tabela podem colocar o clube 3, 4 posições acima ou abaixo da real, elevando o erro quadrático.
+
+Ao comparar o desempenho do modelo nos diferentes grupos de times, identificamos suas áreas fortes e limitações. O modelo acertou em 83% das vezes os clubes que terminaram no G6 (ainda que não tenha sempre acertado a posição exata) e 70% dos clubes rebaixados, enquanto enfrentou maiores desafios nas posições intermediárias, que normalmente contam com pontuações mais próximas.
+
+No entanto, é importante ressaltar que o modelo analisado possui limitações significativas e não pode ser considerado uma ferramenta profissional de previsão. O sucesso desse modelo está fortemente ligado à complexidade e competitividade inerente de cada competição.
+
+Em resumo, esta análise nos oferece uma visão fascinante sobre o desempenho de um modelo de previsão simples no contexto do Campeonato Brasileiro. A constante evolução da liga, equilíbrio das equipes, mudanças bruscas de nível de elenco durante as janelas de transferência, alta carga de jogos e grandes deslocamentos interestaduais reforçam a natureza imprevisível do campeonato e ressaltam a necessidade de abordagens mais sofisticadas para previsões mais precisas e confiáveis.

@@ -1,0 +1,621 @@
+---
+title: "Avaliação de modelo de previsão para o Campeonato Brasileiro"
+output: html_notebook
+---
+
+```{r message=FALSE, warning=FALSE}
+library(ggplot2)
+library(readxl)
+library(dplyr)
+library(tidyr)
+library(knitr)
+library(reshape2)
+library(bslib)
+
+data <- "C:/R/Montecarlo_1422/14-22.xlsx"
+real <- read_excel(data, sheet = "Real") %>% select(-1)
+sim <- read_excel(data, sheet = "Sim") %>% select(-1)
+```
+
+## Evaluation of a prediction model for the Brazilian Championship
+
+In this notebook, we will explore in detail the effectiveness of a simple prediction model applied separately in nine consecutive editions of the Brazilian Championship, covering the period from 2014 to 2022. For each edition, the results of the first round served as model training. After that, a loop was run through all the games in the second round. For each game, the model generates the probability of each final result (0x0, 1x0, 0x1...) and, using a **sample** with the **prob** argument, the result for that match is generated.
+
+An interesting approach taken in this notebook is the comparative analysis of model predictions against actual results, allowing us to evaluate the accuracy of each prediction and identify trends over the years. We will investigate several metrics to understand how model performance varies from year to year.
+
+- **Mean Absolute Error (MAE):** Average of the absolute differences between the real and simulated positions of the teams.
+- **Mean Square Error (MSE):** Average of absolute differences squared.
+- **Root-mean-square Error (RMSE):** Square root of MSE, providing a more understandable error metric.
+- **Mean Percentage Error (MPE):** Average of the percentage errors between the real and simulated positions of the teams.
+- **Mean Relative Error (MRE):** Average of relative errors between the real and simulated positions of the teams.
+
+This notebook will also provide informative visualizations, including histograms, scatterplots, and line graphs, to illustrate the results of the analyzes performed. By the end of this notebook, we will have a comprehensive understanding of the forecast model's performance over time, helping us assess its robustness and identify any areas for improvement.
+
+Ready to dive into the analyzes and discover the insights this notebook has to offer about the performance of the prediction model in the Brazilian Championship scenario? Let's start exploring the results and evaluating the accuracy of our model over these nine exciting editions of the tournament!
+
+### **Why the Brazilian Championship?**
+
+Before delving into the analysis of our prediction model, it is important to understand why we chose the Brazilian Championship as the object of study. The tournament has been the scene of a number of exciting and notable developments. Let's explore some of these facts that make the Brazilian Championship a clear choice for our analysis.
+
+**Growing continental dominance:** Brazilian clubs have become increasingly unbeatable outside the country. In 2022, of the 8 semifinalists of the two Continental Cups, 5 were Brazilians. Finals and semi-finals between Brazilian clubs are increasingly more common, expanding clashes beyond the horizons of the Brazilian Championship.
+
+**Renowned players:** The attraction of renowned players, who have already built successful careers in Europe and other parts of the world, to play in the Brazilian Championship has become an increasingly stronger trend. This presence of outstanding players contributes to raising the level of competition, bringing a unique mix of talent and experience to Brazilian fields.
+
+**Competitive and unpredictable league:** The Brazilian Championship is notoriously recognized for its high competitiveness, being considered one of the most competitive leagues in the world. The season is characterized by a diversity of clubs that start the race dreaming of the title, but also by the fierce search for each position in the table. Each match becomes a box of surprises and twists.
+
+It is important to note that every prediction model may perform better in contexts such as the major European leagues, including England, Italy, Germany, Spain and France. In these leagues, the difference in technical level between the teams is clearer and fewer clubs start the tournament with a real chance of winning the title. This scenario could provide a conducive environment for the model to achieve greater accuracy.
+
+However, in the unique and unpredictable context of the Brazilian Championship, with its wide range of clubs and possible scenarios, our analysis focuses on understanding how our model adapts and behaves in an environment where competition is a real challenge.
+
+### **How does the comparison between reality and simulation work?**
+
+We used two data tables: one containing the real standings from 2014 to 2022 and the other containing the standings simulated by the developed model. The entire model calibration and results simulation process can be seen in our other notebook, specifically for forecasting the 2023 edition.
+
+With this material in hand, we merged the tables based on the team names and then calculated the previously mentioned metrics to evaluate the model's performance. The merged data table has 180 observations, which are equivalent to the 20 clubs from each of the 9 simulated editions.
+
+The columns ending in **.x** are the real data, while the **.y** columns represent the simulations.
+
+```{r}
+merged <- merge(real, sim, by = c("Time","ano"))
+print(merged)
+```
+
+### **Model accuracy for final position**
+
+In this section, we explore the model's accuracy with respect to teams' final positions. To calculate the metrics, we need to create some additional columns in the merged table.
+
+```{r}
+# Adding helper columns before the calculations
+merged$abs_diff <- abs(merged$Pos.x - merged$Pos.y)
+merged$percent_error <- (merged$Pos.x / merged$Pos.y) * 100
+merged$relative_error <- (merged$Pos.x - merged$Pos.y) / merged$Pos.x
+
+# Calculate evaluation metrics
+mae <- mean(merged$abs_diff)
+mse <- mean(merged$abs_diff^2)
+rmse <- sqrt(mse)
+mpe <- mean(merged$percent_error)
+mre <- mean(merged$relative_error)
+
+# Print the metrics for standings
+metrics <- data.frame(
+  Metric = c("MAE", "MSE", "RMSE", "MPE", "MRE"),
+  Value = c(mae, mse, rmse, mpe, mre))
+
+# Print the metrics for standings
+print(metrics)
+```
+
+The value of the Mean Absolute Error (MAE) shows that, on average, the model misses the team's final position by 2.41. This means that the model can place in 6th or 7th place a team that finished in 4th place in real life. As the Brazilian Championship has 20 clubs, an error of 2.41 represents 12% of the total.
+
+### **Model accuracy for total points**
+
+We continue evaluating the model's accuracy, this time focusing on the final points tally of football teams. Here, we perform calculations to measure how accurate the model predicts team points, and to do so, we will create three more auxiliary columns.
+
+```{r}
+# Adding helper columns before the calculations
+merged$abs_points_diff <- abs(merged$PTS.x - merged$PTS.y)
+merged$percent_error_points <- (merged$abs_points_diff / merged$PTS.x) * 100
+merged$relative_error_points <- (merged$PTS.x - merged$PTS.y) / merged$PTS.x
+
+# Calculate evaluation metrics for team points
+mae_points <- mean(merged$abs_points_diff)
+mse_points <- mean(merged$abs_points_diff^2)
+rmse_points <- sqrt(mse_points)
+mpe_points <- mean(merged$percent_error_points)
+mre_points <- mean(merged$relative_error_points)
+
+metrics_points <- data.frame(
+  Metric = c("MAE", "MSE", "RMSE", "MPE", "MRE"),
+  Value = c(mae_points,
+            mse_points,
+            rmse_points,
+            mpe_points,
+            mre_points))
+
+print(metrics_points)
+```
+
+As in the previous step, we will look more carefully at the Mean Absolute Error (MAE) value, which now predicts an average error of 5.5 points in a team's total estimate. The previous MAE represented a 12% error range overall.
+
+At this stage it is difficult to predict a percentage, as clubs could score 30 to 80 points in the same season. If we consider the average of real points, 51.9, here the error would represent 9.3% of the total.
+
+### **Model accuracy for total goals scored**
+
+Finishing the first stage of our analysis, we will now evaluate the model's accuracy in relation to the total number of goals scored. Again, we will use the same merged table of data with the addition of three columns.
+
+```{r}
+merged$abs_goals_diff <- abs(merged$GP.x - merged$GP.y)
+merged$percent_error_goals <- (merged$abs_goals_diff / merged$GP.x) * 100
+merged$relative_error_goals <- (merged$GP.x - merged$GP.y) / merged$GP.x
+
+# Calculate evaluation metrics for total goals scored
+mae_goals <- mean(merged$abs_goals_diff)
+mse_goals <- mean(merged$abs_goals_diff^2)
+rmse_goals <- sqrt(mse_goals)
+mpe_goals <- mean(merged$percent_error_goals)
+mre_goals <- mean(merged$relative_error_goals)
+
+metrics_goals <- data.frame(
+  Metric = c("MAE", "MSE", "RMSE", "MPE", "MRE"),
+  Value = c(mae_goals,
+            mse_goals,
+            rmse_goals,
+            mpe_goals,
+            mre_goals))
+
+print(metrics_goals)
+```
+
+Using the reasoning applied in the previous code, the average number of goals scored by a team over the 9 editions is 44.37. This means that the MAE value is equivalent to 12.7% of this average. Even though the MAE for the positions is the smallest absolute of the 3, it is possible that it would be the largest proportional error.
+
+### Overview of the 15 metrics
+
+Over the last 3 boxes of code, we generated 15 metrics in total. To facilitate understanding, we will create a single dataframe to display all metrics simultaneously.
+
+```{r}
+all_metrics <- data.frame(
+  Variable = rep(c("Position", "Points", "Goals"), each = 5),
+  Metric = c("MAE", "MSE", "RMSE", "MPE", "MRE"), 
+  Value = c(mae, mse, rmse, mpe, mre,
+            mae_points, mse_points, rmse_points, mpe_points, mre_points,
+            mae_goals, mse_goals, rmse_goals, mpe_goals, mre_goals)) %>% 
+  mutate(Variable = factor(Variable,
+                           levels = c("Position", "Points", "Goals"))) %>% 
+  arrange(Metric, Variable)
+
+kable(all_metrics, format = "markdown")
+```
+
+### Visualization of **Mean Absolute Error (MAE)** values
+
+```{r}
+mae_data <- data.frame(
+  Variable = c("Position", "Points", "Goals"),
+  MAE = c(mae, mae_points, mae_goals))
+
+# Create a bar plot
+ggplot(mae_data, aes(x = Variable, y = MAE, fill = Variable)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = round(MAE, 2)), vjust = 1.5, color = "black", size = 10) +
+  labs(title = "Comparação do Erro Médio Absoluto (MAE)",
+       x = NULL,
+       y = "MAE") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        legend.position = "none")
+```
+
+### Visualization of **Root-mean-square Error (RMSE)** values
+
+```{r}
+rmse_data <- data.frame(
+  Variable = c("Position", "Points", "Goals"),
+  RMSE = c(rmse, rmse_points, rmse_goals))
+
+# Create a bar plot
+ggplot(rmse_data, aes(x = Variable, y = RMSE, fill = Variable)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = round(RMSE, 2)), vjust = 1.5, color = "black", size = 10) +
+  labs(title = "Comparação da Raiz Quadrada do Erro Quadrático Médio (RMSE)",
+       x = NULL,
+       y = "RMSE") +
+  theme_minimal() +
+  theme(axis.title.x = element_blank(),
+        legend.position = "none")
+```
+
+### **Standardized model accuracies**
+
+In this section, we continue our evaluation, now focusing on the normalized accuracy of the prediction model. Here, we calculate normalized metrics to assess how accurate the model's predictions are, taking into account the variability of actual data.
+
+- **Normalized MAE:** MAE divided by the amplitude of the real positions.
+- **Normalized MSE:** MSE divided by the standard deviation of actual positions.
+- **Normalized RMSE:** RMSE divided by the standard deviation of the actual positions.
+
+```{r}
+# Calculate normalized metrics
+range <- max(merged$Pos.x) - min(merged$Pos.x)
+sd <- sd(merged$Pos.x)
+
+normalized_mae <- mae / range
+normalized_mse <- mse / (sd^2)
+normalized_rmse <- rmse / sd
+
+#####
+
+# Calculate normalized metrics for team points
+range_points <- max(merged$PTS.x) - min(merged$PTS.x)
+sd_points <- sd(merged$PTS.x)
+
+normalized_mae_points <- mae / range_points
+normalized_mse_points <- mse / (sd_points^2)
+normalized_rmse_points <- rmse / sd_points
+
+#####
+
+# Calculate normalized metrics for total goals scored
+range_goals <- max(merged$GP.x) - min(merged$GP.x)
+sd_goals <- sd(merged$GP.x)
+
+normalized_mae_goals <- mae_goals / range_goals
+normalized_mse_goals <- mse_goals / (sd_goals^2)
+normalized_rmse_goals <- rmse_goals / sd_goals
+
+#####
+
+cat("Posições finais\n")
+cat("Normalized MAE:", normalized_mae, "\n")
+cat("Normalized MSE:", normalized_mse, "\n")
+cat("Normalized RMSE:", normalized_rmse, "\n\n")
+
+cat("Pontuações\n")
+cat("Normalized MAE:", normalized_mae_points, "\n")
+cat("Normalized MSE:", normalized_mse_points, "\n")
+cat("Normalized RMSE:", normalized_rmse_points, "\n\n")
+
+cat("Gols marcados\n")
+cat("Normalized MAE:", normalized_mae_goals, "\n")
+cat("Normalized MSE:", normalized_mse_goals, "\n")
+cat("Normalized RMSE:", normalized_rmse_goals, "\n")
+```
+
+The normalized MAE values indicate that, proportionally, the Mean Absolute Error of the Position prediction is the largest. The relatively high MSE value indicates that the model may be getting the final positions of some clubs right, but missing others by a large margin and increasing the quadratic error.
+
+This same logic applies to predicting Goals Scored. A low MAE and a high MSE indicate that the model comes close to predicting the number of goals scored by some teams, but misses by a high value in other cases.
+
+Finally, the normalized Points forecast metrics appear to be the most optimistic.
+
+### **Visualizing MAE, MSE and RMSE of Positions per year**
+
+In this section, we begin the visual exploration of the model evaluation results. We will start with a graph that compares the value of the most important metrics for each of the simulated years.
+
+The dashed lines, demonstrating the average value of the variables for all editions, help us understand which editions had the lowest error rates. With the following graph, it can be inferred that the editions with the lowest error in position predictions were those of 2014 and 2018.
+
+```{r}
+# Calculate accuracy metrics for each year
+accuracy_by_year <- merged %>%
+  group_by(ano) %>%
+  summarize(MAE = mean(abs(Pos.x - Pos.y)),
+            MSE = mean((Pos.x - Pos.y)^2),
+            RMSE = sqrt(mean((Pos.x - Pos.y)^2))) %>%
+  pivot_longer(cols = c(MAE, MSE, RMSE),
+               names_to = "Métrica",
+               values_to = "Valor")
+
+# Create a line plot to compare model accuracy over the years
+ggplot(accuracy_by_year, aes(x = ano, y = Valor, color = Métrica)) +
+  geom_line() +
+  geom_hline(yintercept = mae, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = mse, linetype = "dashed", color = "green") +
+  geom_hline(yintercept = rmse, linetype = "dashed", color = "blue") +
+  labs(title = "Variação das métricas MAE, MSE e RMSE para posição",
+       x = NULL,
+       y = "Valor da métrica") +
+  theme_minimal()
+```
+
+### **Visualizing MAE, MSE and RMSE of Points Total per year**
+
+Continuing with the visualization of the model evaluation results, we have a graph that compares the value of the most important metrics for each of the years simulated in the scoring question.
+
+The dashed lines, demonstrating the average value of the variables for all editions, help us understand which editions had the lowest error rates. With the following graph, it can be inferred that the editions with the lowest error in score predictions were those of 2014 (again) and 2021.
+
+```{r}
+# Calculate accuracy metrics for each year
+accuracy_by_year_points <- merged %>%
+  group_by(ano) %>%
+  summarize(MAE = mean(abs(PTS.x - PTS.y)),
+            MSE = mean((PTS.x - PTS.y)^2),
+            RMSE = sqrt(mean((PTS.x - PTS.y)^2))) %>%
+  pivot_longer(cols = c(MAE, MSE, RMSE),
+               names_to = "Métrica",
+               values_to = "Valor")
+
+# Create a line plot to compare model accuracy over the years
+ggplot(accuracy_by_year_points, aes(x = ano, y = Valor, color = Métrica)) +
+  geom_line() +
+  geom_hline(yintercept = mae_points, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = mse_points, linetype = "dashed", color = "green") +
+  geom_hline(yintercept = rmse_points, linetype = "dashed", color = "blue") +
+  labs(title = "Variação das métricas MAE, MSE e RMSE para pontuação",
+       x = NULL,
+       y = "Valor da métrica") +
+  theme_minimal()
+```
+
+### **Visualizing MAE, MSE and RMSE of Goals Scored per year**
+
+Finishing this first stage of visualizing the results of the model evaluation, we have a graph that compares the value of the most important metrics for each of the years simulated in terms of goals scored.
+
+The dashed lines, demonstrating the average value of the variables for all editions, help us understand which editions had the lowest error rates. With the following graph, it can be inferred that the editions with the lowest error in score predictions were those of 2016 and 2020.
+
+```{r}
+# Calculate accuracy metrics for each year
+accuracy_by_year_goals <- merged %>%
+  group_by(ano) %>%
+  summarize(MAE = mean(abs(GP.x - GP.y)),
+            MSE = mean((GP.x - GP.y)^2),
+            RMSE = sqrt(mean((GP.x - GP.y)^2))) %>%
+  pivot_longer(cols = c(MAE, MSE, RMSE),
+               names_to = "Métrica",
+               values_to = "Valor")
+
+# Create a line plot to compare model accuracy over the years
+ggplot(accuracy_by_year_goals, aes(x = ano, y = Valor, color = Métrica)) +
+  geom_line() +
+  geom_hline(yintercept = mae_goals, linetype = "dashed", color = "red") +
+  geom_hline(yintercept = mse_goals, linetype = "dashed", color = "green") +
+  geom_hline(yintercept = rmse_goals, linetype = "dashed", color = "blue") +
+  labs(title = "Variação das métricas MAE, MSE e RMSE para gols marcados",
+       x = NULL,
+       y = "Valor da métrica") +
+  theme_minimal()
+```
+
+The 2016, 2018, 2020 and 2021 championships stood out once in the graphs above, containing the lowest error rates in any of the variables analyzed: position, score and goals scored.
+
+The 2014 championship was the only one that stood out in two graphs (Position and Points) and, although this is an indication that this year may have been the model's best, it stood out negatively in the goals scored graph.
+
+### **View of normalized metrics**
+
+We will now move on to analyzing the normalized metrics, which provide us with additional perspective on the model's performance. As previously stated, normalized metrics consider the variation of metrics in relation to data range and dispersion.
+
+Using a clustered bar chart, we will compare the normalized metrics for different categories, including Positions, Points and Goals Scored.
+
+```{r}
+# Create a data frame for normalized metrics
+normalized_metrics <- data.frame(
+  Metric = c("Normalized MAE", "Normalized MSE", "Normalized RMSE"),
+  Position = c(normalized_mae, normalized_mse, normalized_rmse),
+  Points = c(normalized_mae_points, normalized_mse_points, normalized_rmse_points),
+  Goals = c(normalized_mae_goals, normalized_mse_goals, normalized_rmse_goals))
+
+# Melt the data frame for visualization
+normalized_metrics <- melt(normalized_metrics, id.vars = "Metric")
+
+# Create a grouped bar plot for normalized metrics
+ggplot(normalized_metrics, aes(x = Metric, y = value, fill = variable)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.7) +
+  labs(title = "Comparação das métricas normalizadas",
+       x = NULL,
+       y = "Valor") +
+  theme_minimal()
+```
+
+This visualization reinforces the theory that the variable with the highest success rate is the club's total points.
+
+### Histogram of absolute error in Positions
+
+```{r message=FALSE, warning=FALSE}
+abs_diff_freq <- table(merged$abs_diff)
+total_occurrences <- sum(abs_diff_freq)
+percentage_occurrences <- abs_diff_freq / total_occurrences * 100
+
+# Create a data frame for plotting
+histogram_data <- data.frame(abs_diff = as.numeric(names(abs_diff_freq)),
+                              percentage_occurrences = percentage_occurrences)
+
+# Create a histogram plot with percentage of occurrences on the y-axis
+ggplot(histogram_data, aes(x = abs_diff, y = percentage_occurrences)) +
+  geom_bar(stat = "identity", fill = "lightblue", color = "black") +
+  geom_text(aes(label = paste0(round(percentage_occurrences, 1), "%")),
+            vjust = -0.5) +
+  labs(title = "Porcentagem de ocorrências para diferenças de posições reais e simuladas",
+       x = NULL,
+       y = "Porcentagem de ocorrências (%)") +
+  scale_x_continuous(breaks = seq(0, max(histogram_data$abs_diff), by = 1)) +
+  theme_minimal()
+```
+
+This histogram encompasses all final position predictions and tells us which model got 23.3% of the clubs' final positions correct. Furthermore, almost 62% of the time the model is wrong by a maximum of 2 positions. Considering that Position prediction had the highest error rates, the result shown here remains very interesting.
+
+### Scatter plot of real x simulated Positions
+
+```{r}
+ggplot(merged, aes(x = Pos.x, y = Pos.y)) +
+  geom_point(size = 3.5) +
+  geom_abline(intercept = 0, slope = 1, linetype = "dashed", color = "red") +
+  labs(title = "Scatter plot de posições reais x simuladas",
+       x = "Posição real",
+       y = "Posição simulada") +
+  theme_minimal()
+```
+
+This scatter plot shows all existing combinations of real positions x simulated positions. The points crossed by the line represent the model's correct predictions. For some reason, the model did not match any club finishing 5th, 7th, 9th, 12th, 13th and 14th. This may be due to the fact that clubs in these positions tend to have closer scores. One or two more points in the forecast and the club could end up gaining 1, 2 or even 3 positions.
+
+### Brazilian Champions predictions
+
+```{r}
+# Create a data frame with all possible combinations of real_standings and sim_standings
+combinations <- expand.grid(Real = 0:20, Sim = 0:20)
+
+# Merge the data frame with your merged_data to get the counts
+combined_counts <- merge(combinations, merged,
+                         by.x = c("Real", "Sim"),
+                         by.y = c("Pos.x", "Pos.y"),
+                         all.x = TRUE) %>%
+  mutate(diff = abs(Real - Sim))
+
+combined_counts[is.na(combined_counts)] <- 0
+
+correct_champions <- combined_counts %>%
+  subset(Real == 1 & Sim == 1) %>%
+  select(c("Time", "ano", "Real", "Sim")) %>%
+  arrange(desc(ano))
+
+print(correct_champions)
+```
+
+The model successfully predicted 7 of the 9 champions, only making mistakes in the 2018 and 2020 editions.
+
+```{r}
+wrong_champions <- merged %>%
+  select(c('Time', 'ano', 'Pos.x', 'PTS.x', 'Pos.y', 'PTS.y')) %>%
+  subset(ano %in% c(2018, 2020)) %>%
+  subset(Pos.x == 1 | Pos.y == 1) %>%
+  arrange(desc(PTS.x))
+
+print(wrong_champions)
+```
+
+Coincidentally, the two times the model got the champion wrong was because it predicted São Paulo lifting the title. In fact, São Paulo had good campaigns in the first round of 2018 and 2020 and even ended this stage leading the championships. A sudden drop in performance on both occasions caused the club to lose the titles and finish 5th and 4th respectively.
+
+The real champion of 2018 was Palmeiras, who the model predicted to finish 5th. In 2020, Flamengo lifted the cup while the model placed them in 3rd. Even though the champion was wrong in 2020, the model missed Flamengo's total by just 4 points: from 71 in real life to 67 in the simulation.
+
+### Correctly predicted positions
+
+```{r}
+correct_positions <- merged %>%
+  subset(Pos.x == Pos.y) %>%
+  group_by(Pos.x) %>%
+  count()
+
+ggplot(correct_positions, aes(x = Pos.x, y = n)) +
+  geom_bar(stat = "identity", fill = "lightblue", color = "black") +
+  geom_text(aes(label = n), vjust = 1.5, color = "black") +
+  scale_x_continuous(breaks = seq(1, 20, by = 1)) +
+  labs(title = "Histograma de posições previstas corretamente",
+       x = "Posição",
+       y = "Frequência")
+```
+
+The positions that the model gets the most right are precisely the first and last, possibly because they are the campaigns in which a team can get out of sync with the others, whether positively or negatively. This histogram reinforces the model's difficulty in correctly predicting mid-table positions: no club that finished in positions 12th to 14th had this performance correctly predicted in the simulations.
+
+### Correctly predicted positions by year
+
+With the absolute error histogram seen previously, we already know that the model got 23.3% of the final positions correct, for a total of 42 of the 180 observations. Let's check the total number of hits per year.
+
+```{r}
+correct_positions_by_year <- combined_counts %>%
+  subset(Real == Sim) %>%
+  select(c("Time", "ano", "Real", "Sim")) %>%
+  subset(ano != 0) %>%
+  arrange(desc(ano)) %>%
+  group_by(ano) %>%
+  summarize(corrects = n()) %>%
+  mutate(percent = corrects/20*100)
+
+tcp <- correct_positions_by_year %>%
+  summarise(ano = "Total", corrects = sum(corrects),
+            percent = round(mean(percent), 1))
+
+correct_positions_by_year$ano <- as.character(correct_positions_by_year$ano)
+correct_positions_by_year <- bind_rows(correct_positions_by_year, tcp)
+print(correct_positions_by_year)
+```
+
+The years 2015 and 2021 had the highest number of correctly predicted positions, with 6 each. In a universe of 20 clubs, this is equivalent to 30% of the competition. The lowest number was in 2020, when the model got only 2 positions right. Apart from this edition, the lowest value for hits was 4. This jump from 2 to 4 indicates that the 2020 edition was definitely something out of the curve.
+
+A possible explanation for this is the fact that the championship was played during the most acute phase of the COVID-19 pandemic. Collective outbreaks forced teams to play without their main players, the stadiums could not receive spectators and the games were played in record time in an attempt not to overwhelm the following year's calendar. These factors reduced the technical level of the teams, balancing and making it even more unpredictable.
+
+### Correctly predicted zones
+
+Predicting a team's classification zone is as important or more important than predicting exactly the team's total points or position. By "zone" we mean the Top 6, a group that guarantee qualification for the Libertadores, and the bottom 4, that end up relegated to Serie B the following year.
+
+```{r}
+merged <- merged %>%
+  mutate(real_zone = case_when(Pos.x <= 6 ~ "Libertadores",
+                               Pos.x >= 17 ~ "Rebaixamento",
+                               Pos.x >= 7 & Pos.x <= 12 ~ "Sul-Americana",
+                               TRUE ~ NA_character_),
+  sim_zone = case_when(Pos.y <= 6 ~ "Libertadores",
+                       Pos.y >= 17 ~ "Rebaixamento",
+                       Pos.y >= 7 & Pos.y <= 12 ~ "Sul-Americana",
+                       TRUE ~ NA_character_))
+
+total_zones <- merged %>%
+  subset(real_zone == sim_zone) %>%
+  select(c("Time", "ano", "Pos.x", "Pos.y", "real_zone", "sim_zone")) %>%
+  group_by(real_zone) %>%
+  count() %>%
+  mutate(total = case_when(real_zone == "Libertadores" ~ 6*9,
+                           real_zone == "Rebaixamento" ~ 4*9,
+                           real_zone == "Sul-Americana" ~ 6*9)) %>%
+  mutate(accuracy = (n / total) * 100)
+
+print(total_zones)
+```
+
+The model reached a very high level of prediction of the Libertadores qualified teams. Of all the clubs that finished in the top 6 positions in each of the 9 years, for a total of 54, the model was correct 45 times: a rate of 83.3%. In general, it would be like saying that the model got 5 out of 6 classified for the Libertadores every year.
+
+Regarding relegated clubs, the model correctly predicted the fall of 25 of the 36 clubs over the years, for a rate of almost 70%.
+
+In the Sul-Americana (equivalent to Europa League) zone, covering positions 7 to 12 and with greater proximity in scores, it had the lowest success rate. Of the 54 clubs that finished in this zone in real life, the model got 29 right, just over half: almost 54%.
+
+### Correctly predicted zones by year
+
+```{r}
+correct_zones_by_year <- merged %>%
+  subset(real_zone == sim_zone) %>%
+  group_by(ano) %>%
+  count() %>%
+  mutate(accuracy = n / 20 * 100)
+
+print(correct_zones_by_year)
+```
+
+### Libertadores spots correctly predicted per year
+
+```{r}
+libertadores_by_year <- merged %>%
+  subset(real_zone == sim_zone) %>%
+  subset(real_zone == "Libertadores") %>%
+  group_by(ano) %>%
+  count() %>%
+  mutate(accuracy = n / 6 * 100)
+
+print(libertadores_by_year)
+```
+
+Despite the year 2020 having the lowest rate of position hits, the model got all the qualified teams for the following year's Libertadores right. 2018 and 2021 also reached this mark.
+
+An interesting fact is that from 2020 to 2022 the model got 17 of the 18 teams finishing in the top 6 rigt. This may indicate a greater discrepancy between clubs with greater investment or more consistent teamwork. As the model uses the results of the first round to evaluate the second, teams that remain regular throughout the championship tend to be predicted in the correct region of the table.
+
+### Sul-Americana spots correctly predicted per year
+
+```{r}
+sulamericana_by_year <- merged %>%
+  subset(real_zone == sim_zone) %>%
+  subset(real_zone == "Sul-Americana") %>%
+  group_by(ano) %>%
+  count() %>%
+  mutate(accuracy = n / 6 * 100)
+
+print(sulamericana_by_year)
+```
+
+As discussed previously, the clubs in this region of the table have closer scores and this facilitates greater variation in predictions. From 2020 to 2022, the model correctly classified 10 of the 18 teams, a much less notable mark than the Libertadores.
+
+### Correctly predicted relegated clubs by year
+
+```{r}
+z4_by_year <- merged %>%
+  subset(real_zone == sim_zone) %>%
+  subset(real_zone == "Rebaixamento") %>%
+  group_by(ano) %>%
+  count() %>%
+  mutate(accuracy = n / 4 * 100)
+
+print(z4_by_year)
+```
+
+The model always hits at least 2 of the 4 relegated clubs. A possible explanation for this is that, in almost every edition of the Brazilian Championship, one or two clubs end up finishing far from the others. Whether it was because they had just moved up to the first division, because of an internal political crisis (unfortunately something common in Brazilian football) or because of a simple lack of planning.
+
+Including the year 2019, where the model correctly predicted all relegated clubs, in 6 of the 9 years the model missed at most one team.
+
+### Conclusions on model efficiency
+
+Throughout this notebook, we explore the effectiveness of a simple prediction model applied to the Campeonato Brasileiro, one of the most competitive and unpredictable leagues in the world of football. Our main objective was to understand how this model, which only takes into account the results of games between teams, would perform when predicting the final positions of clubs in the 2014 to 2022 editions.
+
+Our analyzes revealed interesting and valuable results. The model demonstrated a considerable rate of success in the clubs' final positions, achieving 23.3% correct predictions and being wrong by a maximum of 2 positions 62% of the time. The model's performance has varied over the years, reflecting the growing competitiveness and technical evolution of Brazilian teams.
+
+As the model only considers the first round to predict the second round, it ends up not capturing relevant factors such as the mid-year transfer window. This window marks the beginning of the European season, and it is when European clubs come shopping for star players in Brazil. This can weaken some teams and improve others, which are sometimes reinforced with players at the end of their contracts in Europe.
+
+Although it presented good results in some metrics, it is important to highlight that the model faces challenges in predicting mid-table positions. Furthermore, we observed that its accuracy varies for different metrics, such as positions, points and goals scored. A possible explanation for the higher Mean Square Error (MSE) values is that the model misses mid-table positions more frequently. Errors in this region of the table can place the club 3, 4 positions above or below the real one, increasing the quadratic error.
+
+By comparing the model's performance across different groups of teams, we identify its strong areas and limitations. The model got the clubs that finished in Top 6 right 83% of the time (although it didn't always get the exact position right) and 70% of the relegated clubs, while it faced greater challenges in the intermediate positions, which normally have closer scores.
+
+However, it is important to highlight that the analyzed model has significant limitations and cannot be considered a professional forecasting tool. The success of this model is strongly linked to the complexity and inherent competitiveness of each competition.
+
+In summary, this analysis offers us a fascinating insight into the performance of a simple prediction model in the context of the Brazilian Championship. The constant evolution of the league, balance of teams, sudden changes in squad levels during transfer windows, high load of games and large interstate movements reinforce the unpredictable nature of the championship and highlight the need for more sophisticated approaches for more accurate and reliable predictions.

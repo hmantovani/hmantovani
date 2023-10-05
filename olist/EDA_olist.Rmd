@@ -1,0 +1,615 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+**Importando os pacotes e funções**
+
+```{r message=FALSE, warning=FALSE}
+source('misc/packages.R')
+source('misc/functions.R')
+```
+
+# **EDA do dataset da Olist de e-commerce no Brasil**
+
+Este conjunto de dados é uma representação de informações detalhadas sobre 100 mil pedidos feitos na Olist Store durante o período de 2016 a 2018, abrangendo diversas plataformas de venda no Brasil. Os recursos presentes neste conjunto de dados nos permitem explorar os pedidos sob diversas perspectivas, desde o status do pedido, preço, pagamento e desempenho de frete, até a localização do cliente, atributos dos produtos e, por fim, avaliações escritas pelos clientes. É importante ressaltar que esses dados comerciais são reais, embora tenham sido anonimizados.
+
+Esse conjunto de dados foi gentilmente fornecido pela Olist, a maior loja de departamentos em marketplaces brasileiros. A Olist conecta pequenos negócios de todo o Brasil a canais de venda de forma simplificada, com um único contrato. Esses comerciantes têm a capacidade de vender seus produtos através da Olist Store e enviá-los diretamente aos clientes utilizando os parceiros logísticos da Olist.
+
+No sistema da Olist cada pedido é designado a um **customerid** único. Isso significa que cada consumidor terá **diferentes ids para diferentes pedidos**. O propósito de ter um **customerunique_id** único por pessoa (como se fosse um CPF) na base é permitir identificar consumidores que fizeram recompras na loja. Caso contrário, você encontraria que cada ordem sempre tivesse diferentes consumidores associados.
+
+```{r message=FALSE, warning=FALSE}
+customers <- read_csv('data/olist_customers_dataset.csv')
+orders <- read_csv('data/olist_orders_dataset.csv')
+reviews <- read_csv('data/olist_order_reviews_dataset.csv')
+payments <- read_csv('data/olist_order_payments_dataset.csv')
+products <- read_csv('data/olist_products_dataset.csv')
+sellers <- read_csv('data/olist_sellers_dataset.csv')
+categories <- read_csv('data/product_category_name_translation.csv')
+geolocation <- read_csv('data/olist_geolocation_dataset.csv')
+order_items <- read_csv('data/olist_order_items_dataset.csv')
+
+# Juntando os dados em uma base única com exceção dos dados de geolocalização
+complete_data <- customers %>% 
+  left_join(orders) %>% 
+  left_join(order_items) %>% # Uma ordem pode ter muito itens e por isso a base expande aqui
+  left_join(reviews) %>% 
+  left_join(payments) %>% 
+  left_join(products) %>%
+  left_join(sellers) %>% 
+  left_join(categories)
+```
+
+## Primeiras observações nos dados
+
+```{r}
+skim(complete_data)
+```
+
+A análise por item expande a base, mas a maioria dos pedidos (87.6%) consiste em apenas 1 item, como já era de se esperar. Para simplificar, vamos limitar nossa análise somente a pedidos com um item.
+
+```{r}
+order_items %>% 
+  count(order_item_id) %>% # Número de itens do mesmo pedido
+  mutate(prop = round(n / sum(n) * 100, 2))
+
+complete_data <- complete_data %>% 
+  filter(order_item_id == 1)
+```
+
+## Transformando os dados
+
+Nesta etapa, após a análise inicial da estrutura dos dados, criamos variáveis que serão úteis na análise e reduzimos o escopo da análise somente para entregas concluídas (order_status == 'delivered').
+
+-   Variável de review alto: "1" se score do review for 5, e "0" caso contrário.
+
+-   Variável de diferença no prazo de entrega: diferença entre o prazo de entrega estipulado para o cliente e a data de entrega propriamente dita.
+
+-   Variável de proporção do frete: relaciona valores de Frete e Preço.
+
+-   Variável de frete gratuito: binária
+
+```{r}
+analysis <- complete_data %>% 
+  mutate(high_review = ifelse(review_score == 5, 'Max. Score', 'Less than 5'),
+         high_review_binary = ifelse(review_score == 5, 1, 0),
+         order_delivered_customer_date = as.Date(order_delivered_customer_date),
+         order_estimated_delivery_date = as.Date(order_estimated_delivery_date),
+         delivery_delay = as.numeric(order_delivered_customer_date - order_estimated_delivery_date),
+         late = ifelse(delivery_delay > 0, 1, 0),
+         freight_prop = freight_value / price,
+         free_freight = ifelse(freight_value == 0, 1, 0)) %>% 
+  select(customer_state, 
+         order_status, 
+         price, 
+         freight_value, 
+         payment_type, 
+         payment_value, 
+         product_category_name,
+         product_photos_qty,
+         review_score,
+         high_review,
+         high_review_binary,
+         delivery_delay,
+         late,
+         order_estimated_delivery_date,
+         order_delivered_customer_date,
+         review_comment_title,
+         review_comment_message,
+         freight_prop,
+         free_freight,
+         customer_city,
+         seller_city) %>% 
+  filter(order_status == 'delivered')
+```
+
+Também precisamos entender a distribuição dos dados faltantes no dataset, por isso usaremos o pacote vis_dat. Como nossa base de dados é muito grande, vamos pegar uma parte menor (30% do total) e tentar entender quais colunas possuem muitos dados faltando.
+
+Naturalmente, as colunas com maior quantidade de dados faltantes são as que possuem preenchimento opcional: título e mensagem do comentário de revisão do produto.
+
+```{r}
+set.seed(2101)
+vis_dat(analysis %>% sample_frac(0.3))
+```
+
+```{r}
+map_df(analysis, ~sum(is.na(.))) %>% 
+  gather() %>% 
+  arrange(desc(value))
+```
+
+Outro fato que precisamos corrigir antes de qualquer análise é a existência de valores nulos na coluna "late", que é uma coluna binária indicando a presença ou ausência de um atraso na entrega. Isso ocorre porque alguns pedidos não possuem data de entrega. Por isso iremos remover essas ocorrências.
+
+```{r}
+analysis <- analysis %>% 
+  drop_na(late)
+```
+
+Por último, vamos checar as cidades com mais pedidos entregues.
+
+```{r}
+analysis %>% 
+  count(customer_city) %>%
+  mutate(prop = round(n / sum(n) * 100, 2)) %>%
+  arrange(desc(n))
+```
+
+## Exploração e visualização de variáveis
+
+### Avaliação do produto (1 a 5)
+
+```{r message=FALSE, warning=FALSE}
+analysis %>%
+  count(review_score) %>%
+  ggplot(aes(x = review_score, y = n)) +
+  geom_bar(stat ='identity') +
+  geom_text(aes(label = n), vjust = -0.5, size = 3)
+```
+
+### Nota máxima: sim ou não
+
+```{r}
+analysis %>%
+  count(high_review) %>%
+  ggplot(aes(x = high_review, y = n)) +
+  geom_bar(stat ='identity') +
+  geom_text(aes(label = n), vjust = -0.5, size = 3)
+```
+
+### Pedidos por UF
+
+```{r}
+analysis %>%
+  count(customer_state) %>%
+  ggplot(aes(x = customer_state, y = n)) +
+  geom_bar(stat ='identity') +
+  geom_text(aes(label = n), vjust = -0.5, size = 3)
+```
+
+### Pedidos por forma de pagamento
+
+```{r}
+analysis %>%
+  count(payment_type) %>%
+  ggplot(aes(x = payment_type, y = n)) +
+  geom_bar(stat ='identity') +
+  geom_text(aes(label = n), vjust = -0.5, size = 3)
+```
+
+### Pedidos por categoria do produto
+
+```{r}
+analysis %>% 
+  count(product_category_name, sort = T) %>% 
+  mutate(prop = round(n / sum(n) * 100, 2))
+```
+
+### Análise de preços
+
+```{r}
+summary(analysis$price)
+```
+
+```{r}
+p1 <- analysis %>% 
+  ggplot(aes(y = price)) +
+  geom_boxplot() +
+  ggtitle('Boxplot')
+
+p2 <- analysis %>% 
+  ggplot(aes(x = price)) +
+  geom_density() +
+  ggtitle('Densidade')
+
+grid.arrange(p1, p2, nrow = 1)
+```
+
+Essas análises nos informam que a variável Preço é extremamente assimétrica, inclusive com outliers com preços acima de R\$ 6000. O mais comum aqui, caso seja desejável incluí-la na modelagem, seria transformar essa variável e estabilizá-la. Por isso, a partir de agora usaremos o logaritmo da variável Preço.
+
+Lembrando que o Boxplot pode ser problemático por não refletir a distribuição dos dados. Veremos adiante um exemplo melhor, com Violin Plots.
+
+```{r}
+p1log <- analysis %>% 
+  ggplot(aes(y = log(price))) +
+  geom_boxplot() +
+  ggtitle('Boxplot')
+
+p2log <- analysis %>% 
+  ggplot(aes(x = log(price))) +
+  geom_density() +
+  ggtitle('Densidade')
+
+grid.arrange(p1log, p2log, nrow = 1)
+```
+
+### Análise de frete
+
+```{r}
+summary(analysis$freight_value)
+```
+
+75% dos produtos tiveram um frete inferior a 21 reais, mas é possível ver que um pedido em específico teve um frete superior a 400 reais!
+
+```{r message=FALSE, warning=FALSE}
+analysis %>% 
+  ggplot(aes(x = log(freight_value))) +
+  geom_density() +
+  ggtitle('Variável Frete com Transformação Logarítmica')
+```
+
+A variável de Frete parece ser mais problemática, pois tem valores 0 e alguns saltos. A melhor maneira de identificar rapidamente onde estão esses pontos de corte é através de interatividade gráfica!
+
+```{r}
+(analysis %>% 
+  filter(freight_value > 0) %>% # Tira os fretes gratuitos
+  ggplot(aes(x = freight_value)) +
+  geom_density()) %>% ggplotly()
+```
+
+O ponto no entorno do 10 parece um ponto de atenção pela subida íngreme após ele. Temos muitos valores de frete repetidos. Talvez seria interessante transformar essa variável em categórica.
+
+Além disso, o frete deve ter relação com a distância entre cliente e vendedor, e uma análise futura poderia levar isso em consideração fazendo algum tipo de manipulação de localização, mas talvez os dados não permitam fazer essa análise de maneira fácil.
+
+### Análise de frete sobre preço
+
+```{r}
+summary(analysis$freight_prop)
+```
+
+Aqui mais uma vez vemos uma proporção absurda de frete sobre preço. Em um pedido específico, o frete correspondeu a 21.4% do valor total da compra.
+
+```{r message=FALSE, warning=FALSE}
+analysis %>% 
+  ggplot(aes(x = log(freight_prop))) +
+  geom_density()
+```
+
+O logaritmo dessa variável, quando o frete é zero, resulta em -Infinito. Isso causaria problemas na hora de criar os modelos, mas podemos resolver facilmente: basta acrescentar um valor irrisório ao frete, de modo que a divisão não resulte em zero.
+
+### Análise de frete x preço
+
+```{r message=FALSE, warning=FALSE}
+analysis %>% 
+  ggplot(aes(x = log(price),
+             y = log(freight_value))) +
+  geom_point() +
+  geom_smooth()
+```
+
+### Fretes gratuitos
+
+```{r}
+analysis %>% 
+  count(free_freight, sort = T) %>% 
+  mutate(prop = n / sum(n))
+```
+
+Os pedidos com frete gratuito equivalem a menos de 0,4% do total. É uma porção quase irrelevante dos dados, então podemos considerar remover esses dados para facilitar a modelagem futura.
+
+### Análise de atrasos nas entregas
+
+```{r}
+summary(as.numeric(analysis$delivery_delay))
+```
+
+```{r}
+analysis %>% 
+  count(late) %>% 
+  mutate(prop = n / sum(n))
+```
+
+Podemos perceber que 75% dos pedidos chegaram com no mínimo 7 dias de antecedência, mas existem também pedidos com atrasos absurdos, chegando a 6 meses. Também descobrimos que menos de 7% dos pedidos analisados foram entregues com atraso.
+
+```{r message=FALSE, warning=FALSE}
+analysis %>% 
+  ggplot(aes(x = delivery_delay)) +
+  geom_density()
+```
+
+Aqui podemos ver uma leve inclinação a partir do 0, indicando os pedidos atrasados. O inclínio é bem pequeno e já sabemos que houveram relativamente poucos pedidos atrasados.
+
+### Quantidade de fotos do produto
+
+Muitos produtos em marketplaces costumam contar com fotos ilustrativas do produto, que ajudam a guiar o cliente na hora da compra.
+
+```{r}
+analysis %>% 
+  count(product_photos_qty) %>% 
+  mutate(prop = n / sum(n))
+```
+
+## Múltiplas densidades Preço vs. Categoria
+
+Vamos analisar a densidade do preço por categoria. Novamente usamos **fct_lump** para agrupar as categorias fora do top 7 em frequência e criamos um gráfico com uma curva de densidade para o preço vs. cada categoria. Como as curvas se sobrepõem, a visualização é dificultada.
+
+```{r}
+analysis %>% 
+  mutate(cat_product_category_name = fct_lump(product_category_name, n = 7)) %>% 
+  ggplot(aes(x = log(price), fill = cat_product_category_name)) +
+  geom_density(alpha = 0.35)
+```
+
+Um modo melhor de visualizar seria colocar a base de cada curva em um nível diferente. O gráfico acima nos mostrava a existência de NAs na coluna, então vamos também remover.
+
+```{r}
+analysis %>%
+  filter(!is.na(product_category_name)) %>% 
+  mutate(cat_product_category_name = fct_lump(product_category_name, n = 7),
+         log_price = log(price)) %>%
+  ggplot(aes(x = log_price, 
+             y = cat_product_category_name,
+             fill = stat(x))) + 
+  geom_density_ridges_gradient(scale = 3, rel_min_height = 0.001) +
+  scale_fill_viridis_c(name = "Log do Preço")
+```
+
+Outro modo de analisar os valores por categoria seria criando um boxplot para cada, sabendo da limitação natural do boxplot em não refletir bem a distribuição/frequência dos dados.
+
+```{r}
+analysis %>% 
+  filter(!is.na(product_category_name)) %>%
+  mutate(cat_product_category_name = fct_lump(product_category_name, n = 7),
+         log_price = log(price)) %>% 
+  ggplot(aes(fill = cat_product_category_name,
+             y = log_price,
+             x = cat_product_category_name)) +
+  geom_boxplot() +
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45))
+```
+
+Com algumas mudanças no código anterior, podemos transformar os box plots em violin plots, que mostram com clareza a distribuição dos dados. A limitação natural do violin plot no ggplot em R é a ausência das linhas percentis, então podemos adicionar um box plot dentro de cada violin plot e obter o "melhor dos dois mundos"
+
+```{r}
+analysis %>%
+  filter(!is.na(product_category_name)) %>%
+  mutate(cat_product_category_name = fct_lump(product_category_name, n = 7),
+         log_price = log(price)) %>% 
+  ggplot(aes(fill = cat_product_category_name,
+             y = log_price,
+             x = cat_product_category_name)) +
+  geom_violin(trim = FALSE) +  # trim = FALSE shows the full distribution
+  geom_boxplot(width = 0.2, outlier.shape = NA, position = position_dodge(width = 0.75)) +
+  theme(legend.title = element_blank(),
+        axis.text.x = element_text(angle = 45))
+```
+
+## Análises bivariadas
+
+### Estado vs. Avaliação do cliente
+
+```{r}
+analysis %>%
+  filter(!is.na(high_review_binary)) %>%
+  group_by(customer_state) %>%
+  summarize(
+    n = n(),
+    max_reviews = sum(high_review_binary),
+    max_reviews_prop = mean(high_review_binary)) %>%
+  arrange(desc(max_reviews_prop))
+```
+
+Mesmo São Paulo sendo de maneira disparada o estado com mais pedidos, também é o estado mais satisfeito: 61.7% dos pedidos foram avaliados com nota máxima. Vamos agora testar uma visualização interativa com Plotly que nos permitirá ver exatamente o número de pedidos por estado e a "taxa de satisfação" de cada.
+
+Aqui vemos que o estado mais insatisfeito seria o Maranhão, onde apenas 48.3% dos 739 pedidos foram avaliados com a nota máxima. De qualquer maneira, não é possível traçar um paralelo entre estado e probabilidade de avaliação máxima.
+
+```{r message=FALSE, warning=FALSE}
+analysis %>% 
+  plota_tx_interesse(var_x = 'customer_state',
+                     var_y = 'high_review',
+                     flag_interesse = 'Max. Score')
+```
+
+Vamos tentar mudar a escala da visualização para obter maior clareza.
+
+```{r message=FALSE, warning=FALSE}
+analysis %>% 
+  plota_tx_interesse(var_x = 'customer_state',
+                     var_y = 'high_review',
+                     flag_interesse = 'Max. Score',
+                     ylim = NA)
+```
+
+### Forma de pagamento vs. Avaliação do cliente
+
+```{r message=FALSE, warning=FALSE}
+analysis %>% 
+  plota_tx_interesse(var_x = 'payment_type',
+                     var_y = 'high_review',
+                     flag_interesse = 'Max. Score',
+                     ylim = NA)
+```
+
+### Categoria do produto vs. Avaliação do cliente
+
+```{r message=FALSE, warning=FALSE}
+analysis %>% 
+  plota_tx_interesse(var_x = 'product_category_name',
+                     var_y = 'high_review',
+                     flag_interesse = 'Max. Score',
+                     ylim = NA)
+```
+
+Temos muitas classes diferentes e isso acaba complicando muito a visualização dos dados. Por isso vamos pegar as 10 mais presentes e agrupar o resto em uma 11ª variável, chamada de "Other". Isso é possível através da função **fct_lump** a seguir
+
+```{r message=FALSE, warning=FALSE}
+analysis %>% 
+  mutate(product_category_name_cat = fct_lump(product_category_name, 10)) %>% 
+  plota_tx_interesse(var_x = 'product_category_name_cat',
+                     var_y = 'high_review',
+                     flag_interesse = 'Max. Score',
+                     ylim = NA)
+```
+
+Agora com o gráfico muito mais legível, podemos perceber rapidamente que as 3 categorias com maior taxa de satisfação do cliente (avaliação 5 estrelas) são:
+
+-   Brinquedos (62.8%)
+
+-   Beleza e saúde (62.1%)
+
+-   Esporte e lazer (61.4%)
+
+### Preço vs. Avaliação do cliente
+
+```{r}
+analysis %>% 
+  group_by(high_review) %>% 
+  summarize(n = n(),
+            mean = mean(price, na.rm = T),
+            sd = sd(price, na.rm = T),
+            min = min(price, na.rm = T),
+            max = max(price, na.rm = T))
+```
+
+### Frete vs. Avaliação do cliente
+
+```{r}
+analysis %>% 
+  group_by(high_review) %>% 
+  summarize(n = n(),
+            mean = mean(freight_value, na.rm = T),
+            sd = sd(freight_value, na.rm = T),
+            min = min(freight_value, na.rm = T),
+            max = max(freight_value, na.rm = T))
+```
+
+### Frete sobre preço vs. Avaliação do cliente
+
+```{r}
+analysis %>% 
+  group_by(high_review) %>% 
+  summarize(n = n(),
+            mean = mean(freight_prop, na.rm = T),
+            sd = sd(freight_prop, na.rm = T),
+            min = min(freight_prop, na.rm = T),
+            max = max(freight_prop, na.rm = T))
+```
+
+### Preço vs. Avaliação do cliente
+
+```{r}
+ analysis %>%
+   mutate(log_price = log(price)) %>% 
+   ggstatsplot::ggbetweenstats(
+   x = high_review,
+   y = log_price,
+   title = "Log do Preço vs. Avaliação do Cliente")
+```
+
+### Atraso na entrega vs. Avaliação do cliente
+
+Aqui podemos perceber uma clara diferença, sendo essa uma variável que claramente impacta na Avaliação Máxima do cliente. A curva vermelha após o 0 indica que uma grande parte dos pedidos atrasados não recebe nota máxima.
+
+```{r}
+analysis %>%
+  filter(!is.na(high_review)) %>%
+  ggplot(aes(x = delivery_delay, fill = as.factor(high_review))) +
+  geom_density(alpha = 0.5)
+```
+
+Com poucas linhas de código, podemos perceber que **83,6%** dos pedidos atrasados não foram avaliados com nota máxima
+
+```{r}
+analysis %>%
+  filter(!is.na(high_review)) %>%
+  filter(delivery_delay > 0) %>%
+  count(high_review) %>%
+  mutate(prob = n / sum(n) * 100)
+```
+
+### Variável binária de atraso vs. Avaliação do cliente
+
+```{r message=FALSE, warning=FALSE}
+analysis %>% 
+  mutate(late = ifelse(late == 1, 'Yes', 'No')) %>% 
+  plota_tx_interesse(var_x = 'late',
+                     var_y = 'high_review',
+                     flag_interesse = 'Max. Score',
+                     ylim = NA)
+```
+
+### Quantidade de fotos vs. Avaliação do cliente
+
+Antes de fazer essa análise, substituímos NA por 0 fotos. De qualquer maneira, não é possível notar qualquer relação.
+
+```{r message=FALSE, warning=FALSE}
+analysis %>% 
+  replace_na(list(product_photos_qty = 0)) %>% 
+  plota_tx_interesse(var_x = 'product_photos_qty',
+                     var_y = 'high_review',
+                     flag_interesse = 'Max. Score')
+```
+
+## Análise multivariada
+
+Usando o **facet_wrap** do ggplot, é possível criar diversos gráficos com poucas linhas. Usaremos sempre as mesmas variáveis como X (Log do Preço) e Y (Log do Frete) para todos os gráficos, além de definir a avaliação (máxima ou não) pela cor dos pontos. Cria-se então um gráfico para cada combinação de estado + atraso (sim/não).
+
+```{r}
+analysis %>%
+  mutate(customer_state = fct_lump(customer_state, 5)) %>% 
+  ggplot(aes(x = log(price),
+             y = log(freight_value),
+             col = high_review)) +
+  geom_point(alpha = 0.5) +
+  facet_wrap(customer_state ~ late, 
+             labeller = "label_both") +
+  ggtitle('Preço vs. Frete vs. Avaliação vs. Estado vs. Atraso') +
+  theme_light()
+```
+
+## Salvando a base de dados para modelagem
+
+### Seleção de variáveis
+
+A variável model recebe uma versão modificada da nossa tabela completa de análise, utilizando apenas as colunas que podem ser necessárias em uma modelagem futura.
+
+```{r}
+model <- analysis %>% 
+  mutate(delivery_delay = as.numeric(delivery_delay),
+         log_price = log(price),
+         freight_prop_fix = (freight_value + 1) / (price + 1), # evitar -Inf
+         log_freight_prop_fix = log(freight_prop_fix),
+         product_category_name_cat = fct_lump(product_category_name, 7)
+         ) %>% 
+  replace_na(list(product_photos_qty = 0)) %>% 
+  select(customer_state,
+         log_price,
+         log_freight_prop_fix,
+         payment_type,
+         product_category_name_cat,
+         product_photos_qty,
+         delivery_delay,
+         late,
+         high_review_binary)
+```
+
+### Checagem final de NAs
+
+Checamos a existência de NAs nessa nova base de dados, agora com menos colunas. Três colunas possuem NAs, então precisamos resolver isso antes de pensar em modelagem.
+
+```{r}
+map_df(model, ~sum(is.na(.))) %>% 
+  gather() %>% 
+  arrange(desc(value))
+```
+
+### Tratamento dos NAs
+
+Para a coluna de categoria do produto, podemos criar uma categoria nomeada "NA" ao invés de simplesmente excluir todas as ocorrências. Para a coluna de avaliação, não há outra saída a não ser excluir. O mesmo se aplica ao único valor faltante do tipo de pagamento, totalizando 677 linhas a serem removidas. Um número relativamente baixo perante o total.
+
+```{r}
+model <- model %>%
+  filter(!is.na(high_review_binary)) %>%
+  filter(!is.na(payment_type)) %>%
+  mutate(product_category_name_cat = fct_na_value_to_level(product_category_name_cat))
+```
+
+```{r}
+map_df(model, ~sum(is.na(.))) %>% 
+  gather() %>% 
+  arrange(desc(value))
+```
+
+```{r}
+saveRDS(model, 'data/model.rds')
+```
