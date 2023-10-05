@@ -1,6 +1,6 @@
 # Model for simulating football championships
 
-The analysis can be accessed through [NBViewer](https://nbviewer.org/github/hmantovani/football-EN/blob/main/football-predicting-model/Montecarlo_BR.html).
+The analysis can be accessed through [NBViewer](https://nbviewer.org/github/hmantovani/hmantovani/blob/main/football-EN/football-predicting-model/Montecarlo_BR.html).
 
 Football, rooted in Brazilian culture as a national passion, transcends geographic and social borders, uniting fans of all ages in a sporting spectacle. Brazil breathes football. From the potholed streets of favelas to the impeccable lawns of world-famous stadiums, sport is intertwined with the everyday lives of millions of Brazilians. Regional rivalries fuel fans' passion and lend authenticity and intensity to each match.
 
