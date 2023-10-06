@@ -23,8 +23,6 @@
 
 </details>
 
-<hr>
-
 <a> <img src="https://cdn-icons-png.flaticon.com/512/323/323310.png" alt="English" width="30" height="30"> </a>
 
 <details>
