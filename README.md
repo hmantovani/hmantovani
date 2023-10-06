@@ -2,10 +2,8 @@
 <img src="https://upload.wikimedia.org/wikipedia/commons/8/81/LinkedIn_icon.svg" alt="LinkedIn" width="20" height="20">
 </a> [Henrique Mantovani](https://www.linkedin.com/in/hmantovani/)
 
-<hr>
-
 ㅤ<a href="https://hmantovani.github.io//">
-<img src="https://cdn.icon-icons.com/icons2/2157/PNG/512/github_git_hub_logo_icon_132878.png" alt="LinkedIn" width="20" height="20">
+<img src="https://cdn.icon-icons.com/icons2/2157/PNG/512/github_git_hub_logo_icon_132878.png" alt="GitHub" width="25" height="25">
 </a> [GitHub website](https://hmantovani.github.io/)
 
 <hr>
