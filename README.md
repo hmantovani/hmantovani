@@ -6,6 +6,10 @@
 <img src="https://github.com/hmantovani/hmantovani/blob/main/github.png" alt="GitHub" width="20" height="20">
 </a> [GitHub website](https://hmantovani.github.io/)
 
+ㅤ<a href="https://hmantovani.github.io//">
+<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" alt="GitHub" width="20" height="20">
+</a> [Python Handbook](https://github.com/hmantovani/py-handbook)
+
 <hr>
 
 <a> <img src="https://cdn-icons-png.flaticon.com/512/3909/3909370.png" alt="Portuguese" width="30" height="30"> </a>
