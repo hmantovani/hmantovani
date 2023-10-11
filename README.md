@@ -1,7 +1,3 @@
-ㅤ<a href="https://www.linkedin.com/in/hmantovani">
-<img src="https://github.com/hmantovani/hmantovani/blob/main/linkedin.png" alt="LinkedIn" width="20" height="20">
-</a> [Henrique Mantovani](https://www.linkedin.com/in/hmantovani)
-
 ㅤ<a href="https://hmantovani.github.io">
 <img src="https://github.com/hmantovani/hmantovani/blob/main/github.png" alt="GitHub" width="20" height="20">
 </a> [hmantovani.github.io](https://hmantovani.github.io)
@@ -9,6 +5,10 @@
 ㅤ<a href="https://github.com/hmantovani/py-handbook">
 <img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" alt="Python Handbook" width="20" height="20">
 </a> [Python Handbook](https://github.com/hmantovani/py-handbook)
+
+ㅤ<a href="https://www.linkedin.com/in/hmantovani">
+<img src="https://github.com/hmantovani/hmantovani/blob/main/linkedin.png" alt="LinkedIn" width="20" height="20">
+</a> [Henrique Mantovani](https://www.linkedin.com/in/hmantovani)
 
 <hr>
 
