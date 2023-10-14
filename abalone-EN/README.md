@@ -1,6 +1,18 @@
-### Abalones Project - Exploratory Data Analysis (EDA) and Modeling
+### Abalones Project - Predicting the Age of Abalones
 
-This is a project that uses the Abalones dataset as the foundation for exploratory data analysis (EDA) and modeling. The Abalones dataset consists of detailed information about abalones, which are marine mollusks primarily found along the coast of Australia. This dataset contains physical measurements such as length, diameter, height, and weights of different parts of the abalone, along with the estimated age in the form of rings. Additionally, it includes information about the gender of the abalones. These data are often used in marine biology studies and statistical modeling to predict the age of abalones based on their physical characteristics. This dataset provides a valuable opportunity for exploratory data analysis and predictive modeling.
+Abalones, a type of marine mollusk, have been a valuable seafood resource for centuries. The age of an abalone is a crucial factor in determining its market value and sustainability for both ecological and economic reasons. The traditional method of age determination involves the labor-intensive process of counting growth rings on the shell, a technique that is not only time-consuming but also harmful to the abalone population. 
+
+#### Why are we predicting Abalone age?
+
+- **Economic value:** The seafood industry depends on the accurate determination of abalone age to establish appropriate pricing. Abalones are considered a delicacy in many cultures, and their age directly influences their market value. A precise predictive model can benefit both abalone producers and consumers by ensuring fair pricing.
+
+- **Sustainability:** Sustainable harvesting practices are essential to protect marine ecosystems. Knowing the age of abalones allows for better management of populations and helps in setting catch limits. Predicting age without physical harm to abalones is a significant step toward responsible resource management.
+
+- **Time and labor savings:** Traditional methods of age determination are labor-intensive and time-consuming. Automating this process through predictive modeling can save significant time and effort, making it a more efficient and cost-effective solution.
+
+- **Environmental impact:** Reducing the need for invasive age determination methods can minimize the ecological impact on abalone populations. This is crucial for the conservation of these valuable marine creatures.
+
+By developing a reliable predictive model for abalone age estimation, we can address both economic and ecological concerns, offering a more efficient, sustainable, and environmentally friendly solution for the seafood industry and marine conservation efforts.
 
 ![Abalones](https://reefbuilders.com/wp-content/blogs.dir/1/files/2021/08/abalone-bali-aquarium.jpeg)
 
@@ -19,21 +31,6 @@ The Abalones dataset contains information about the age of abalones, a type of m
 - `Viscera_weight`: Viscera weight of the abalone (in grams).
 - `Shell_weight`: Shell weight of the abalone (in grams).
 - `Rings`: Number of rings (an estimate of age).
-
-#### Project objectives
-
-1. Conduct exploratory data analysis (EDA) to understand variable distributions, identify trends and outliers, and gain insights from the data.
-2. Preprocess the data, including handling missing values, encoding categorical variables, and normalizing/scaling numerical variables as needed.
-3. Build and evaluate regression models to predict the age of abalones based on the provided information.
-4. Document and share the results and source code in a GitHub repository.
-
-#### Repository structure
-
-- `data`: Folder containing the Abalones dataset.
-- `notebooks`: Folder containing Jupyter Notebooks used for EDA and modeling.
-- `scripts`: Folder containing auxiliary Python scripts, if applicable.
-- `results`: Folder to store analysis results such as plots and model metrics.
-- `README.md`: This file providing an overview of the project.
 
 #### Contributions
 
