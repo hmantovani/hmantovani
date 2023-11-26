@@ -667,3 +667,179 @@ def process_exports(fm_data, att_data, genie_data, interest_data,
     print(f'File {csv_file}.csv created at "{folder_export}"')
 
     return main, stats
+def aggregate_exports(exports):
+    def check_date(row):
+        if row['Rgn'] == 'EU':
+            return row['Date'] > last_date_eu
+        elif row['Rgn'] == 'RW':
+            return row['Date'] > last_date_rw
+        else:
+            return False 
+        
+    season_ends = exports[exports['Half'] == 'End']
+    last_date_eu = season_ends[season_ends['Rgn'] == 'EU']['Date'].max()
+    last_date_rw = season_ends[season_ends['Rgn'] == 'RW']['Date'].max()
+
+    season_mids = exports[exports['Half'] == 'Mid']
+    season_mids['Dummy'] = season_mids.apply(check_date, axis=1)
+    season_mids = season_mids[season_mids['Dummy']]
+    season_mids.drop(columns=['Dummy'], inplace=True)
+
+    all_seasons = pd.concat([season_ends, season_mids])
+    all_seasons['Av_Rat_Total'] = all_seasons['Av_Rat'] * all_seasons['Apps']
+    all_seasons['NP-xG/Shot_Total'] = all_seasons['NP-xG/Shot'] * all_seasons['Apps']
+    all_seasons['Sprints'] = (all_seasons['Sprints/90'] * (all_seasons['Mins'] / 90)).round(0)
+    all_seasons['Mins_t'] = all_seasons['Mins']
+
+    agg_scheme = {
+        'Rgn': 'last',
+        'Half': 'last',
+        'Date': 'last',
+        'EU': 'last',
+        'Nat': 'last',
+        'Interested': 'last',
+        'P1': 'last',
+        'P2': 'last',
+        'Rt1': 'last',
+        'Pt1': 'last',
+        'RtG': 'last',
+        'PtG': 'last',
+        'Position': 'last',
+        'Age': 'last',
+        'Name': 'last',
+        'Club': 'last',
+        'Division': 'last',
+        'Mins': 'last',
+        'Based': 'last',
+        'GK%': 'last',
+        'DFg%': 'last',
+        'DFa%': 'last',
+        'xGP/90': 'last',
+        'CS/90': 'last',
+        'Gls_Conc/90': 'last',
+        'Hdrs_W/90': 'last',
+        'Hd%': 'last',
+        'Blocks/90': 'last',
+        'Intcp/90': 'last',
+        'Clear/90': 'last',
+        'Press_C/90': 'last',
+        'PAS%': 'last',
+        'OP-KP/90': 'last',
+        'CCC/90': 'last',
+        'Pr_Pas/90': 'last',
+        'xA/90': 'last',
+        'Pas_C/90': 'last',
+        'Ps%': 'last',
+        'DRB%': 'last',
+        'ST%': 'last',
+        'Drb/90': 'last',
+        'Cr_C/90': 'last',
+        'Cr%': 'last',
+        'NP-xG/90': 'last',
+        'Gls/90': 'last',
+        'NP-xG/Shot': 'last',
+        'Sht_T/90': 'last',
+        'Sprints/90': 'last',
+        'Fls_Ag/90': 'last',
+        'Value': 'last',
+        'Wage': 'last',
+        'Expires': 'last',
+        'Det': 'last',
+        'Prof': 'last',
+        'Amb': 'last',
+        'Acc': 'last',
+        'Pac': 'last',
+        'Height': 'last',
+        'Personality': 'last',
+        'Apps': 'sum',
+        'Starts': 'sum',
+        'Gls': 'sum',
+        'Ast': 'sum',
+        'PoM': 'sum',
+        'Mins_t': 'sum',
+        'xGP': 'sum',
+        'CS': 'sum',
+        'Gls_Conc': 'sum',
+        'Blocks': 'sum',
+        'Intcp': 'sum',
+        'Clear': 'sum',
+        'Press_C': 'sum',
+        'Hdrs_A': 'sum',
+        'Hdrs_W': 'sum',
+        'OP-KP': 'sum',
+        'CCC': 'sum',
+        'Pr_Pas': 'sum',
+        'xA': 'sum',
+        'Pas_A': 'sum',
+        'Pas_C': 'sum',
+        'Cr_A': 'sum',
+        'Cr_C': 'sum',
+        'Drb': 'sum',
+        'Fls_Ag': 'sum',
+        'xG': 'sum',
+        'NP-xG': 'sum',
+        'Sht': 'sum',
+        'Sht_T': 'sum',
+        'Av_Rat_Total': 'sum',
+        'NP-xG/Shot_Total': 'sum',
+        'Sprints': 'sum'
+    }
+
+    agg = all_seasons.groupby('UID').agg(agg_scheme).reset_index()
+    agg['Av_Rat'] = (agg['Av_Rat_Total'] / agg['Apps']).round(2)
+    agg['NP-xG/Shot_t'] = (agg['NP-xG/Shot_Total'] / agg['Apps']).round(2)
+
+    agg['xGP/90_t'] = (agg['xGP'] / (agg['Mins_t'] / 90)).round(2)
+    agg['CS/90_t'] = (agg['CS'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Gls_Conc/90_t'] = (agg['Gls_Conc'] / (agg['Mins_t'] / 90)).round(2)
+
+    agg['Blocks/90_t'] = (agg['Blocks'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Intcp/90_t'] = (agg['Intcp'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Clear/90_t'] = (agg['Clear'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Press_C/90_t'] = (agg['Press_C'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Hdrs_W/90_t'] = (agg['Hdrs_W'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Hd%_t'] = (agg['Hdrs_W'] / (agg['Hdrs_A'] * 100)).round(0).fillna(0)
+
+    agg['OP-KP/90_t'] = (agg['OP-KP'] / (agg['Mins_t'] / 90)).round(2)
+    agg['CCC/90_t'] = (agg['CCC'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Pr_Pas/90_t'] = (agg['Pr_Pas'] / (agg['Mins_t'] / 90)).round(2)
+    agg['xA/90_t'] = (agg['xA'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Pas_C/90_t'] = (agg['Pas_C'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Ps%_t'] = (agg['Pas_C'] / (agg['Pas_A'] * 100)).round(0).fillna(0)
+
+    agg['Drb/90_t'] = (agg['Drb'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Spr/90_t'] = (agg['Sprints'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Cr_C/90_t'] = (agg['Cr_C'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Cr%_t'] = (agg['Cr_C'] / (agg['Cr_A'] * 100)).round(0).fillna(0)
+    agg['Fls_Ag/90_t'] = (agg['Fls_Ag'] / (agg['Mins_t'] / 90)).round(2)
+
+    agg['NP-xG/90_t'] = (agg['NP-xG'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Gls/90_t'] = (agg['Gls'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Sht_T/90_t'] = (agg['Sht_T'] / (agg['Mins_t'] / 90)).round(2)
+    agg['Shots_Gls%_t'] = (agg['Gls'] / (agg['Sht'] * 100)).round(0).fillna(0)
+
+    agg['GK%t'] = (agg['xGP/90_t'] + agg['CS/90_t'] - agg['Gls_Conc/90_t'] + (agg['Av_Rat'] / 10)).round(5)
+    agg['DFg%t'] = (agg['Blocks/90_t'] + agg['Intcp/90_t'] + agg['Clear/90_t'] + agg['Press_C/90_t']).round(5)
+    agg['DFa%t'] = (agg['Blocks/90_t'] + agg['Intcp/90_t'] + agg['Clear/90_t'] + agg['Press_C/90_t'] + agg['Hdrs_W/90_t'] + (agg['Hd%_t'] / 100)).round(5)
+    agg['PAS%t'] = (agg['OP-KP/90_t'] + agg['CCC/90_t'] + agg['Pr_Pas/90_t'] + agg['xA/90_t'] + (agg['Ps%_t']) / 100).round(5)
+    agg['DRB%t'] = (agg['Drb/90_t'] + agg['Cr_C/90_t'] + (agg['Cr%_t'] / 100) + agg['Fls_Ag/90_t'] + (agg['Spr/90_t'] / 9)).round(5)
+    agg['ST%t'] = (agg['NP-xG/90_t'] + agg['Gls/90_t'] + agg['Sht_T/90_t'] + (agg['Shots_Gls%_t'] / 100) + agg['NP-xG/Shot_t']).round(5)
+
+    # Define the desired column order
+    column_order = [
+        'Rgn', 'Half', 'Date', 'UID', 'EU', 'Nat', 'Interested', 'P1', 'P2',
+        'Rt1', 'Pt1', 'RtG', 'PtG', 'Position', 'Age', 'Name', 'Av_Rat', 'Club',
+        'Division', 'Based', 'Apps', 'Starts', 'Gls', 'Ast', 'PoM', 'Mins',
+        'GK%', 'DFg%', 'DFa%', 'xGP/90', 'CS/90', 'Gls_Conc/90', 'Hdrs_W/90', 'Hd%',
+        'Blocks/90', 'Intcp/90', 'Clear/90', 'Press_C/90', 'PAS%', 'OP-KP/90', 'CCC/90',
+        'Pr_Pas/90', 'xA/90', 'Pas_C/90', 'Ps%', 'DRB%', 'ST%', 'Drb/90', 'Cr_C/90',
+        'Cr%', 'NP-xG/90', 'Gls/90', 'NP-xG/Shot', 'Sht_T/90', 'Sprints/90', 'Fls_Ag/90',
+        'Value', 'Wage', 'Expires', 'Det', 'Prof', 'Amb', 'Acc', 'Pac', 'Height',
+        'Personality', 'GK%t', 'DFg%t', 'DFa%t', 'PAS%t', 'DRB%t', 'ST%t', 'Mins_t']
+
+    # Reorder the columns in the 'agg' DataFrame
+    agg = agg[column_order]
+
+    return agg
+
+#
