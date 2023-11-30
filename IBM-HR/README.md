@@ -17,3 +17,11 @@ This is a fictitious dataset created by IBM data scientists with diverse data fr
 
 - IBM HR Analytics Employee Attrition & Performance
 - https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset
+
+## Models by accuracy
+
+![Accuracy Metrics](Metrics_Accuracy.PNG "Accuracy Metrics")
+
+## Full model summary
+
+![Metrics](Metrics.PNG "Metrics")
