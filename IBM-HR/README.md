@@ -20,8 +20,8 @@ This is a fictitious dataset created by IBM data scientists with diverse data fr
 
 ## Models by accuracy
 
-![Accuracy Metrics](Metrics_Accuracy.PNG "Accuracy Metrics")
+![Accuracy Metrics](Metrics_Accuracy.png)
 
 ## Full model summary
 
-![Metrics](Metrics.PNG "Metrics")
+![Metrics](Metrics.png)
