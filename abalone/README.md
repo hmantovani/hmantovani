@@ -1,44 +1,41 @@
-### Projeto Abalones - Análise Exploratória de Dados (EDA) e Modelagem
+### Abalones Project - Predicting the Age of Abalones
 
-Este é um projeto que utiliza o conjunto de dados de Abalones como base para uma análise exploratória de dados (EDA) e modelagem. O conjunto de dados de Abalones consiste em informações detalhadas sobre abalones, que são moluscos marinhos encontrados principalmente ao longo da costa da Austrália. Este conjunto de dados contém medidas físicas, como comprimento, diâmetro, altura e pesos de diferentes partes do abalone, juntamente com a idade estimada em forma de anéis. Além disso, inclui informações sobre o sexo dos abalones. Esses dados são frequentemente usados em estudos de biologia marinha e modelagem estatística para prever a idade dos abalones com base em suas características físicas. Este conjunto de dados oferece uma oportunidade valiosa para análise exploratória de dados e modelagem preditiva.
+Abalones, a type of marine mollusk, have been a valuable seafood resource for centuries. The age of an abalone is a crucial factor in determining its market value and sustainability for both ecological and economic reasons. The traditional method of age determination involves the labor-intensive process of counting growth rings on the shell, a technique that is not only time-consuming but also harmful to the abalone population. 
+
+#### Why are we predicting Abalone age?
+
+- **Economic value:** The seafood industry depends on the accurate determination of abalone age to establish appropriate pricing. Abalones are considered a delicacy in many cultures, and their age directly influences their market value. A precise predictive model can benefit both abalone producers and consumers by ensuring fair pricing.
+
+- **Sustainability:** Sustainable harvesting practices are essential to protect marine ecosystems. Knowing the age of abalones allows for better management of populations and helps in setting catch limits. Predicting age without physical harm to abalones is a significant step toward responsible resource management.
+
+- **Time and labor savings:** Traditional methods of age determination are labor-intensive and time-consuming. Automating this process through predictive modeling can save significant time and effort, making it a more efficient and cost-effective solution.
+
+- **Environmental impact:** Reducing the need for invasive age determination methods can minimize the ecological impact on abalone populations. This is crucial for the conservation of these valuable marine creatures.
+
+By developing a reliable predictive model for abalone age estimation, we can address both economic and ecological concerns, offering a more efficient, sustainable, and environmentally friendly solution for the seafood industry and marine conservation efforts.
 
 ![Abalones](https://reefbuilders.com/wp-content/blogs.dir/1/files/2021/08/abalone-bali-aquarium.jpeg)
 
-Fonte: [Unique Corals](https://uniquecorals.com/blogs/news/our-rare-and-exclusive-abalones)
+Source: [Unique Corals](https://uniquecorals.com/blogs/news/our-rare-and-exclusive-abalones)
 
-#### Descrição do conjunto de dados
+#### Dataset description
 
-O conjunto de dados de Abalones contém informações sobre a idade de abalones, um tipo de molusco, com base em várias medidas físicas. Os abalones são coletados da costa da Austrália. O conjunto de dados inclui as seguintes colunas:
+The Abalones dataset contains information about the age of abalones, a type of mollusk, based on various physical measurements. Abalones are collected from the coast of Australia. The dataset includes the following columns:
 
-- `Sex`: O sexo do abalone.
-- `Length`: Comprimento do abalone (em mm).
-- `Diameter`: Diâmetro do abalone (em mm).
-- `Height`: Altura do abalone (em mm).
-- `Whole_weight`: Peso inteiro do abalone (em gramas).
-- `Shucked_weight`: Peso da carne do abalone (em gramas).
-- `Viscera_weight`: Peso das vísceras do abalone (em gramas).
-- `Shell_weight`: Peso da casca do abalone (em gramas).
-- `Rings`: Número de anéis (uma estimativa da idade).
+- `Sex`: The sex of the abalone.
+- `Length`: Length of the abalone (in mm).
+- `Diameter`: Diameter of the abalone (in mm).
+- `Height`: Height of the abalone (in mm).
+- `Whole_weight`: Whole weight of the abalone (in grams).
+- `Shucked_weight`: Shucked weight of the abalone (in grams).
+- `Viscera_weight`: Viscera weight of the abalone (in grams).
+- `Shell_weight`: Shell weight of the abalone (in grams).
+- `Rings`: Number of rings (an estimate of age).
 
-#### Objetivos do projeto
+#### Contributions
 
-1. Realizar uma análise exploratória de dados (EDA) para entender a distribuição das variáveis, identificar tendências e outliers, e obter insights sobre os dados.
-2. Pré-processar os dados, incluindo tratamento de valores ausentes, codificação de variáveis categóricas e normalização/escalonamento de variáveis numéricas, conforme necessário.
-3. Construir e avaliar modelos de regressão para prever a idade dos abalones com base nas informações fornecidas.
-4. Documentar e compartilhar os resultados e código-fonte em um repositório no GitHub.
+Contributions are welcome! Feel free to open issues or submit pull requests with improvements or corrections.
 
-#### Estrutura do repositório
+#### License
 
-- `data`: Pasta que contém o conjunto de dados de Abalones.
-- `notebooks`: Pasta que contém os Jupyter Notebooks utilizados para a EDA e modelagem.
-- `scripts`: Pasta que contém scripts Python auxiliares, se aplicável.
-- `results`: Pasta para armazenar os resultados da análise, como gráficos e métricas de modelo.
-- `README.md`: Este arquivo que fornece uma visão geral do projeto.
-
-#### Contribuições
-
-Contribuições são bem-vindas! Sinta-se à vontade para abrir problemas (issues) ou enviar pull requests com melhorias ou correções.
-
-#### Licença
-
-Este projeto está licenciado sob a [licença MIT](LICENSE).
+This project is licensed under the [MIT License](LICENSE).

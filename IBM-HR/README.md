@@ -1,19 +1,19 @@
-# Análise de atrição, desempenho e retenção de funcionários
+# Employee attrition, performance and retention analysis
 
-* **[Notebook da EDA no NBViewer](https://nbviewer.org/github/hmantovani/hmantovani/blob/main/IBM-HR/EDA_RH_IBM.ipynb)**
-* **[Notebook da modelagem no NBViewer](https://nbviewer.org/github/hmantovani/hmantovani/blob/main/IBM-HR/model_IBM.ipynb)**
+* **[EDA Notebook on NBViewer](https://nbviewer.org/github/hmantovani/hmantovani/blob/main/IBM-HR-EN/EDA_RH_IBM.ipynb)**
+* **[Modeling Notebook in NBViewer](https://nbviewer.org/github/hmantovani/hmantovani/blob/main/IBM-HR-EN/model_IBM.ipynb)**
 
-Ter a capacidade de contratar, treinar e manter um corpo de funcionários competente e capacitado é uma das peças mais importantes dentro do esquema de uma empresa. Para estimular seus talentos a permanecerem exercendo suas atividades atuais, a empresa deve elaborar uma estratégia de retenção de funcionários.
+Having the ability to hire, train and maintain a competent and qualified team of employees is one of the most important pieces within a company's scheme. To encourage its talents to remain in their current activities, the company must develop an employee retention strategy.
 
-Uma empresa que possui uma estratégia bem definida nesse aspecto cria um ambiente de trabalho mais saudável e motiva seus colaboradores a gerarem resultados. Uma regularidade maior no corpo de funcionários pode gerar alguns benefícios:
+A company that has a well-defined strategy in this aspect creates a healthier work environment and motivates its employees to generate results. Greater regularity in the workforce can generate some benefits:
 
-- maior qualidade nas entregas
-- maior engajamento das equipes
-- redução de gastos com demissões
-- maior entrosamento interno
-- fortalecimento do capital intelectual
+- higher quality in deliveries
+- greater team engagement
+- reduction in layoff expenses
+- greater internal integration
+- strengthening intellectual capital
 
-Esse é um dataset fictício criado por cientistas de dados da IBM com diversos dados de quase 1500 colaboradores. Como o objetivo geral de uma empresa deve ser manter seus talentos e fortalecer seu capital intelectual, essa análise busca entender quais fatores levam a uma maior insatisfação por parte dos colaboradores, permitindo que a empresa intervenha em determinados aspectos.
+This is a fictitious dataset created by IBM data scientists with diverse data from almost 1500 employees. As a company's general objective should be to maintain its talents and strengthen its intellectual capital, this analysis seeks to understand which factors lead to greater dissatisfaction on the part of employees, allowing the company to intervene in certain aspects.
 
 - IBM HR Analytics Employee Attrition & Performance
 - https://www.kaggle.com/datasets/pavansubhasht/ibm-hr-analytics-attrition-dataset

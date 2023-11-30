@@ -1,26 +1,21 @@
-# Keras e MNIST
-Criação, treinamento e aplicação de modelos para classificação de imagens no famoso dataset MNIST
+# Keras and MNIST
+Creation, training, and application of models for image classification on the famous MNIST dataset
 
-A base de dados MNIST é uma grande coleção de algarismos manuscritos, frequentemente utilizada para treinar sistemas de processamento de imagens. Também é amplamente considerada para treinamento e teste no campo de aprendizagem de máquina. O conjunto conta com 60 mil imagens de treinamento e 10 mil imagens de teste. Todas as imagens possuem um tamanho de 28x28 pixels, com a cor do dígito branca em um fundo preto. Em 2017, surgiu o conjunto conhecido como EMNIST, uma versão expandida do original com 4x mais imagens: 240 mil para treinamento e 40 mil para teste.
+The MNIST dataset is a large collection of handwritten digits, often used to train image processing systems. It is also widely considered for training and testing in the field of machine learning. The dataset consists of 60,000 training images and 10,000 test images. All images are 28x28 pixels in size, with the digit's color being white on a black background. In 2017, the EMNIST dataset emerged, an expanded version of the original with 4 times more images: 240,000 for training and 40,000 for testing.
 
-Apesar de ser muito utilizada por pessoas em fase de evolução na área de Machine Learning e processamento de imagens, também é motivo de pesquisas profissionais, com pesquisadores testando modelos cada vez mais complexos. A intenção, obviamente, é desenvolver uma expertise nesse ramo para futuramente aplicar o conhecimento em outras ocasiões. O modelo mais preciso para esse dataset em específico foi revelado em 2020, na China, e atingiu uma eficácia de 99,91%. A lista completa de modelos, classificadores e taxas de erro está disponível [na página do MNIST na Wikipedia](https://en.wikipedia.org/wiki/MNIST_database#Classifiers) (em inglês). É interessante notar que, dos oito modelos mais eficazes, sete consistem em redes neurais convolucionais. Por esse motivo, esse tipo de modelo foi abordado nesse teste.
+Although it is commonly used by people evolving in the field of machine learning and image processing, it is also the subject of professional research, with researchers testing increasingly complex models. The intention, of course, is to develop expertise in this area to apply the knowledge in other scenarios. The most accurate model for this specific dataset was revealed in 2020 in China, achieving an accuracy of 99.91%. The complete list of models, classifiers, and error rates is available [on the MNIST Wikipedia page](https://en.wikipedia.org/wiki/MNIST_database#Classifiers). It is interesting to note that of the eight most effective models, seven are convolutional neural networks. For this reason, this type of model was addressed in this test.
 
-Esse repositório conta com dois arquivos, sendo um para modelos convencionais e um para modelos convolucionais. Como já era de se esperar, pelas informações do parágrafo acima, os modelos convolucionais atingem uma precisão muito maior. Ao longo de todo o desenvolvimento do projeto, foram criados 9 modelos.
+This repository contains two files, one for conventional models and one for convolutional models. As expected from the information in the paragraph above, convolutional models achieve much higher accuracy. Throughout the entire project development, nine models were created.
 
----
+Performance ranking of convolutional models
+* Relu - 99.23%
+* Softplus - 99.00%
+* Softsign - 98.82%
+* Selu - 98.70%
 
-**Ranking de desempenho dos modelos convolucionais**
-* Relu - 99,23%
-* Softplus - 99,00%
-* Softsign - 98,82%
-* Selu - 98,70%
-
-
-**Ranking de desempenho dos modelos**
-* Relu - 97,67%
-* Softplus - 97,50%
-* Softsign - 97,48%
-* Selu - 97,34%
-* Sigmoid - 95,82%
-
-Dentre os 9 modelos criados, a maior eficácia apareceu no modelo convolucional com ativação **relu**, que atingiu uma taxa de erro de 0,77%. Esse valor colocaria o modelo como o 13º mais preciso na lista da Wikipedia, mas ainda configura um resultado muito interessante tendo em vista o tempo despendido na análise.
+Performance ranking of conventional models
+* relu - 97.67%
+* softplus - 97.50%
+* softsign - 97.48%
+* selu - 97.34%
+* sigmoid - 95.82%
