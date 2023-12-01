@@ -1,10 +1,7 @@
 # Pima Indians Diabetes Database Analysis
 
 ## Context
-This dataset is sourced from the National Institute of Diabetes and Digestive and Kidney Diseases. The primary goal is to predict whether a patient has diabetes or not based on specific diagnostic measurements. The instances in this dataset are females at least 21 years old of Pima Indian heritage.
-
-## Content
-The dataset contains various medical predictor variables and one target variable, Outcome. Predictor variables include the number of pregnancies, BMI, insulin level, age, etc.
+This dataset is sourced from the National Institute of Diabetes and Digestive and Kidney Diseases. The primary goal is to predict whether a patient has diabetes or not based on specific diagnostic measurements. It contains information of 768 women at least 21 years old from a population near Phoenix, Arizona, USA. They are all of Pima Indian heritage, a population that has been under study by the National Institute of Diabetes and Digestive and Kidney Diseases at intervals of 2 years since 1965. In the test for Diabetes, 258 tested positive and 500 tested negative. 
 
 ## Importance of Modeling Diabetes Prediction
 
@@ -25,46 +22,46 @@ The dataset contains various medical predictor variables and one target variable
 - **Informed Decision-making**: Models empower individuals to make informed decisions about their health.
 - **Privacy and Confidentiality**: Ensuring patient data privacy and confidentiality is crucial in healthcare.
 
-## Model Evaluation and Analysis
+## Model Performance Summary and Insights
 
-### Models Tested
-The following machine learning models were evaluated using this dataset:
+The analysis of multiple machine learning models applied to the Pima Indians Diabetes dataset has provided valuable insights into their predictive performance. The dataset, sourced from the National Institute of Diabetes and Digestive and Kidney Diseases, encompasses diagnostic measurements of 768 women of Pima Indian heritage, aimed at predicting the presence of diabetes.
 
-1. Random Forest
-2. Naive Bayes
-3. K-Nearest Neighbors
-4. Logistic Regression
-5. Extra Trees
-6. Bagging
-7. Gradient Boosting
-8. Stochastic Gradient Descent
-9. Decision Tree
-10. Adaboost
-11. Multi-layer Perceptron
-12. Perceptron
-13. XGBoost
+### Key Findings:
 
-### Findings
+1. **Random Forest**
+   - *Accuracy*: 79.22%
+   - *Strengths*: Balanced performance across precision, recall, and F1-score.
+   - *Weaknesses*: Moderate false negatives (19), potentially impacting sensitivity.
 
-#### Top Performing Models
-- **Random Forest** and **Naive Bayes**: Balanced performance across precision, recall, and F1-score.
-- **K-Nearest Neighbors**, **XGBoost**, and **Logistic Regression**: Reasonable performance with scores closely aligned across metrics.
+2. **CatBoost**
+   - *Accuracy*: 76.62%
+   - *Observations*: Competitive precision and recall, slightly lower than Random Forest.
+   - *Limitations*: Notable false negatives (25), affecting correct identification of positive cases.
 
-#### Moderately Performing Models
-- **Bagging** and **Stochastic Gradient Descent**: Consistent but slightly lower performance compared to top models.
-- **Gradient Boosting**: Good precision but slightly lower recall and F1-score.
+3. **Naive Bayes, Logistic Regression, AdaBoost**
+   - *Performance*: Similar accuracy, precision, recall, and F1-scores.
+   - *Strengths*: Consistency in predictive power but moderate false negatives.
 
-#### Mixed Performance Models
-- **Extra Trees**: Reasonable overall performance but lower recall compared to top models.
-- **Adaboost**: Decent precision but struggles with recall, affecting the F1-score.
+4. **K-Nearest Neighbors, Extra Trees, Gradient Boosting, Bagging, Quadratic Discriminant**
+   - *Performance*: Similar metrics but slightly lower precision and recall.
+   - *Weaknesses*: Challenges in achieving higher precision, leading to misclassification of positive cases.
 
-#### Lower Performing Models
-- **Decision Tree** and **Multi-layer Perceptron**: Weaker overall performance, particularly with low recall and F1-score.
-- **Perceptron**: Extremely low precision despite high recall, indicating misclassifications.
+5. **XGBoost, Stochastic Gradient, Decision Tree, Gaussian Process, Perceptron, Multi-layer Perceptron**
+   - *Observations*: Lower accuracy and imbalanced precision-recall.
+   - *Limitations*: Higher false negatives impacting sensitivity.
 
-### Conclusion
-Ensemble methods like **Random Forest**, **Naive Bayes**, and some others exhibit balanced performance across precision, recall, and F1-score. Depending on specific project requirements, considering ensemble methods or hyperparameter tuning might further enhance model performance.
+### Conclusion:
 
-It's crucial to select models based on the priority of metrics important for the problem at hand - precision, recall, or F1-score.
+- **Top Performers**: Random Forest and CatBoost showcased the best overall performance with a balance between accuracy, precision, recall, and F1-score.
+- **Considerations**: Some models demonstrated strong accuracy but had notable false negatives, indicating room for improvement in identifying individuals with diabetes accurately.
+- **Trade-offs**: Higher accuracy might sacrifice precision or recall, emphasizing the need to evaluate based on specific application context, especially in healthcare prediction models.
 
-Feel free to explore the Jupyter Notebook or code file associated with this analysis for more in-depth details.
+Choosing an appropriate model depends on the context of use, considering the trade-offs between accuracy, precision, and recall, particularly in healthcare where identifying positive cases accurately is crucial.
+
+### Models by accuracy
+
+![Accuracy Metrics](Models_Accuracy.png)
+
+### Full model summary
+
+![Metrics](Metrics.png)
