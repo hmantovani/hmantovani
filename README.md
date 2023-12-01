@@ -15,7 +15,7 @@
 <a> <img src="https://cdn-icons-png.flaticon.com/512/3909/3909370.png" alt="Portuguese" width="30" height="30"> </a>
 
 <details>
-<summary>Lista de repositórioss</summary>
+<summary>Lista de repositórios</summary>
 
 <img src="https://github.com/hmantovani/hmantovani/blob/main/r.png" height="10" width="10"/> [E-commerce da Olist](https://github.com/hmantovani/hmantovani/tree/main/olist) - Análise e modelagem de dados usando o dataset de e-commerce da Olist, disponibilizado no Kaggle. O objetivo final é criar um modelo capaz de prever a probabilidade de um cliente ficar satisfeito ao comprar um produto.
 
