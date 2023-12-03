@@ -12,7 +12,7 @@
 
 <hr>
 
-<summary>Classification</summary>
+## **Classification**
 
 <img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [IBM HR analysis](https://github.com/hmantovani/hmantovani/tree/main/IBM-HR-EN) - Analysis and modeling of a fictitious dataset created by IBM data scientists with diverse data from almost 1500 employees. As a company's general objective should be to maintain its talents and strengthen its intellectual capital, this analysis seeks to understand which factors lead to greater dissatisfaction on the part of employees, allowing the company to intervene in certain aspects.
 
