@@ -14,17 +14,21 @@
 
 ## **Classification**
 
-<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [IBM HR analysis](https://github.com/hmantovani/hmantovani/tree/main/IBM-HR-EN) - Analysis and modeling of a fictitious dataset created by IBM data scientists with diverse data from almost 1500 employees. As a company's general objective should be to maintain its talents and strengthen its intellectual capital, this analysis seeks to understand which factors lead to greater dissatisfaction on the part of employees, allowing the company to intervene in certain aspects.
+<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [IBM HR analysis](https://github.com/hmantovani/hmantovani/tree/main/IBM-HR) - Analysis and modeling of a fictitious dataset created by IBM data scientists with diverse data from almost 1500 employees. As a company's general objective should be to maintain its talents and strengthen its intellectual capital, this analysis seeks to understand which factors lead to greater dissatisfaction on the part of employees, allowing the company to intervene in certain aspects.
 
-<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [Abalone age prediction](https://github.com/hmantovani/hmantovani/tree/main/abalone-EN) - Predictive modeling to determine the age of abalones. Accurate age prediction is essential for sustainable harvesting and conservation efforts, ensuring the preservation of these marine species. It also saves a lot of time, because the most used method is to cut the abalone open and count its rings under a microscope.
+<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [Abalone age prediction](https://github.com/hmantovani/hmantovani/tree/main/abalone) - Predictive modeling to determine the age of abalones. Accurate age prediction is essential for sustainable harvesting and conservation efforts, ensuring the preservation of these marine species. It also saves a lot of time, because the most used method is to cut the abalone open and count its rings under a microscope.
+
+<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [Diabetes prediction](https://github.com/hmantovani/hmantovani/tree/main/diabetes) - The main aim is to accurately forecast a patient's likelihood of having diabetes using specific diagnostic measurements, allowing for early intervention, potentially preventing complications and enabling proactive management. **Best model: Random Forest (79.2%)**
+
+<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [Titanic survivors](https://github.com/hmantovani/hmantovani/tree/main/titanic) - Inspired in the [Kaggle competition Titanic: Machine Learning from Disaster](https://www.kaggle.com/competitions/titanic), the goal is to predict whether a passenger survived the Titanic disaster based on passenger data like Sex, Age and Class. **Best model: Random Forest (79.2%)**
 
 ## **Image classification**
 
-<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [Keras + MNIST](https://github.com/hmantovani/hmantovani/tree/main/keras-mnist-EN) - Creation, training, and application of models for **image classification** on the famous MNIST dataset. The MNIST dataset is a large collection of handwritten digits, often used to train image processing systems and widely employed by individuals in the process of advancing their knowledge in the field of Machine Learning and image processing.
+<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [Keras + MNIST](https://github.com/hmantovani/hmantovani/tree/main/keras-mnist) - Creation, training, and application of models for **image classification** on the famous MNIST dataset. The MNIST dataset is a large collection of handwritten digits, often used to train image processing systems and widely employed by individuals in the process of advancing their knowledge in the field of Machine Learning and image processing.
 
 ## **EDA**
 
-<img src="https://github.com/hmantovani/hmantovani/blob/main/r.png" height="10" width="10"/> [E-commerce da Olist](https://github.com/hmantovani/hmantovani/tree/main/olist) - Análise e modelagem de dados usando o dataset de e-commerce da Olist, disponibilizado no Kaggle. O objetivo final é criar um modelo capaz de prever a probabilidade de um cliente ficar satisfeito ao comprar um produto.
+<img src="https://github.com/hmantovani/hmantovani/blob/main/r.png" height="10" width="10"/> [E-commerce da Olist](https://github.com/hmantovani/hmantovani/tree/main/olist) - Data analysis and modeling using Olist's e-commerce dataset, available on Kaggle. The ultimate goal is to create a model capable of predicting the likelihood of a customer being satisfied when purchasing a product.
 
 </details>
 
