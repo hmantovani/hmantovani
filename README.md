@@ -20,7 +20,7 @@
 
 <img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [Diabetes prediction](https://github.com/hmantovani/hmantovani/tree/main/diabetes) - The main aim is to accurately forecast a patient's likelihood of having diabetes using specific diagnostic measurements, allowing for early intervention, potentially preventing complications and enabling proactive management. **Best model: Random Forest (79.2%)**
 
-<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [Titanic survivors](https://github.com/hmantovani/hmantovani/tree/main/titanic) - Inspired in the [Kaggle competition Titanic: Machine Learning from Disaster](https://www.kaggle.com/competitions/titanic), the goal is to predict whether a passenger survived the Titanic disaster based on passenger data like Sex, Age and Class. **Best model: Random Forest (79.2%)**
+<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [Titanic survivors](https://github.com/hmantovani/hmantovani/tree/main/titanic) - Inspired in the [Kaggle competition](https://www.kaggle.com/competitions/titanic) *Titanic: Machine Learning from Disaster*, the goal is to predict whether a passenger survived the Titanic disaster based on passenger data like Sex, Age and Class. **Best model: Random Forest (79.2%)**
 
 ## **Image classification**
 
