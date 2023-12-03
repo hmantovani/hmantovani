@@ -14,9 +14,7 @@
 
 ## **Classification**
 
-<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [IBM HR analysis](https://github.com/hmantovani/hmantovani/tree/main/IBM-HR) - Analysis and modeling of a fictitious dataset created by IBM data scientists with diverse data from almost 1500 employees. As a company's general objective should be to maintain its talents and strengthen its intellectual capital, this analysis seeks to understand which factors lead to greater dissatisfaction on the part of employees, allowing the company to intervene in certain aspects.
-
-**Best model: KNN (87.7%)**
+<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [IBM HR analysis](https://github.com/hmantovani/hmantovani/tree/main/IBM-HR) - Analysis and modeling of a fictitious dataset created by IBM data scientists with diverse data from almost 1500 employees. As a company's general objective should be to maintain its talents and strengthen its intellectual capital, this analysis seeks to understand which factors lead to greater dissatisfaction on the part of employees, allowing the company to intervene in certain aspects. `**Best model: KNN (87.7%)**`
 
 <img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [Abalone age prediction](https://github.com/hmantovani/hmantovani/tree/main/abalone) - Predictive modeling to determine the age of abalones. Accurate age prediction is essential for sustainable harvesting and conservation efforts, ensuring the preservation of these marine species. It also saves a lot of time, because the most used method is to cut the abalone open and count its rings under a microscope.
 
