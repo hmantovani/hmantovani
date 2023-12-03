@@ -12,8 +12,6 @@
 
 <hr>
 
-<img src="https://github.com/hmantovani/hmantovani/blob/main/py.png" height="10" width="10"/> [Python Handbook](https://github.com/hmantovani/py-handbook) - A compilation of concise Python code snippets. It serves as a quick-reference guide, streamlining tasks like Exploratory Data Analysis (EDA), data manipulation and modeling. These compact codes enhance productivity by providing instant solutions for various activities in Python programming.
-
 <details>
 <summary>Classification</summary>
 
