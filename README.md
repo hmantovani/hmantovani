@@ -51,9 +51,9 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
         <img src="https://raw.githubusercontent.com/hmantovani/cases/main/online-retail/assets/case-logo.png" width="100" alt="Inventory Optimization Case">
       </a>
       <br />
-      <b>📦 Inventory Optimization & Demand Analytics</b>
+      <b>📦 Online Retail</b>
       <br />
-      <sub>End-to-end project focused on supply chain efficiency, ABC/XYZ analysis, and demand forecasting using an online retail dataset.</sub>
+      <sub>Case focused on supply chain efficiency, ABC/XYZ segmentation, demand forecasting and stockout reduction using an online retail dataset.</sub>
     </td>
   </tr>
 </table>
