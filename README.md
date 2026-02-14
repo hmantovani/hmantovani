@@ -57,3 +57,35 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
     </td>
   </tr>
 </table>
+
+<table>
+  <tr>
+    <td align="center" width="33%" valign="top">
+      <a href="https://github.com/hmantovani/YYY">
+        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Placeholder">
+      </a>
+      <br />
+      <b>Placeholder</b>
+      <br />
+      <sub>Description for Placeholder</sub>
+    </td>
+    <td align="center" width="33%" valign="top">
+      <a href="https://github.com/hmantovani/YYY">
+        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Placeholder">
+      </a>
+      <br />
+      <b>Placeholder</b>
+      <br />
+      <sub>Description for Placeholder</sub>
+    </td>
+    <td align="center" width="33%" valign="top">
+      <a href="https://github.com/hmantovani/YYY">
+        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Placeholder">
+      </a>
+      <br />
+      <b>Placeholder</b>
+      <br />
+      <sub>Description for Placeholder</sub>
+    </td>
+  </tr>
+</table>
