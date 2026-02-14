@@ -67,7 +67,7 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
       <br />
       <b>⏳ Supply Chain</b>
       <br />
-      <sub>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</sub>
+      <sub>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</sub>
     </td>
     <td align="center" width="33%" valign="top">
       <a href="https://github.com/hmantovani/YYY">
@@ -76,7 +76,7 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
       <br />
       <b>⏳ Fraud Detection</b>
       <br />
-      <sub>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</sub>
+      <sub>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</sub>
     </td>
     <td align="center" width="33%" valign="top">
       <a href="https://github.com/hmantovani/ZZZ">
@@ -85,7 +85,7 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
       <br />
       <b>⏳ Sentiment Analysis</b>
       <br />
-      <sub>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</sub>
+      <sub>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</sub>
     </td>
   </tr>
 </table>
