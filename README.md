@@ -38,8 +38,8 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
       <sub>Multi-language video downloader with GUI</sub>
     </td>
     <td align="center" width="33%" valign="top">
-      <a href="https://github.com/hmantovani/XXX">
-        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Placeholder 1">
+      <a href="https://github.com/hmantovani/wikipedia-pdf">
+        <img src="https://raw.githubusercontent.com/hmantovani/wikipedia-pdf/main/assets/wiki.png" width="100" alt="Wikipedia to PDF">
       </a>
       <br />
       <b>Placeholder 1</b>
@@ -51,9 +51,9 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
         <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Placeholder 2">
       </a>
       <br />
-      <b>Placeholder 2</b>
+      <b>📖 Wikipedia PDF Downloader</b>
       <br />
-      <sub>Description for Placeholder 2</sub>
+      <sub>Automated Wiki-to-PDF tool for AI Knowledge Bases (RAG)</sub>
     </td>
   </tr>
 </table>
