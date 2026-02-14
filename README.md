@@ -57,9 +57,3 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
     </td>
   </tr>
 </table>
-
----
-
-<div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=hmantovani&show_icons=true&theme=react&border_radius=10" alt="My GitHub stats" />
-</div>
