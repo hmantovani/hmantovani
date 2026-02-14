@@ -42,18 +42,18 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
         <img src="https://raw.githubusercontent.com/hmantovani/wikipedia-pdf/main/assets/wiki.png" width="100" alt="Wikipedia to PDF">
       </a>
       <br />
-      <b>Placeholder 1</b>
-      <br />
-      <sub>Description for Placeholder 1</sub>
-    </td>
-    <td align="center" width="33%" valign="top">
-      <a href="https://github.com/hmantovani/YYY">
-        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Placeholder 2">
-      </a>
-      <br />
       <b>📖 Wikipedia PDF Downloader</b>
       <br />
       <sub>Automated Wiki-to-PDF tool for AI Knowledge Bases (RAG)</sub>
+    </td>
+    <td align="center" width="33%" valign="top">
+      <a href="https://github.com/hmantovani/YYY">
+        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Placeholder">
+      </a>
+      <br />
+      <b>Placeholder</b>
+      <br />
+      <sub>Description for Placeholder</sub>
     </td>
   </tr>
 </table>
