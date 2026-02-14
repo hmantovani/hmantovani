@@ -39,7 +39,7 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
     </td>
     <td align="center" width="33%" valign="top">
       <a href="https://github.com/hmantovani/wikipedia-pdf">
-        <img src="https://raw.githubusercontent.com/hmantovani/wikipedia-pdf/main/assets/wiki-gold.png" width="100" alt="Wikipedia to PDF">
+        <img src="https://raw.githubusercontent.com/hmantovani/wikipedia-pdf/main/assets/wk.png" width="100" alt="Wikipedia to PDF">
       </a>
       <br />
       <b>📖 Wikipedia PDF Downloader</b>
