@@ -62,7 +62,7 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
   <tr>
     <td align="center" width="33%" valign="top">
       <a href="https://github.com/hmantovani/XXX">
-        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/assets/placeholder.png" width="100" alt="Supply Chain Case">
+        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/refs/heads/main/assets/placeholder-light.png" width="100" alt="Supply Chain Case">
       </a>
       <br />
       <b>⏳ Supply Chain</b>
@@ -71,7 +71,7 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
     </td>
     <td align="center" width="33%" valign="top">
       <a href="https://github.com/hmantovani/YYY">
-        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/assets/placeholder.png" width="100" alt="Fraud Detection Case">
+        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/refs/heads/main/assets/placeholder-light.png" width="100" alt="Fraud Detection Case">
       </a>
       <br />
       <b>⏳ Fraud Detection</b>
@@ -80,7 +80,7 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
     </td>
     <td align="center" width="33%" valign="top">
       <a href="https://github.com/hmantovani/ZZZ">
-        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/assets/placeholder.png" width="100" alt="Sentiment Analysis Case">
+        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/refs/heads/main/assets/placeholder-light.png" width="100" alt="Sentiment Analysis Case">
       </a>
       <br />
       <b>⏳ Sentiment Analysis</b>
