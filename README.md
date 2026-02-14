@@ -1,14 +1,34 @@
-# Hi, I'm Henrique Mantovani 👋
+# Hi, I'm [<img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/linkedin.png" width="30" style="vertical-align:middle"> **Henrique Mantovani**](https://www.linkedin.com/in/hmantovani) 👋
 
-*Passionate about automation and Python development*
+*Production Engineer & Data Scientist*
 
-*Entusiasta de automação e desenvolvimento Python*
+*Engenheiro de Produção & Cientista de Dados*
+
+---
+
+### <img src="assets/us.png" width="22"> <img src="assets/uk.png" width="22">
+
+Hi, I’m **Henrique Mantovani**. I hold a degree in **Production Engineering** from **PUC-SP (2022)** and a **Postgraduate degree in Data Science** from **PUC-RS (2025)**.
+
+My professional journey has combined engineering's focus on efficiency with strategic data analytics. I began my career in marketing and communications at **Thermo Fisher**. My definitive transition to data occurred during my final year of college, when I joined **IBM** as a **Data Analysis Intern**, allowing me to dive deep into the field. I also worked at **Keyence** — one of Japan’s top 10 largest companies by market cap — where I focused on process automation within a high-level operational efficiency culture. During this stage, I had the opportunity to lead the implementation of **Python** into the data team’s routine and built a **Data Warehouse** to power multiple company-wide **PowerBI** reports.
+
+Today, my work is focused on **ETL, automation, analysis, and predictive modeling**. I currently work as a **Consultant**, leveraging these pillars to help companies and projects turn raw data into strategy, optimize processes and build scalable information ecosystems. Feel free to reach out!
+
+---
+
+### <img src="assets/br.png" width="22"> <img src="assets/pt.png" width="22">
+
+Olá, eu sou o **Henrique Mantovani**. Sou graduado em **Engenharia de Produção** pela **PUC-SP (2022)** e pós-graduado em **Ciência de Dados** pela **PUC-RS (2025)**.
+
+Minha trajetória profissional até hoje combinou o foco em eficiência da engenharia com a análise estratégica de dados. Meu primeiro cargo foi na área de marketing e comunicação na **Thermo Fisher**. Minha transição para dados ocorreu no último ano da faculdade, quando ingressei na **IBM** através de um estágio em análise de dados e pude me aprofundar na área. Atuei também na **Keyence**, uma das 10 maiores empresas do Japão por valor de mercado. Pude focar bastante na automação de processos em uma cultura de eficiência operacional. Nessa etapa, tive também a oportunidade de liderar a implementação de **Python** na rotina da área de dados e de construir um **Data Warehouse** para alimentar múltiplos relatórios em **PowerBI** pela empresa.
+
+Minha atuação hoje é focada em **ETL, automação, análise e modelagem preditiva**. Atualmente, trabalho como **consultor** e esses são os meus pilares para ajudar empresas e projetos a transformarem dados brutos em estratégia, otimizar processos e estruturar ecossistemas de informação escaláveis. Sinta-se à vontade para entrar em contato comigo!
 
 ---
 
 ## 🛠️ Projects
 
-<table border="0">
+<table>
   <tr>
     <td align="center" width="33%" valign="top">
       <a href="https://github.com/hmantovani/youtube-mp4">
@@ -16,39 +36,32 @@
       </a>
       <br />
       <b>📺 YouTube Downloader</b>
-      <p><i>Multi-language video downloader with GUI.</i></p>
-    </td>
-    
-    <td align="center" width="33%" valign="top">
-      <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Future Project">
       <br />
-      <b>🚀 In Progress</b>
-      <p><i>New automation tool coming soon...</i></p>
+      <sub>Multi-language video downloader with GUI</sub>
     </td>
-
     <td align="center" width="33%" valign="top">
-      <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Future Project">
+      <a href="https://github.com/hmantovani/XXX">
+        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Placeholder 1">
+      </a>
       <br />
-      <b>💡 Idea Stage</b>
-      <p><i>Brainstorming next features.</i></p>
+      <b>Placeholder 1</b>
+      <br />
+      <sub>Description for Placeholder 1</sub>
+    </td>
+    <td align="center" width="33%" valign="top">
+      <a href="https://github.com/hmantovani/YYY">
+        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Placeholder 2">
+      </a>
+      <br />
+      <b>Placeholder 2</b>
+      <br />
+      <sub>Description for Placeholder 2</sub>
     </td>
   </tr>
 </table>
 
 ---
 
-## 📫 Contact Me / Contato
-
-ㅤ<a href="https://www.linkedin.com/in/hmantovani">
-<img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/linkedin.png" alt="LinkedIn" width="20" height="20">
-</a> [Henrique Mantovani](https://www.linkedin.com/in/hmantovani)
-
-ㅤ<a href="https://hmantovani.github.io">
-<img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/github.png" alt="GitHub" width="20" height="20">
-</a> [hmantovani.github.io](https://hmantovani.github.io)
-
----
-
 <div align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=hmantovani&show_icons=true&theme=react&hide_border=true" alt="Henrique's GitHub stats" />
+  <img src="https://github-readme-stats.vercel.app/api?username=hmantovani&show_icons=true&theme=react&border_radius=10" alt="My GitHub stats" />
 </div>
