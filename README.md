@@ -57,3 +57,35 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
     </td>
   </tr>
 </table>
+
+<table>
+  <tr>
+    <td align="center" width="33%" valign="top">
+      <a href="https://github.com/hmantovani/XXX">
+        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/assets/placeholder.png" width="100" alt="Supply Chain Case">
+      </a>
+      <br />
+      <b>⏳ Supply Chain</b>
+      <br />
+      <sub>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</sub>
+    </td>
+    <td align="center" width="33%" valign="top">
+      <a href="https://github.com/hmantovani/YYY">
+        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/assets/placeholder.png" width="100" alt="Fraud Detection Case">
+      </a>
+      <br />
+      <b>⏳ Fraud Detection</b>
+      <br />
+      <sub>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</sub>
+    </td>
+    <td align="center" width="33%" valign="top">
+      <a href="https://github.com/hmantovani/ZZZ">
+        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/assets/placeholder.png" width="100" alt="Sentiment Analysis Case">
+      </a>
+      <br />
+      <b>⏳ Sentiment Analysis</b>
+      <br />
+      <sub>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</sub>
+    </td>
+  </tr>
+</table>
