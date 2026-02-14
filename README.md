@@ -20,15 +20,15 @@
     </td>
     
     <td align="center" width="33%" valign="top">
-      <img src="https://img.shields.io/badge/Status-Coming_Soon-lightgrey?style=for-the-badge" width="150" alt="Future Project">
-      <br /><br />
+      <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Future Project">
+      <br />
       <b>🚀 In Progress</b>
       <p><i>New automation tool coming soon...</i></p>
     </td>
 
     <td align="center" width="33%" valign="top">
-      <img src="https://img.shields.io/badge/Status-Idea_Stage-blue?style=for-the-badge" width="150" alt="Future Project">
-      <br /><br />
+      <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Future Project">
+      <br />
       <b>💡 Idea Stage</b>
       <p><i>Brainstorming next features.</i></p>
     </td>
