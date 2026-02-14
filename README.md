@@ -47,13 +47,13 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
       <sub>Automated Wiki-to-PDF tool for AI Knowledge Bases (RAG)</sub>
     </td>
     <td align="center" width="33%" valign="top">
-      <a href="https://github.com/hmantovani/YYY">
-        <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/ph.png" width="100" alt="Placeholder">
+      <a href="https://github.com/hmantovani/online-retail-optimization">
+        <img src="https://raw.githubusercontent.com/hmantovani/cases/main/online-retail/assets/case-logo.png" width="100" alt="Inventory Optimization Case">
       </a>
       <br />
-      <b>Placeholder</b>
+      <b>📦 Inventory Optimization & Demand Analytics</b>
       <br />
-      <sub>Description for Placeholder</sub>
+      <sub>End-to-end project focused on supply chain efficiency, ABC/XYZ analysis, and demand forecasting using an online retail dataset.</sub>
     </td>
   </tr>
 </table>
