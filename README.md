@@ -1,17 +1,18 @@
 # Hi, I'm Henrique Mantovani 👋
 
-**[EN]** Passionate about automation and Python development.  
-**[PT-BR]** Entusiasta de automação e desenvolvimento Python.
+*Passionate about automation and Python development*
+
+*Entusiasta de automação e desenvolvimento Python*
 
 ---
 
-## 🛠️ My Projects / Meus Projetos
+## 🛠️ Projects
 
 <table border="0">
   <tr>
     <td align="center" width="33%" valign="top">
       <a href="https://github.com/hmantovani/youtube-mp4">
-        <img src="https://raw.githubusercontent.com/hmantovani/youtube-mp4/main/assets/us.png" width="100" alt="YouTube Downloader">
+        <img src="https://raw.githubusercontent.com/hmantovani/youtube-mp4/main/assets/yt.png" width="100" alt="YouTube Downloader">
       </a>
       <br />
       <b>📺 YouTube Downloader</b>
