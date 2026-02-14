@@ -1,8 +1,6 @@
 # Hi, I'm [<img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/linkedin.png" width="30" style="vertical-align:middle"> **Henrique Mantovani**](https://www.linkedin.com/in/hmantovani) 👋
 
-*Production Engineer & Data Scientist*
-
-*Engenheiro de Produção & Cientista de Dados*
+*Production Engineer & Data Scientist* | *Engenheiro de Produção & Cientista de Dados*
 
 ---
 
