@@ -1,34 +1,69 @@
-# Hi, I'm **Henrique Mantovani** 👋
+<h1>Hi, I'm Henrique Mantovani 👋</h1>
+<h3>Production Engineer & Data Scientist</h3>
 
-*Production Engineer & Data Scientist* / *Engenheiro de Produção & Cientista de Dados*
+<p>
+  <a href="https://mantovani.tech" target="_blank">
+    🌐 Website
+  </a>
+  &nbsp;&nbsp;|&nbsp;&nbsp;
+  <a href="https://www.linkedin.com/in/hmantovani/" target="_blank">
+    💼 LinkedIn
+  </a>
+</p>
 
-<img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/url-icon.png" width="25" style="vertical-align:top">  [mantovani.tech](https://mantovani.tech)
+<hr style="border: none; height: 2px; background-color: #58e7a4; margin: 40px 0;">
 
-<img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/linkedin.png" width="25" style="vertical-align:top">  [Henrique Mantovani](https://www.linkedin.com/in/hmantovani/)
+<h2 style="border-bottom: none; padding-bottom: 10; margin-bottom: 10px;">
+  <img src="assets/us.png" width="24" style="vertical-align:bottom"> 
+  <img src="assets/uk.png" width="24" style="vertical-align:bottom">
+  English
+</h2>
 
----
+<p>
+Hi, I’m <strong>Henrique Mantovani</strong>. I hold a degree in 
+<strong>Production Engineering</strong> from <strong>PUC-SP (2022)</strong> 
+and a <strong>Postgraduate degree in Data Science</strong> from 
+<strong>PUC-RS (2025)</strong>.
+</p>
 
-### <img src="assets/us.png" width="22"> <img src="assets/uk.png" width="22">
+<p>
+My professional journey has combined engineering's focus on efficiency with strategic data analytics. I began my career in marketing and communications at <strong>Thermo Fisher</strong>. My definitive transition to data occurred during my final year of college, when I joined <strong>IBM</strong> as a <strong>Data Analysis Intern</strong>, allowing me to dive deep into the field. I also worked at <strong>Keyence</strong> — one of Japan’s top 10 largest companies by market cap — where I focused on process automation within a high-level operational efficiency culture. During this stage, I had the opportunity to lead the implementation of <strong>Python</strong> into the data team’s routine and built a <strong>Data Warehouse</strong> to power multiple company-wide <strong>PowerBI</strong> reports.
+</p>
 
-Hi, I’m **Henrique Mantovani**. I hold a degree in **Production Engineering** from **PUC-SP (2022)** and a **Postgraduate degree in Data Science** from **PUC-RS (2025)**.
+<p>
+Today, my work is focused on <strong>ETL, automation, analysis, and predictive modeling</strong>. I currently work as a <strong>Consultant</strong>, leveraging these pillars to help companies and projects turn raw data into strategy, optimize processes and build scalable information ecosystems. Feel free to reach out!
+</p>
 
-My professional journey has combined engineering's focus on efficiency with strategic data analytics. I began my career in marketing and communications at **Thermo Fisher**. My definitive transition to data occurred during my final year of college, when I joined **IBM** as a **Data Analysis Intern**, allowing me to dive deep into the field. I also worked at **Keyence** — one of Japan’s top 10 largest companies by market cap — where I focused on process automation within a high-level operational efficiency culture. During this stage, I had the opportunity to lead the implementation of **Python** into the data team’s routine and built a **Data Warehouse** to power multiple company-wide **PowerBI** reports.
+</div>
 
-Today, my work is focused on **ETL, automation, analysis, and predictive modeling**. I currently work as a **Consultant**, leveraging these pillars to help companies and projects turn raw data into strategy, optimize processes and build scalable information ecosystems. Feel free to reach out!
+<hr style="border: none; height: 2px; background-color: #58e7a4; margin: 40px 0;">
 
----
+<h2 style="border-bottom: none; padding-bottom: 10; margin-bottom: 10px;">
+  <img src="assets/br.png" width="24" style="vertical-align:bottom"> 
+  <img src="assets/pt.png" width="24" style="vertical-align:bottom">
+  Português
+</h2>
 
-### <img src="assets/br.png" width="22"> <img src="assets/pt.png" width="22">
+<p>
+Olá, eu sou o <strong>Henrique Mantovani</strong>. Sou graduado em 
+<strong>Engenharia de Produção</strong> pela <strong>PUC-SP (2022)</strong> 
+e pós-graduado em <strong>Ciência de Dados</strong> pela 
+<strong>PUC-RS (2025)</strong>.
+</p>
 
-Olá, eu sou o **Henrique Mantovani**. Sou graduado em **Engenharia de Produção** pela **PUC-SP (2022)** e pós-graduado em **Ciência de Dados** pela **PUC-RS (2025)**.
+<p>
+Minha trajetória profissional até hoje combinou o foco em eficiência da engenharia com a análise estratégica de dados. Meu primeiro cargo foi na área de marketing e comunicação na <strong>Thermo Fisher</strong>. Minha transição para dados ocorreu no último ano da faculdade, quando ingressei na <strong>IBM</strong> através de um estágio em análise de dados e pude me aprofundar na área. Atuei também na <strong>Keyence</strong>, uma das 10 maiores empresas do Japão por valor de mercado. Pude focar bastante na automação de processos em uma cultura de eficiência operacional. Nessa etapa, tive também a oportunidade de liderar a implementação de <strong>Python</strong> na rotina da área de dados e de construir um <strong>Data Warehouse</strong> para alimentar múltiplos relatórios em <strong>PowerBI</strong> pela empresa.
+</p>
 
-Minha trajetória profissional até hoje combinou o foco em eficiência da engenharia com a análise estratégica de dados. Meu primeiro cargo foi na área de marketing e comunicação na **Thermo Fisher**. Minha transição para dados ocorreu no último ano da faculdade, quando ingressei na **IBM** através de um estágio em análise de dados e pude me aprofundar na área. Atuei também na **Keyence**, uma das 10 maiores empresas do Japão por valor de mercado. Pude focar bastante na automação de processos em uma cultura de eficiência operacional. Nessa etapa, tive também a oportunidade de liderar a implementação de **Python** na rotina da área de dados e de construir um **Data Warehouse** para alimentar múltiplos relatórios em **PowerBI** pela empresa.
+<p>
+Minha atuação hoje é focada em <strong>ETL, automação, análise e modelagem preditiva</strong>. Atualmente, trabalho como <strong>consultor</strong> e esses são os meus pilares para ajudar empresas e projetos a transformarem dados brutos em estratégia, otimizar processos e estruturar ecossistemas de informação escaláveis. Sinta-se à vontade para entrar em contato comigo!
+</p>
 
-Minha atuação hoje é focada em **ETL, automação, análise e modelagem preditiva**. Atualmente, trabalho como **consultor** e esses são os meus pilares para ajudar empresas e projetos a transformarem dados brutos em estratégia, otimizar processos e estruturar ecossistemas de informação escaláveis. Sinta-se à vontade para entrar em contato comigo!
+</div>
 
----
+<hr style="border: none; height: 2px; background-color: #58e7a4; margin: 40px 0;">
 
-## 🛠️ Projects
+<h1 style="border-bottom: none; padding-bottom: 20; margin-bottom: 10px;">🛠️ Projects</h1>
 
 <table>
   <tr>
@@ -93,3 +128,5 @@ Minha atuação hoje é focada em **ETL, automação, análise e modelagem predi
     </td>
   </tr>
 </table>
+
+<hr style="border: none; height: 2px; background-color: #58e7a4; margin: 40px 0;">
