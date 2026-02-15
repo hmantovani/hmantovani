@@ -1,15 +1,16 @@
 <h1>Hi, I'm Henrique Mantovani 👋</h1>
 <h3>Production Engineer & Data Scientist</h3>
-
-<p>
-  <a href="https://mantovani.tech" target="_blank">
-    🌐 Website
+<h2 style="border-bottom: none; padding-bottom: 10px; margin-bottom: 10px; font-size: 18px; font-weight: 500;">
+  <a href="https://mantovani.tech" target="_blank" style="text-decoration: none; margin-right: 25px;">
+    <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/url-icon.png" width="24" style="vertical-align: bottom; margin-right: 7px;">
+    mantovani.tech
   </a>
-  &nbsp;&nbsp;|&nbsp;&nbsp;
-  <a href="https://www.linkedin.com/in/hmantovani/" target="_blank">
-    💼 LinkedIn
+<br></br>
+  <a href="https://www.linkedin.com/in/hmantovani/" target="_blank" style="text-decoration: none;">
+    <img src="https://raw.githubusercontent.com/hmantovani/hmantovani/main/linkedin.png" width="24" style="vertical-align: bottom; margin-right: 7px;">
+    Henrique Mantovani
   </a>
-</p>
+</h2>
 
 <hr style="border: none; height: 2px; background-color: #58e7a4; margin: 40px 0;">
 
